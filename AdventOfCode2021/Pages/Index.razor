@@ -1,9 +1,19 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Advent of Code by Elephtera</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello World!</h1>
+Below are my assignment results. See github sourcecode for solutions on getting the correct result.
 
-Welcome to your new app.
+@{
+    var ass1 = new Assignments.Day1.Assignment1();
+    var result1 = ass1.PerformAsync();
+    result1.Wait();
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    var ass2 = new Assignments.Day1.Assignment2();
+    var result2 = ass2.PerformAsync();
+    result2.Wait();
+}
+
+Assignment 1: <b>@result1.Result</b>
+Assignment 2: <b>@result2.Result</b>
