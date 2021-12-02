@@ -48,20 +48,20 @@
     {
         private static Uri Assignment1Uri = new Uri("https://adventofcode.com/2021/day/1/input");
 
-        private async Task<IList<int>> GetInputData()
+        private IList<int> GetInputData()
         {
-            var input = await InputHandler.GetInputAsList(Assignment1Uri);
+            var input = InputHandler.GetInputAsList(InputDay1.Input);
             return input;
         }
 
-        public async Task<string> PerformAsync()
+        public string Perform()
         {
             var count = 0;
             var previous = default(int?);
 
-            foreach (var input in await GetInputData())
+            foreach (var input in GetInputData())
             {
-                if(previous != default && previous < input)
+                if (previous != default && previous < input)
                 {
                     count++;
                 }

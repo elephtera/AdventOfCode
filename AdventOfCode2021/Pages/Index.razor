@@ -7,13 +7,20 @@ Below are my assignment results. See github sourcecode for solutions on getting 
 
 @{
     var ass1 = new Assignments.Day1.Assignment1();
-    var result1 = ass1.PerformAsync();
-    result1.Wait();
+    var result1 = ass1.Perform();
 
     var ass2 = new Assignments.Day1.Assignment2();
-    var result2 = ass2.PerformAsync();
-    result2.Wait();
+    var result2 = ass2.Perform();
+
+    var ass3 = new Assignments.Day2.Assignment1();
+    var result3 = ass3.Perform();
+
+    var ass4 = new Assignments.Day2.Assignment2();
+    var result4 = ass4.Perform();
 }
 
-Assignment 1: <b>@result1.Result</b>
-Assignment 2: <b>@result2.Result</b>
+<br />Assignment 1: <b>@result1</b>
+<br />Assignment 2: <b>@result2</b>
+<br />Assignment 3: <b>@result3</b>
+<br />Assignment 4: <b>@result4</b>
+

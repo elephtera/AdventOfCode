@@ -1,21 +1,8 @@
-﻿namespace AdventOfCode2021.Assignments
+﻿namespace AdventOfCode2021.Assignments.Day1
 {
-    public static class InputHandler
+    public class InputDay1
     {
-        public static async Task<IList<int>> GetInputAsList(Uri url)
-        {
-            //var client = new HttpClient();
-            //using HttpResponseMessage response = await client.GetAsync(url);
-            //using HttpContent content = response.Content;
-            //var inputResult = await content.ReadAsStringAsync();
-            var lines = InputDay1.Split(new string[] { Environment.NewLine },
-                    StringSplitOptions.None);
-
-            var result = lines.Select(line => int.Parse(line)).ToList();
-            return result;
-        }
-
-        private static string InputDay1 = @"134
+        public static string Input = @"134
 138
 142
 143
