@@ -69,50 +69,8 @@
         public string PartA()
         {
             IList<string> inputs = InputHandler.GetInputAsStringList(Day3Input.Input);
-            var arraySize = inputs[0].Length;
-            int[] ones = new int[arraySize];
-            int[] zeroes = new int[arraySize];
-
-            foreach (var input in inputs)
-            {
-                var position = 0;
-                foreach(var bit in input.ToArray())
-                {
-
-                    if(bit == '0')
-                    {
-                        zeroes[position]++;
-                    }
-                    else if(bit == '1')
-                    {
-                        ones[position]++;
-                    }
-                    
-                    position++;
-                }
-            }
-
-            var gamma = string.Empty;
-            var epsilon = string.Empty;
-
-            for(int i = 0; i < arraySize; i++)
-            {
-                if(ones[i] > zeroes[i])
-                {
-                    gamma += "1";
-                    epsilon += "0";
-                }
-                else if (ones[i] < zeroes[i])
-                {
-                    gamma += "0";
-                    epsilon += "1";
-                }
-                else
-                {
-                    gamma += "0";
-                    epsilon += "0";
-                }
-            }
+            string gamma, epsilon;
+            CalculateGammaEpsilon(inputs, out gamma, out epsilon);
 
             return (Convert.ToInt32(gamma, 2) * Convert.ToInt32(epsilon, 2)).ToString();
         }
@@ -122,22 +80,10 @@
             int position = 0;
             IList<string> inputsOxygen = InputHandler.GetInputAsStringList(Day3Input.Input);
             IList<string> inputsCO2 = InputHandler.GetInputAsStringList(Day3Input.Input);
-            string mostOnes, mostZeroes;
             do
             {
-                CalculateGammaEpsilon(inputsOxygen, out mostOnes, out mostZeroes);
-                if (mostOnes[position] < mostZeroes[position])
-                {
-                    inputsOxygen = FilterInputs(inputsOxygen, '0', position);
-                }
-                else if (mostOnes[position] > mostZeroes[position])
-                {
-                    inputsOxygen = FilterInputs(inputsOxygen, '1', position);
-                }
-                else
-                {
-                    inputsOxygen = FilterInputs(inputsOxygen, '1', position);
-                }
+                CalculateOnesZeroesForPosition(inputsOxygen, position, out int ones, out int zeroes);
+                inputsOxygen = FilterInputs(inputsOxygen, ones < zeroes, position);
                 position++;
 
             } while (inputsOxygen.Count > 1);
@@ -145,73 +91,36 @@
             position = 0;
             do
             {
-                CalculateGammaEpsilon(inputsCO2, out mostOnes, out mostZeroes);
-                if (mostOnes[position] < mostZeroes[position])
-                {
-                    inputsCO2 = FilterInputs(inputsCO2, '1', position);
-                }
-                else if (mostOnes[position] > mostZeroes[position])
-                {
-                    inputsCO2 = FilterInputs(inputsCO2, '0', position);
-                }
-                else
-                {
-                    inputsCO2 = FilterInputs(inputsCO2, '0', position);
-                }
+                CalculateOnesZeroesForPosition(inputsCO2, position, out int ones, out int zeroes);
+                inputsCO2 = FilterInputs(inputsCO2, ones < zeroes, position);
+
                 position++;
             } while (inputsCO2.Count > 1);
 
             return (Convert.ToInt32(inputsOxygen[0], 2) * Convert.ToInt32(inputsCO2[0], 2)).ToString();
         }
 
-        private static IList<string> FilterInputs(IList<string> inputs, char v, int position)
+        private static IList<string> FilterInputs(IList<string> inputs, bool one, int position)
         {
-            var newInputs = new List<string>();
-            foreach (string input in inputs)
-            {
-                if (input[position] == v)
-                {
-                    newInputs.Add(input);
-                }
-            }
-            return newInputs;
+            return inputs.Where(input => input[position] == (one ? '1' : '0')).ToList();
         }
 
         private static void CalculateGammaEpsilon(IList<string> inputs, out string gamma, out string epsilon)
         {
             var arraySize = inputs[0].Length;
-            int[] ones = new int[arraySize];
-            int[] zeroes = new int[arraySize];
-
-            foreach (var input in inputs)
-            {
-                var position = 0;
-                foreach (var bit in input.ToArray())
-                {
-
-                    if (bit == '0')
-                    {
-                        zeroes[position]++;
-                    }
-                    else if (bit == '1')
-                    {
-                        ones[position]++;
-                    }
-
-                    position++;
-                }
-            }
-
             gamma = string.Empty;
             epsilon = string.Empty;
-            for (int i = 0; i < arraySize; i++)
+
+            for (int position = 0; position < arraySize; position++)
             {
-                if (ones[i] > zeroes[i])
+                CalculateOnesZeroesForPosition(inputs, position, out int oneCount, out int zeroCount);
+
+                if (oneCount > zeroCount)
                 {
                     gamma += "1";
                     epsilon += "0";
                 }
-                else if (ones[i] < zeroes[i])
+                else if (oneCount < zeroCount)
                 {
                     gamma += "0";
                     epsilon += "1";
@@ -220,6 +129,27 @@
                 {
                     gamma += "0";
                     epsilon += "0";
+                }
+            }
+        }
+
+        private static void CalculateOnesZeroesForPosition(IList<string> inputs, int position, out int ones, out int zeroes)
+        {
+            ones = 0;
+            zeroes = 0;
+
+            foreach (var input in inputs)
+            {
+                switch (input[position])
+                {
+                    case '0':
+                        zeroes++;
+                        break;
+                    case '1':
+                        ones++;
+                        break;
+                    default:
+                        break;
                 }
             }
         }
