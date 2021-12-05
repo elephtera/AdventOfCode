@@ -10,6 +10,16 @@
             var result = lines.Select(line => int.Parse(line)).ToList();
             return result;
         }
+
+        public static IList<string> GetInputAsStringList(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            var result = lines.ToList();
+            return result;
+        }
+
         public static IList<int[][]> ConvertInputToBingoCards(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
@@ -57,5 +67,31 @@
             return result;
 
         }
+
+        public static IList<Tuple<SubmarineAction, int>> ConvertInputToActionList(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            var result = lines.Select(line => ConvertLineToAction(line)).ToList();
+            return result;
+        }
+
+        public static Tuple<SubmarineAction, int> ConvertLineToAction(string inputLine)
+        {
+            var bits = inputLine.Split(new string[] { " " }, StringSplitOptions.None);
+
+            var action = SubmarineAction.nothing;
+            if (!Enum.TryParse<SubmarineAction>(bits[0], out action))
+            {
+                action = SubmarineAction.nothing;
+            }
+
+            var amount = int.Parse(bits[1]);
+
+            return new Tuple<SubmarineAction, int>(action, amount);
+        }
+
+
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace AdventOfCode2021.Assignments.Day2
+﻿namespace AdventOfCode2021.Assignments
 {
-    public class InputDay2
+    public class Day2Input
     {
         public static string Input = @"forward 2
 down 7
