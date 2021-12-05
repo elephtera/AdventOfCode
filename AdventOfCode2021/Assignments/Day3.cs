@@ -64,7 +64,7 @@
      * 
      * Use the binary numbers in your diagnostic report to calculate the oxygen generator rating and CO2 scrubber rating, then multiply them together. What is the life support rating of the submarine? (Be sure to represent your answer in decimal, not binary.)
      */
-    public class Day3
+    public class Day3 : IDay
     {
         public string PartA()
         {

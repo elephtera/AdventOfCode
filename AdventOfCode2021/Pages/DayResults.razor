@@ -1,0 +1,24 @@
+﻿@page "/day/{day}"
+@using AdventOfCode2021.Assignments
+
+<PageTitle>Day @Day</PageTitle>
+
+<h1>Results for day @Day</h1>
+
+<p role="status">Part 1: @PartA</p>
+<p role="status">Part 2: @PartB</p>
+
+@code {
+    [Parameter]
+    public string? Day { get; set; }
+
+    public IDay GetDay()
+    {
+        var classInstance = Activator.CreateInstance("AdventOfCode2021", "AdventOfCode2021.Assignments.Day" + Day);
+        return (IDay) classInstance.Unwrap();
+    }
+
+    public string PartA => GetDay().PartA();
+
+    public string PartB => GetDay().PartB();
+}

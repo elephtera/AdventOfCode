@@ -63,7 +63,7 @@
      * 
      * Consider all of the lines. At how many points do at least two lines overlap?
      */
-    public class Day5
+    public class Day5 : IDay
     {
         public string PartA()
         {

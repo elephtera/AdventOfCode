@@ -41,7 +41,6 @@
 
                 lineCount++;
 
-
                 if (lineCount == 5)
                 {
                     bingoCards.Add(bingoCard);

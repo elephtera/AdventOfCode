@@ -65,7 +65,7 @@
      * 
      * Figure out which board will win last. Once it wins, what would its final score be?
      */
-    public class Day4
+    public class Day4 : IDay
     {
         private IList<int[][]> GetBingoCards()
         {

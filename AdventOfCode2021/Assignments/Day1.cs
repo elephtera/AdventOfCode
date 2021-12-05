@@ -77,7 +77,7 @@
      * 
      * Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?
      */
-    public class Day1
+    public class Day1 : IDay
     {
         public string PartA()
         {
