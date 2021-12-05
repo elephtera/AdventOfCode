@@ -1,6 +1,6 @@
-﻿namespace AdventOfCode2021.Assignments.Day1
+﻿namespace AdventOfCode2021.Assignments
 {
-    public class InputDay1
+    public class Day1Input
     {
         public static string Input = @"134
 138
