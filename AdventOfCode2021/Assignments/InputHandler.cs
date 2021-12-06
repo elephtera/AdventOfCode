@@ -4,7 +4,7 @@
     {
         public static IList<int> ConvertInputToIntList(string input)
         {
-            var lines = input.Split(new string[] { Environment.NewLine },
+            var lines = input.Split(new string[] { Environment.NewLine, "," },
                     StringSplitOptions.None);
 
             var result = lines.Select(line => int.Parse(line)).ToList();
