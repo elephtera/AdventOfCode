@@ -180,33 +180,20 @@
                  *   G
                  * 
                  */
-
-
-                var SectionBD = section(section(numbers[4], numbers[1]), numbers[7]);
-                var SectionBDEG = section(numbers[8], numbers[7]);
-                var SectionABDEG = section(numbers[8], numbers[1]);
-                var sectionC = section(numbers[1], numbers[5]);
-                sectionC = string.IsNullOrEmpty(sectionC) ? section(numbers[7], numbers[5]) : sectionC;
-                sectionC = string.IsNullOrEmpty(sectionC) ? section(numbers[1], numbers[6]) : sectionC;
-                sectionC = string.IsNullOrEmpty(sectionC) ? section(numbers[7], numbers[6]) : sectionC;
+                var combined17 = string.Concat(numbers[1].Union(numbers[7]).OrderBy(n => n));
+                var SectionBD = Section(numbers[4], combined17);
+                var sectionC = Section(Section(combined17, numbers[5]), numbers[6]);
 
                 // length 5 list
-                numbers[3] = length5.FirstOrDefault(l5 => containsSegments(l5, numbers[1]), numbers[3]);
-                numbers[3] = length5.FirstOrDefault(l5 => containsSegments(l5, numbers[7]), numbers[3]);
-                numbers[5] = length5.FirstOrDefault(l5 => containsSegments(l5, SectionBD), numbers[5]);
-                numbers[2] = length5.FirstOrDefault(l5 => containsSegments(l5, sectionC) && doesntContainsSegments(l5, numbers[1]), numbers[2]);
-                numbers[2] = length5.FirstOrDefault(l5 => containsSegments(l5, sectionC) && doesntContainsSegments(l5, numbers[7]), numbers[2]);
-
-
+                numbers[3] = length5.FirstOrDefault(l5 => ContainsSegments(l5, combined17), numbers[3]);
+                numbers[5] = length5.FirstOrDefault(l5 => ContainsSegments(l5, SectionBD), numbers[5]);
+                numbers[2] = length5.FirstOrDefault(l5 => ContainsSegments(l5, sectionC) && DoesntContainsSegments(l5, combined17), numbers[2]);
 
                 // length 6 list
-                numbers[9] = length6.FirstOrDefault(l6 => containsSegments(l6, numbers[3]), numbers[9]);
-                numbers[6] = length6.FirstOrDefault(l6 => doesntContainsSegments(l6, numbers[1]), numbers[6]);
-                numbers[6] = length6.FirstOrDefault(l6 => doesntContainsSegments(l6, numbers[7]), numbers[6]);
-                numbers[0] = length6.FirstOrDefault(l6 => doesntContainsSegments(l6, numbers[5]), numbers[0]);
-                numbers[9] = length6.FirstOrDefault(l6 => containsSegments(l6, numbers[4]), numbers[9]);
-                numbers[6] = length6.FirstOrDefault(l6 => containsSegments(l6, SectionABDEG), numbers[6]);
-                numbers[6] = length6.FirstOrDefault(l6 => containsSegments(l6, SectionBDEG), numbers[6]);
+                numbers[9] = length6.FirstOrDefault(l6 => ContainsSegments(l6, numbers[3]), numbers[9]);
+                numbers[6] = length6.FirstOrDefault(l6 => DoesntContainsSegments(l6, combined17), numbers[6]);
+                numbers[0] = length6.FirstOrDefault(l6 => DoesntContainsSegments(l6, numbers[5]), numbers[0]);
+                numbers[9] = length6.FirstOrDefault(l6 => ContainsSegments(l6, numbers[4]), numbers[9]);
 
                 foreach (var number in numbers)
                 {
@@ -224,7 +211,7 @@
             return numberLookupTable;
         }
 
-        public bool containsSegments(string number, string segments)
+        public bool ContainsSegments(string number, string segments)
         {
             if (segments == string.Empty)
             {
@@ -234,7 +221,7 @@
             return segments.All(segment => number.Contains(segment));
         }
 
-        public bool doesntContainsSegments(string number, string segments)
+        public bool DoesntContainsSegments(string number, string segments)
         {
             if (segments == string.Empty)
             {
@@ -244,7 +231,7 @@
             return !segments.All(segment => number.Contains(segment));
         }
 
-        public string section(string number, string substract)
+        public string Section(string number, string substract)
         {
             foreach (var sub in substract)
             {

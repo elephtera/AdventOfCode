@@ -30,11 +30,12 @@
             {
                 var items = line.Split(new string[] { "|" }, StringSplitOptions.None);
 
-                Day8Display display = new Day8Display()
+                var display = new Day8Display()
                 {
-                    inputs = items[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(i => string.Join("", i.OrderBy(x => x))).ToList(),
-                    outputs = items[1].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(i => string.Join("", i.OrderBy(x => x))).ToList(),
+                    inputs = items[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(i => string.Concat(i.OrderBy(x => x))).ToList(),
+                    outputs = items[1].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(i => string.Concat(i.OrderBy(x => x))).ToList(),
                 };
+
                 result.Add(display);
             }
             return result;
