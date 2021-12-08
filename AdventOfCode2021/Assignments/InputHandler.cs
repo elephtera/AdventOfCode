@@ -20,6 +20,26 @@
             return result;
         }
 
+        public static IList<Day8Display> ConvertInputToDisplayItems(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+            var result = new List<Day8Display>();
+
+            foreach (var line in lines)
+            {
+                var items = line.Split(new string[] { "|" }, StringSplitOptions.None);
+
+                Day8Display display = new Day8Display()
+                {
+                    inputs = items[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(i => string.Join("", i.OrderBy(x => x))).ToList(),
+                    outputs = items[1].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(i => string.Join("", i.OrderBy(x => x))).ToList(),
+                };
+                result.Add(display);
+            }
+            return result;
+        }
+
         public static IList<int[][]> ConvertInputToBingoCards(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
@@ -57,7 +77,7 @@
             var result = new List<Line>();
             var inputLines = input.Split(new string[] { Environment.NewLine },
                     StringSplitOptions.None);
-            foreach(var inputLine in inputLines)
+            foreach (var inputLine in inputLines)
             {
                 var numbers = inputLine.Split(new String[] { ",", " -> " }, StringSplitOptions.None).Select(number => Int32.Parse(number)).ToArray();
                 result.Add(new Line() { x1 = numbers[0], y1 = numbers[1], x2 = numbers[2], y2 = numbers[3] });
