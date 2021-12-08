@@ -148,60 +148,23 @@
 
         public Dictionary<string, int> GetNumbers(Day8Display display)
         {
-            var numbers = new string[10] { "", "", "", "", "", "", "", "", "", "" };
-            var inputlist = new List<string>();
-            inputlist.AddRange(display.inputs);
-            inputlist.AddRange(display.outputs);
-            inputlist = inputlist.Distinct().ToList();
+            var numbers = new string[10];
+            var inputlist = new List<string>(display.inputs);
 
-            var unknownItem = new List<string>();
-            unknownItem.AddRange(display.outputs.Distinct());
+            numbers[1] = inputlist.Single(item => item.Length == 2);
+            numbers[4] = inputlist.Single(item => item.Length == 4);
+            numbers[7] = inputlist.Single(item => item.Length == 3);
+            numbers[8] = inputlist.Single(item => item.Length == 7);
+            numbers[9] = inputlist.Single(item => item.Length == 6 && ContainsSegments(item, numbers[4]));
+            numbers[3] = inputlist.Single(item => item.Length == 5 && ContainsSegments(item, numbers[7]));
+            numbers[6] = inputlist.Single(item => item.Length == 6 && DoesntContainsSegments(item, numbers[7]));
 
-            numbers[1] = inputlist.FirstOrDefault(item => item.Length == 2, string.Empty);
-            numbers[4] = inputlist.FirstOrDefault(item => item.Length == 4, string.Empty);
-            numbers[7] = inputlist.FirstOrDefault(item => item.Length == 3, string.Empty);
-            numbers[8] = inputlist.FirstOrDefault(item => item.Length == 7, string.Empty);
+            var SectionBD = Section(numbers[4], numbers[7]);
+            numbers[5] = inputlist.Single(item => item.Length == 5 && ContainsSegments(item, SectionBD));
+            numbers[0] = inputlist.Single(item => item.Length == 6 && DoesntContainsSegments(item, numbers[5]));
 
-            foreach (var number in numbers)
-            {
-                unknownItem.Remove(number);
-            }
-
-            var segments = new char[7];
-            var length5 = inputlist.Where(item => item.Length == 5).ToList();
-            var length6 = inputlist.Where(item => item.Length == 6).ToList();
-            while (unknownItem.Any())
-            {
-                /**
-                 *   A
-                 *  B C
-                 *   D
-                 *  E F
-                 *   G
-                 * 
-                 */
-                var combined17 = string.Concat(numbers[1].Union(numbers[7]).OrderBy(n => n));
-                var SectionBD = Section(numbers[4], combined17);
-                var sectionC = Section(Section(combined17, numbers[5]), numbers[6]);
-
-                // length 5 list
-                numbers[3] = length5.FirstOrDefault(l5 => ContainsSegments(l5, combined17), numbers[3]);
-                numbers[5] = length5.FirstOrDefault(l5 => ContainsSegments(l5, SectionBD), numbers[5]);
-                numbers[2] = length5.FirstOrDefault(l5 => ContainsSegments(l5, sectionC) && DoesntContainsSegments(l5, combined17), numbers[2]);
-
-                // length 6 list
-                numbers[9] = length6.FirstOrDefault(l6 => ContainsSegments(l6, numbers[3]), numbers[9]);
-                numbers[6] = length6.FirstOrDefault(l6 => DoesntContainsSegments(l6, combined17), numbers[6]);
-                numbers[0] = length6.FirstOrDefault(l6 => DoesntContainsSegments(l6, numbers[5]), numbers[0]);
-                numbers[9] = length6.FirstOrDefault(l6 => ContainsSegments(l6, numbers[4]), numbers[9]);
-
-                foreach (var number in numbers)
-                {
-                    unknownItem.Remove(number);
-                    length5.Remove(number);
-                    length6.Remove(number);
-                }
-            }
+            var sectionC = Section(Section(numbers[7], numbers[5]), numbers[6]);
+            numbers[2] = inputlist.Single(item => item.Length == 5 && ContainsSegments(item, sectionC) && DoesntContainsSegments(item, numbers[7]));
 
             var numberLookupTable = new Dictionary<string, int>();
             for (int i = 0; i < numbers.Length; i++)
