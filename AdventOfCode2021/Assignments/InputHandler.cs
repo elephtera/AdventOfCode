@@ -19,7 +19,7 @@
             var result = lines.ToList();
             return result;
         }
-
+        
         public static IList<Day8Display> ConvertInputToDisplayItems(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
