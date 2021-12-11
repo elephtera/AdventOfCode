@@ -98,10 +98,10 @@
 
             var score = 0;
             Stack<char> lineStack = new Stack<char>();
-            foreach(var line in input)
+            foreach (var line in input)
             {
                 var nextline = false;
-                foreach(char c in line)
+                foreach (char c in line)
                 {
                     switch (c)
                     {
@@ -112,7 +112,7 @@
                             lineStack.Push(c);
                             break;
                         case '>':
-                            if(lineStack.Pop() != '<')
+                            if (lineStack.Pop() != '<')
                             {
                                 score += 25137;
                                 nextline = true;
@@ -159,11 +159,9 @@
         {
             var input = InputHandler.GetInputAsStringList(Day10Input.Input);
 
-            var incompleteLines = DetermineIncompleteLines(input);
             var scores = new List<long>();
-            foreach (var line in incompleteLines)
+            foreach (var line in input)
             {
-                // fix
                 var lastLength = -1;
                 var lineScore = 0L;
 
@@ -177,7 +175,16 @@
                     remaining = remaining.Replace("()", "");
                 }
 
-                for(int i = remaining.Length - 1; i >= 0; i--)
+                if (remaining.Contains(">") ||
+                    remaining.Contains("]") ||
+                    remaining.Contains("}") ||
+                    remaining.Contains(")"))
+                {
+                    // invalid line
+                    continue;
+                }
+
+                for (int i = remaining.Length - 1; i >= 0; i--)
                 {
                     var token = remaining[i];
                     lineScore *= 5;
@@ -205,65 +212,6 @@
             var middleScore = sortedScores[((sortedScores.Count + 1) / 2) - 1];
 
             return middleScore.ToString();
-        }
-
-        private static List<string> DetermineIncompleteLines(IList<string> input)
-        {
-            Stack<char> lineStack = new Stack<char>();
-            var incompleteLines = new List<string>();
-            foreach (var line in input)
-            {
-                var brokenLine = false;
-                foreach (char c in line)
-                {
-                    switch (c)
-                    {
-                        case '<':
-                        case '[':
-                        case '{':
-                        case '(':
-                            lineStack.Push(c);
-                            break;
-                        case '>':
-                            if (lineStack.Pop() != '<')
-                            {
-                                brokenLine = true;
-                            }
-                            break;
-                        case ']':
-                            if (lineStack.Pop() != '[')
-                            {
-                                brokenLine = true;
-                            }
-                            break;
-                        case '}':
-                            if (lineStack.Pop() != '{')
-                            {
-                                brokenLine = true;
-                            }
-                            break;
-                        case ')':
-                            if (lineStack.Pop() != '(')
-                            {
-                                brokenLine = true;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if (brokenLine)
-                    {
-                        break;
-                    }
-                }
-                if (!brokenLine)
-                {
-                    incompleteLines.Add(line);
-                }
-            }
-
-            return incompleteLines;
         }
     }
 }

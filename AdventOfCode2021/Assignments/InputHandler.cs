@@ -19,7 +19,21 @@
             var result = lines.ToList();
             return result;
         }
-        
+
+        public static int[][] ConvertInputToDoubleArray(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            var resultArray = new int[lines.Length][];
+            for (int i = 0; i < lines.Length; i++)
+            {
+                resultArray[i] = lines[i].Select(item => int.Parse(item.ToString())).ToArray();
+            }
+
+            return resultArray;
+        }
+
         public static IList<Day8Display> ConvertInputToDisplayItems(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
