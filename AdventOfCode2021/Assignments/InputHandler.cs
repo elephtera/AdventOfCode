@@ -2,6 +2,21 @@
 {
     public static class InputHandler
     {
+        public static IList<int[]> ConvertInputToPointList(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+            var result = new List<int[]>();
+            foreach (var line in lines)
+            {
+                var items = line.Split(new string[] { "," },
+                    StringSplitOptions.None);
+                result.Add(items.Select(item => int.Parse(item)).ToArray());
+            }
+
+            return result;
+        }
+
         public static IList<int> ConvertInputToIntList(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine, "," },
