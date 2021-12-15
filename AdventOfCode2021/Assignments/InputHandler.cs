@@ -49,6 +49,24 @@
             return resultArray;
         }
 
+        public static int[,] ConvertInputTo2DArray(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            var resultArray = new int[lines[0].Length, lines.Length];
+            for (int y = 0; y < lines.Length; y++)
+            {
+                for (int x = 0; x < lines.Length; x++)
+                {
+                    resultArray[x,y] = lines[y][x];
+                }
+
+            }
+
+            return resultArray;
+        }
+
         public static IList<Day8Display> ConvertInputToDisplayItems(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
