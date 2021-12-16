@@ -36,224 +36,182 @@ What is the lowest total risk of any path from the top left to the bottom right?
      */
     public class Day15 : IDay
     {
-		
 
-		public string PartA()
+
+        public string PartA()
         {
-            var input = InputHandler.ConvertInputToDoubleArray(Day15Input.Input2);
+            var input = InputHandler.ConvertInputToDoubleArray(Day15Input.Input);
 
-			var graph = ConvertInputToGraph(input);
-
-
-			var result = Dijkstra(graph, 0, input.Length * input.Length);
-			return result.ToString();
+            var result = Dijkstra(input);
+            return result.ToString();
 
 
         }
-		public string PartB()
-		{
-			var input = InputHandler.ConvertInputToDoubleArray(Day15Input.Input2);
-			int[][] extendedInput = GenerateExtendedInput(input);
-
-			var graph = ConvertInputToGraph(extendedInput);
-
-
-			var result = Dijkstra(graph, 0, extendedInput.Length * extendedInput.Length);
-			return result.ToString();
-		}
-
-		private int[,] ConvertInputToGraph(int[][] input)
+        public string PartB()
         {
-			var arraySize = input.Length;
-			var Vertices = arraySize * arraySize;
-
-			int[,] graph = new int[Vertices, Vertices];
-			for(int y = 0; y < arraySize; y++)
-            {
-				for(int x = 0; x < arraySize; x++)
-                {
-					var lineairPosition = y * arraySize + x;
-					// Alleen vullen wat naar ons toekomt. uitgaand word door de ontvangende node ingevuld
-					if (x + 1 < arraySize)
-					{
-						graph[lineairPosition + 1, lineairPosition] = input[x][y];
-					}
-					if (y + 1 < arraySize)
-					{
-
-						graph[lineairPosition + arraySize, lineairPosition] = input[x][y];
-					}
-					if (x - 1 >= 0)
-					{
-
-						graph[lineairPosition - 1, lineairPosition] = input[x][y];
-					}
-					if (y - 1 >= 0)
-					{
-
-						graph[lineairPosition - arraySize, lineairPosition] = input[x][y];
-					}
-				}
-            }
-
-			return graph;
+            var input = InputHandler.ConvertInputToDoubleArray(Day15Input.Input);
+            var extendedInput = GenerateExtendedInput(input);
+            var start = DateTime.Now;
+            var result = Dijkstra(extendedInput);
+            var end = DateTime.Now;
+            return result.ToString() + " start: " + start + " end: " + end;
         }
-
-        
 
         private int[][] GenerateExtendedInput(int[][] input)
         {
-			var size = input.Length;
-			var targetSize = size * 5;
-			var extendedResult = new int[targetSize][];
-			for(int x = 0; x < size; x++)
+            var size = input.Length;
+            var targetSize = size * 5;
+            var extendedResult = new int[targetSize][];
+            for (int x = 0; x < size; x++)
             {
-				extendedResult[x] = new int[targetSize];
+                extendedResult[x] = new int[targetSize];
 
-				for(int y = 0; y < size; y++)
+                for (int y = 0; y < size; y++)
                 {
-					extendedResult[x][y] = input[x][y];
+                    extendedResult[x][y] = input[x][y];
                 }
             }
 
-			for (int column = 1; column < 5; column++)
-			{
-				// Bovenste rij
-				for (int x = 0; x < size; x++)
-				{
-					for (int y = 0; y < size; y++)
-					{
-						var val = extendedResult[x][y + ((column - 1) * size)] + 1;
-						extendedResult[x][y + column * size] = val > 9? 1 : val;
-					}
-				}
+            for (int column = 1; column < 5; column++)
+            {
+                // Bovenste rij
+                for (int x = 0; x < size; x++)
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        var val = extendedResult[x][y + ((column - 1) * size)] + 1;
+                        extendedResult[x][y + column * size] = val > 9 ? 1 : val;
+                    }
+                }
             }
 
-			// Overige rijen
-			
-			for (int x = size; x < targetSize; x++)
-			{
-				extendedResult[x] = new int[targetSize];
-				for (int y = 0; y < targetSize; y++)
-				{
-					var val = extendedResult[x - size][y] + 1;
-					extendedResult[x][y] = val > 9 ? 1 : val;
-				}
-			}
+            // Overige rijen
 
-			return extendedResult;
+            for (int x = size; x < targetSize; x++)
+            {
+                extendedResult[x] = new int[targetSize];
+                for (int y = 0; y < targetSize; y++)
+                {
+                    var val = extendedResult[x - size][y] + 1;
+                    extendedResult[x][y] = val > 9 ? 1 : val;
+                }
+            }
+
+            return extendedResult;
         }
 
 
-        /**
-		 * Dijkstra algorithm from Geeks for geeks
-		 * 
-		 */
+        // Function that implements Dijkstra's
+        // single source shortest path algorithm
+        // for a graph represented using adjacency
+        // matrix representation
+        private int Dijkstra(int[][] input)
+        {
+            var arraySize = input.Length;
+            var vertices = arraySize * arraySize;
+            int[] dist = new int[vertices]; // The output array. dist[i]
+                                            // will hold the shortest
+                                            // distance from src to i
 
+            // sptSet[i] will true if vertex
+            // i is included in shortest path
+            // tree or shortest distance from
+            // src to i is finalized
+            bool[] sptSet = new bool[vertices];
 
-        // A C# program for Dijkstra's single
-        // source shortest path algorithm.
-        // The program is for adjacency matrix
-        // representation of the graph
+            // Initialize all distances as
+            // INFINITE and stpSet[] as false
+            for (int i = 0; i < vertices; i++)
+            {
+                dist[i] = int.MaxValue;
+                sptSet[i] = false;
+            }
 
-        // A utility function to find the
-        // vertex with minimum distance
-        // value, from the set of vertices
-        // not yet included in shortest
-        // path tree
+            // Distance of startingpoint is always 0
+            dist[0] = 0;
+
+            // Find shortest path for all vertices
+            for (int count = 0; count < vertices - 1; count++)
+            {
+                // Pick the minimum distance vertex
+                // from the set of vertices not yet
+                // processed. u is always equal to
+                // src in first iteration.
+                int from = minDistance(dist, sptSet);
+
+                // Mark the picked vertex as processed
+                sptSet[from] = true;
+
+                // Update dist value of the adjacent
+                // vertices of the picked vertex.
+                foreach(var neighbour in GetNeighbours(from, input))
+                {
+                    var to = neighbour[0];
+                    var graphValue = neighbour[1];
+
+                    // Update dist[to] only if is not in
+                    // sptSet, there is an edge from u
+                    // to v, and total weight of path
+                    // from start to "to" through "from" is smaller
+                    // than current value of dist[to]
+                    if (!sptSet[to] && graphValue != 0 &&
+                        dist[from] != int.MaxValue && dist[from] + graphValue < dist[to])
+                    {
+                        dist[to] = dist[from] + graphValue;
+                    }
+                }
+            }
+
+            return dist[vertices - 1];
+        }
 
         int minDistance(int[] dist,
-						bool[] sptSet)
-		{
-			// Initialize min value
-			int min = int.MaxValue, min_index = -1;
+                        bool[] sptSet)
+        {
+            // Initialize min value
+            int min = int.MaxValue, min_index = -1;
+            
+            for (int v = 0; v < dist.Length; v++)
+                if (sptSet[v] == false && dist[v] <= min)
+                {
+                    min = dist[v];
+                    min_index = v;
+                }
 
-			for (int v = 0; v < dist.Length; v++)
-				if (sptSet[v] == false && dist[v] <= min)
-				{
-					min = dist[v];
-					min_index = v;
-				}
+            return min_index;
+        }
 
-			return min_index;
-		}
+        private IEnumerable<int[]> GetNeighbours(int from, int[][] input)
+        {
+            var arraySize = input.Length;
 
-		// A utility function to print
-		// the constructed distance array
-		private string GetSolution(int[] dist, int n)
-		{
-			var result = "";
-			result = "Vertex	 Distance from Source" + Environment.NewLine;
+            var x = from % arraySize;
+            var y = from / arraySize;
 
+            // yield return to items.
+            var lineairPosition = y * arraySize + x;
 
-			for (int i = 0; i < dist.Length; i++)
-			{
-				result += i + " \t\t " + dist[i] + Environment.NewLine;
-			}
-			return result;
-		}
+            if (x < arraySize - 1)
+            {
+                yield return new int[2] { lineairPosition + 1, input[y][x + 1] };
+            }
 
-		// Function that implements Dijkstra's
-		// single source shortest path algorithm
-		// for a graph represented using adjacency
-		// matrix representation
-		private int Dijkstra(int[,] graph, int src, int vertices)
-		{
-			int[] dist = new int[vertices]; // The output array. dist[i]
-									 // will hold the shortest
-									 // distance from src to i
+            if (y < arraySize - 1)
+            {
+                yield return new int[2] { lineairPosition + arraySize, input[y + 1][x] };
+            }
 
-			// sptSet[i] will true if vertex
-			// i is included in shortest path
-			// tree or shortest distance from
-			// src to i is finalized
-			bool[] sptSet = new bool[vertices];
+            if (x > 0)
+            {
+                yield return new int[2] { lineairPosition - 1, input[y][x - 1] };
+            }
 
-			// Initialize all distances as
-			// INFINITE and stpSet[] as false
-			for (int i = 0; i < vertices; i++)
-			{
-				dist[i] = int.MaxValue;
-				sptSet[i] = false;
-			}
-
-			// Distance of source vertex
-			// from itself is always 0
-			dist[src] = 0;
-
-			// Find shortest path for all vertices
-			for (int count = 0; count < vertices - 1; count++)
-			{
-				// Pick the minimum distance vertex
-				// from the set of vertices not yet
-				// processed. u is always equal to
-				// src in first iteration.
-				int u = minDistance(dist, sptSet);
-
-				// Mark the picked vertex as processed
-				sptSet[u] = true;
-
-				// Update dist value of the adjacent
-				// vertices of the picked vertex.
-				for (int v = 0; v < vertices; v++)
-
-					// Update dist[v] only if is not in
-					// sptSet, there is an edge from u
-					// to v, and total weight of path
-					// from src to v through u is smaller
-					// than current value of dist[v]
-					if (!sptSet[v] && graph[u, v] != 0 &&
-						dist[u] != int.MaxValue && dist[u] + graph[u, v] < dist[v])
-						dist[v] = dist[u] + graph[u, v];
-			}
-
-			return dist[vertices - 1];
-			// print the constructed distance array
-			//return GetSolution(dist, Vertices);
-		}
-	}
-
-	// This code is contributed by ChitraNayal
+            if (y > 0)
+            {
+                yield return new int[2] { lineairPosition - arraySize, input[y - 1][x] };
+            }
+        }
+    }
 
 
 }
