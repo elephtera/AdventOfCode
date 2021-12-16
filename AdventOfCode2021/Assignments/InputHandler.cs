@@ -17,6 +17,19 @@
             return result;
         }
 
+        internal static string ConvertInputToBitString(string input)
+        {
+            string bitRepresentation = "";
+            foreach (char c in input)
+            {
+                var i = Convert.ToInt32($"{c}", 16);
+                var bit = Convert.ToString(i, 2).PadLeft(4, '0');
+                bitRepresentation += bit;
+            }
+
+            return bitRepresentation;
+        }
+
         public static IList<int> ConvertInputToIntList(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine, "," },
