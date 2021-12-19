@@ -5,8 +5,6 @@
      */
     public class Day17 : IDay
     {
-
-
         public string PartA()
         {
             //target area: x=138..184, y=-125..-71

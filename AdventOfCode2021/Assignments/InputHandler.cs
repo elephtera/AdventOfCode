@@ -17,6 +17,33 @@
             return result;
         }
 
+        internal static IList<ScannerData> ConvertInputToScannerData(string rawInput)
+        {
+            var input = GetInputAsStringList(rawInput);
+            // --- scanner XX ---
+            // where XX is a number, without leading zero.
+
+            List<ScannerData> scanners = new List<ScannerData>();
+            ScannerData? currentScanner = null;
+            foreach(var line in input)
+            {
+                if (line.StartsWith("---"))
+                {
+                    // Found a new Scanner, add the old one, and process the new one.
+                    if (currentScanner != null) { scanners.Add(currentScanner); }
+
+                    var scannerID = Convert.ToInt32(line.Substring(12, line.Length - 12 - 4));
+                    currentScanner = new ScannerData(scannerID);
+                    continue;
+                }
+
+                var coordinates = line.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(coord => Convert.ToInt32(coord)).ToArray();
+                currentScanner?.AddProbe(coordinates[0], coordinates[1], coordinates[2]);
+            }
+
+            return scanners;
+        }
+
         internal static string ConvertInputToBitString(string input)
         {
             string bitRepresentation = "";
@@ -42,7 +69,7 @@
         public static IList<string> GetInputAsStringList(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
-                    StringSplitOptions.None);
+                    StringSplitOptions.RemoveEmptyEntries);
 
             var result = lines.ToList();
             return result;
