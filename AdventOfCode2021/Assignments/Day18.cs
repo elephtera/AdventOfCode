@@ -21,6 +21,11 @@ namespace AdventOfCode2021.Assignments
 
         public SnailfishMath DoMath(IList<string>? input)
         {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
             // Parse input per line
             var snailfishlines = new List<SnailfishMath>();
             foreach (var line in input)
@@ -110,10 +115,6 @@ namespace AdventOfCode2021.Assignments
             
 
             return maxMagnitude.ToString();
-
-
-            //
-            return "0";
         }
     }
 

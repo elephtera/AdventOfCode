@@ -107,6 +107,35 @@
             return resultArray;
         }
 
+        public static int[][] ConvertInputToPadded2DArray(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            var resultArray = CreateInitializedDoubleArray(lines.Length, lines[0].Length);
+
+
+            for (int y = 0; y < lines.Length; y++)
+            {
+                for (int x = 0; x < lines[y].Length; x++)
+                {
+                    var value = lines[y][x] == '#'? 1 : 0;
+                    resultArray[y][x] = value;
+                }
+            }
+
+            return resultArray;
+        }
+
+        public static int[][] CreateInitializedDoubleArray(int sizeX, int sizeY)
+        {
+            var result = new int[sizeX][];
+            for(int i = 0; i < sizeX; i++)
+            {
+                result[i] = new int[sizeY];
+            }
+            return result;
+        }
         public static IList<Day8Display> ConvertInputToDisplayItems(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },

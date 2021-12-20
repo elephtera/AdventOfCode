@@ -33,10 +33,10 @@
                     var rhs = node.Next;
                     if (lhs.Previous != null)
                         lhs.Previous.Value = (lhs.Previous.Value.number + lhs.Value.number, lhs.Previous.Value.depth);
-                    if (rhs.Next != null)
+                    if (rhs?.Next != null)
                         rhs.Next.Value = (rhs.Next.Value.number + rhs.Value.number, rhs.Next.Value.depth);
                     lhs.Value = (0, node.Value.depth - 1);
-                    numbers.Remove(rhs);
+                    if (rhs != null) { numbers.Remove(rhs); }
                     node = numbers.First;
                 }
                 else if (node.Value.number > 9 && !numbers.Any(n => n.depth > 4))
@@ -87,7 +87,14 @@
                 }
             }
 
-            return numbers.First.Value.number;
+            var firstNumber = numbers.First;
+            if (firstNumber != null)
+            {
+
+                return firstNumber.Value.number;
+            }
+
+            return -1;
         }
     }
 }
