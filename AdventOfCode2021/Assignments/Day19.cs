@@ -14,52 +14,37 @@ namespace AdventOfCode2021.Assignments
             
             string rawInput = Day19Input.Input;
             var scanners = InputHandler.ConvertInputToScannerData(rawInput);
-            
             string result = "";
-            foreach(var scanner in scanners)
-            {
-
-                var overlapping = scanners.Where(s => s != scanner).Where(s => s.ProbeDiff.Intersect(scanner.ProbeDiff).Count() > 12);
-                if (overlapping.Any())
-                {
-                    
-                    result += $" |xyz| {scanner.ID}: " + string.Join(",", overlapping.Select(o => o.ID)) + Environment.NewLine;
-                }
-
-                overlapping = scanners.Where(s => s != scanner).Where(s => s.ProbeDiffYX.Intersect(scanner.ProbeDiff).Count() > 12);
-                if (overlapping.Any())
-                {
-                    result += $" |yxz| {scanner.ID}: " + string.Join(",", overlapping.Select(o => o.ID)) + Environment.NewLine;
-                }
-
-                overlapping = scanners.Where(s => s != scanner).Where(s => s.ProbeDiffZY.Intersect(scanner.ProbeDiff).Count() > 12);
-                if (overlapping.Any())
-                {
-                    result += $" |xzy| {scanner.ID}: " + string.Join(",", overlapping.Select(o => o.ID)) + Environment.NewLine;
-                }
-
-            }
-
-
+            
             // Use scannerData as one central map
             var map = new ScannerData(99);
-            foreach(var probe in scanners[0].Probes)
+            foreach(var probe in scanners[10].Probes)
             {
                 map.AddProbe(probe.X, probe.Y, probe.Z);
             }
+            var cnt = 1;
 
-            foreach(var scanner in scanners.Skip(1))
+            foreach(var scanner in scanners)
             {
-                var overlap = map.ProbeDiff.Intersect(scanner.ProbeDiff);
-                if (overlap.Count() > 12)
+
+                map.RotateAndMap(scanner);
+
+
+                var overlapInMap = map.ProbeDiff.Where(p => scanner.ProbeDiff.Any(pd => pd.DiffXYZ.Equals( p.DiffXYZ)));
+                if (overlapInMap.Count() > 12)
                 {
-                    // There is a match. We can add this scannerdata to the map
-                    (int x, int y, int z) = map.DetermineDiff(scanner);
+                    var firstOverlapInMap = overlapInMap.First();
+                    var first = scanner.ProbeDiff.First(p => p.Equals(firstOverlapInMap));
+                    var (diffX, diffY, diffZ) = firstOverlapInMap.TranslationXYZ(first);
+
                     foreach (var probe in scanner.Probes)
                     {
-                        map.AddProbe(probe.X, probe.Y, probe.Z);
+                        map.AddProbe(probe.X + diffX, probe.Y + diffY, probe.Z + diffZ);
                     }
+                    cnt++;
+                    continue;
                 }
+
             }
 
 

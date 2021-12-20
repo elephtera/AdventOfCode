@@ -6,51 +6,44 @@
         {
             ID = scannerID;
             Probes = new List<Coordinate3D>();
-            ProbeDiff = new List<Coordinate3D>();
+            ProbeDiff = new List<DiffCoord>();
         }
-        
+
         public int ID { get; }
 
         public List<Coordinate3D> Probes { get; }
 
-        public List<Coordinate3D> ProbeDiff { get; }
-
-        public IEnumerable<Coordinate3D> ProbeDiffYX { get
-            {
-                foreach (Coordinate3D p in ProbeDiff)
-                {
-                    yield return new Coordinate3D(p.Y,p.X,p.Z);
-                }
-            } 
-        }
-
-        public IEnumerable<Coordinate3D> ProbeDiffZY
-        {
-            get
-            {
-                foreach (Coordinate3D p in ProbeDiff)
-                {
-                    yield return new Coordinate3D(p.X, p.Z, p.Y);
-                }
-            }
-        }
-
-        /**
-         * ----- X
-         * |
-         * |
-         * Y
-         * */
+        public List<DiffCoord> ProbeDiff { get; }
 
         internal void AddProbe(int x, int y, int z)
         {
             Coordinate3D newProbe = new(x, y, z);
-            foreach(Coordinate3D probe in Probes)
+            if (Probes.Any(p => p.Equals(newProbe)))
             {
-                ProbeDiff.Add(probe.Diff(newProbe));
+                return;
+            }
+
+            foreach (Coordinate3D probe in Probes)
+            {
+                ProbeDiff.Add(new DiffCoord(probe, newProbe));
             }
 
             Probes.Add(newProbe);
+        }
+
+        internal void RotateAndMap(ScannerData scanner)
+        {
+            foreach(DiffCoord diff in ProbeDiff)
+            {
+                DiffCoord? diffCoord = scanner.ProbeDiff.FirstOrDefault(p => p.Equals(diff));
+                if (diffCoord != null)
+                {
+
+                }
+            }
+            var overlapInMap = ProbeDiff.Where(p => scanner.ProbeDiff.Any(pd => pd.DiffXYZ.Equals(p.DiffXYZ)));
+
+
         }
 
         //internal (int x, int y, int z) DetermineDiff(ScannerData scanner)
@@ -85,14 +78,29 @@
         public Coordinate3D CoordA { get; }
         public Coordinate3D CoordB { get; }
 
-        public Coordinate3D Diff { get; }
+        public Coordinate3D DiffXYZ { get; }
 
         public DiffCoord(Coordinate3D coordA, Coordinate3D coordB)
         {
             CoordA = coordA;
             CoordB = coordB;
-            Diff = CoordA.Diff(CoordB);
+            DiffXYZ = CoordA.Diff(CoordB);
         }
+
+        public (int x, int y, int z) TranslationXYZ(DiffCoord other)
+        {
+            if (CoordA.X - CoordB.X == other.CoordA.X - other.CoordB.X && CoordA.Y - CoordB.Y == other.CoordA.Y - other.CoordB.Y)
+            {
+                // A == A, B == B
+                return (CoordA.X - other.CoordA.X, CoordA.Y - other.CoordA.Y, CoordA.Z - other.CoordA.Z);
+            }
+            else
+            {
+                return (CoordA.X - other.CoordB.X, CoordA.Y - other.CoordB.Y, CoordA.Z - other.CoordB.Z);
+
+            }
+        }
+
 
         public override bool Equals(object? obj)
         {
@@ -105,19 +113,21 @@
             {
                 return false;
             }
+
             var other = (DiffCoord)obj;
 
-            return other.Diff == Diff;
+            return other.DiffXYZ.Equals(DiffXYZ);
         }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return DiffXYZ.GetHashCode();
         }
     }
 
     public class Coordinate3D
     {
+        private int[] point3D;
         public int X { get; set; }
         public int Y { get; set; }
         public int Z { get; set; }
@@ -127,10 +137,34 @@
             X = x;
             Y = y;
             Z = z;
+            point3D = new int[3] { x, y, z };
+            AddAllCoordinates();
         }
 
-        public int[] Xyz => new int[3] { X, Y, Z };
+        public List<int[]> AllCoordinates { get; } = new List<int[]>();
 
+        private int[] Roll(int[] dice) => new int[3] { dice[0], dice[2], -dice[1] };
+        private int[] Turn(int[] dice) => new int[3] { -dice[1], dice[0], dice[2] };
+
+        public void AddAllCoordinates()
+        {
+            int[] v = this.point3D;
+            for(int cycle = 0; cycle < 2; cycle++)
+            {
+                for(int step = 0; step < 3; step++)
+                {
+                    v = Roll(v);
+                    AllCoordinates.Add(v);
+                    for(int i = 0; i < 3; i++)
+                    {
+                        v = Turn(v);
+                        AllCoordinates.Add(v);
+                    }
+                }
+                Roll(Turn(Roll(v)));
+            }
+        }
+      
         internal Coordinate3D Diff(Coordinate3D newProbe)
         {
             var diffX = Math.Abs(X - newProbe.X);
