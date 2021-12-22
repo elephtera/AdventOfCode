@@ -17,29 +17,59 @@
             return result;
         }
 
+        public static List<Cube> ConvertInputToCubes(string input)
+        {
+            var result = new List<Cube>();
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            // line example: on x=-20..26,y=-36..17,z=-47..7
+            foreach(var line in lines)
+            {
+                var splitted = line.Split(new string[] { " ", ",", "=", ".." },
+                    StringSplitOptions.RemoveEmptyEntries);
+                var turnedOn = splitted[0] == "on";
+                var minX = Convert.ToInt32(splitted[2]);
+                var maxX = Convert.ToInt32(splitted[3]);
+                var minY = Convert.ToInt32(splitted[5]);
+                var maxY = Convert.ToInt32(splitted[6]);
+                var minZ = Convert.ToInt32(splitted[8]);
+                var maxZ = Convert.ToInt32(splitted[9]);
+                var cube = new Cube(minX, maxX, minY, maxY, minZ, maxZ, turnedOn);
+                result.Add(cube);
+            }
+
+            return result;
+        }
+
         internal static IList<ScannerData> ConvertInputToScannerData(string rawInput)
         {
             var input = GetInputAsStringList(rawInput);
             // --- scanner XX ---
             // where XX is a number, without leading zero.
 
-            List<ScannerData> scanners = new List<ScannerData>();
-            ScannerData? currentScanner = null;
-            foreach(var line in input)
+            var scanners = new List<ScannerData>();
+            var beacons = new List<Coordinate3D>();
+            foreach (var line in input)
             {
                 if (line.StartsWith("---"))
                 {
                     // Found a new Scanner, add the old one, and process the new one.
-                    if (currentScanner != null) { scanners.Add(currentScanner); }
+                    if (beacons.Any())
+                    {
+                        scanners.Add(new ScannerData(new Coordinate3D(0, 0, 0), 0, beacons));
+                        beacons = new List<Coordinate3D>();
+                    }
 
-                    var scannerID = Convert.ToInt32(line.Substring(12, line.Length - 12 - 4));
-                    currentScanner = new ScannerData(scannerID);
                     continue;
                 }
 
                 var coordinates = line.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(coord => Convert.ToInt32(coord)).ToArray();
-                currentScanner?.AddProbe(coordinates[0], coordinates[1], coordinates[2]);
+                beacons.Add(new Coordinate3D(coordinates[0], coordinates[1], coordinates[2]));
             }
+
+            // Add the last one
+            scanners.Add(new ScannerData(new Coordinate3D(0, 0, 0), 0, beacons));
 
             return scanners;
         }
@@ -99,7 +129,7 @@
             {
                 for (int x = 0; x < lines.Length; x++)
                 {
-                    resultArray[x,y] = lines[y][x];
+                    resultArray[x, y] = lines[y][x];
                 }
 
             }
@@ -119,7 +149,7 @@
             {
                 for (int x = 0; x < lines[y].Length; x++)
                 {
-                    var value = lines[y][x] == '#'? 1 : 0;
+                    var value = lines[y][x] == '#' ? 1 : 0;
                     resultArray[y][x] = value;
                 }
             }
@@ -130,7 +160,7 @@
         public static int[][] CreateInitializedDoubleArray(int sizeX, int sizeY)
         {
             var result = new int[sizeX][];
-            for(int i = 0; i < sizeX; i++)
+            for (int i = 0; i < sizeX; i++)
             {
                 result[i] = new int[sizeY];
             }
