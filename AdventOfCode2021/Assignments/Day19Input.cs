@@ -2,12 +2,6 @@
 {
     public class Day19Input
     {
-        public static string Input2 = @"";
-        public static string Input4 = @"";
-
-        public static string Input3 = @"";
-
-        public static string Input5 = @"";
         public static string Input = @"--- scanner 0 ---
 487,691,378
 -705,-990,-501

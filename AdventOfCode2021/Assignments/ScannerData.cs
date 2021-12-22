@@ -1,201 +1,71 @@
 ﻿namespace AdventOfCode2021.Assignments
 {
-    internal class ScannerData
+    public class ScannerData
     {
-        public ScannerData(int scannerID)
-        {
-            ID = scannerID;
-            Probes = new List<Coordinate3D>();
-            ProbeDiff = new List<DiffCoord>();
-        }
-
-        public int ID { get; }
-
+        public Coordinate3D ScannerLocation { get; }
+        public int Rotation { get; }
         public List<Coordinate3D> Probes { get; }
 
-        public List<DiffCoord> ProbeDiff { get; }
-
-        internal void AddProbe(int x, int y, int z)
+        public ScannerData(Coordinate3D center, int rotation, List<Coordinate3D> probes)
         {
-            Coordinate3D newProbe = new(x, y, z);
-            if (Probes.Any(p => p.Equals(newProbe)))
-            {
-                return;
-            }
-
-            foreach (Coordinate3D probe in Probes)
-            {
-                ProbeDiff.Add(new DiffCoord(probe, newProbe));
-            }
-
-            Probes.Add(newProbe);
+            ScannerLocation = center;
+            Rotation = rotation;
+            Probes = probes;
         }
 
-        internal void RotateAndMap(ScannerData scanner)
+        public ScannerData(List<Coordinate3D> probes)
         {
-            foreach(DiffCoord diff in ProbeDiff)
-            {
-                DiffCoord? diffCoord = scanner.ProbeDiff.FirstOrDefault(p => p.Equals(diff));
-                if (diffCoord != null)
-                {
-
-                }
-            }
-            var overlapInMap = ProbeDiff.Where(p => scanner.ProbeDiff.Any(pd => pd.DiffXYZ.Equals(p.DiffXYZ)));
-
-
+            ScannerLocation = new Coordinate3D(0,0,0);
+            Rotation = 0;
+            Probes = probes;
         }
 
-        //internal (int x, int y, int z) DetermineDiff(ScannerData scanner)
-        //{
-        //    var coordsX = Probes.Select(p => p.X).ToList();
-        //    var coordsY = Probes.Select(p => p.Y).ToList();
-        //    var coordsZ = Probes.Select(p => p.Z).ToList();
-        //    int maxX = coordsX.Max();
-        //    int maxY = coordsY.Max();
-        //    int maxZ = coordsZ.Max();
-
-        //    var minX = coordsX.Min();
-        //    var minY = coordsY.Min();
-        //    int minZ = coordsZ.Min();
-
-
-        //    for (int i = minX; i < maxX; i++)
-        //    {
-        //        for(int j = minY; j < maxY; j++)
-        //        {
-        //            for(var k = minZ; k < maxZ; k++)
-        //            {
-        //                // 
-        //            }
-        //        }
-        //    }
-        //}
-    }
-
-    public class DiffCoord
-    {
-        public Coordinate3D CoordA { get; }
-        public Coordinate3D CoordB { get; }
-
-        public Coordinate3D DiffXYZ { get; }
-
-        public DiffCoord(Coordinate3D coordA, Coordinate3D coordB)
+        public ScannerData Rotate()
         {
-            CoordA = coordA;
-            CoordB = coordB;
-            DiffXYZ = CoordA.Diff(CoordB);
+            return new(ScannerLocation, Rotation + 1, Probes);
         }
 
-        public (int x, int y, int z) TranslationXYZ(DiffCoord other)
+        public ScannerData Translate(Coordinate3D t)
         {
-            if (CoordA.X - CoordB.X == other.CoordA.X - other.CoordB.X && CoordA.Y - CoordB.Y == other.CoordA.Y - other.CoordB.Y)
-            {
-                // A == A, B == B
-                return (CoordA.X - other.CoordA.X, CoordA.Y - other.CoordA.Y, CoordA.Z - other.CoordA.Z);
-            }
-            else
-            {
-                return (CoordA.X - other.CoordB.X, CoordA.Y - other.CoordB.Y, CoordA.Z - other.CoordB.Z);
-
-            }
+            var translatedScannerLocation = new Coordinate3D(ScannerLocation.X + t.X, ScannerLocation.Y + t.Y, ScannerLocation.Z + t.Z);
+            return new ScannerData(translatedScannerLocation, Rotation, Probes);
         }
 
-
-        public override bool Equals(object? obj)
+        public Coordinate3D Transform(Coordinate3D coord)
         {
-            // If the passed object is null
-            if (obj == null)
+            var x = coord.X;
+            var y = coord.Y;
+            var z = coord.Z;
+
+#pragma warning disable 1717
+            // rotate coordinate system so that x-axis points in the possible 6 directions
+            switch (Rotation % 6)
             {
-                return false;
-            }
-            if (!(obj is DiffCoord))
-            {
-                return false;
+                case 0: (x, y, z) = (x, y, z); break;
+                case 1: (x, y, z) = (-x, y, -z); break;
+                case 2: (x, y, z) = (y, -x, z); break;
+                case 3: (x, y, z) = (-y, x, z); break;
+                case 4: (x, y, z) = (z, y, -x); break;
+                case 5: (x, y, z) = (-z, y, x); break;
             }
 
-            var other = (DiffCoord)obj;
-
-            return other.DiffXYZ.Equals(DiffXYZ);
-        }
-
-        public override int GetHashCode()
-        {
-            return DiffXYZ.GetHashCode();
-        }
-    }
-
-    public class Coordinate3D
-    {
-        private int[] point3D;
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
-
-        public Coordinate3D(int x, int y, int z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-            point3D = new int[3] { x, y, z };
-            AddAllCoordinates();
-        }
-
-        public List<int[]> AllCoordinates { get; } = new List<int[]>();
-
-        private int[] Roll(int[] dice) => new int[3] { dice[0], dice[2], -dice[1] };
-        private int[] Turn(int[] dice) => new int[3] { -dice[1], dice[0], dice[2] };
-
-        public void AddAllCoordinates()
-        {
-            int[] v = this.point3D;
-            for(int cycle = 0; cycle < 2; cycle++)
+            // rotate around x-axis:
+            switch ((Rotation / 6) % 4)
             {
-                for(int step = 0; step < 3; step++)
-                {
-                    v = Roll(v);
-                    AllCoordinates.Add(v);
-                    for(int i = 0; i < 3; i++)
-                    {
-                        v = Turn(v);
-                        AllCoordinates.Add(v);
-                    }
-                }
-                Roll(Turn(Roll(v)));
+                case 0: (x, y, z) = (x, y, z); break;
+                case 1: (x, y, z) = (x, -z, y); break;
+                case 2: (x, y, z) = (x, -y, -z); break;
+                case 3: (x, y, z) = (x, z, -y); break;
             }
-        }
-      
-        internal Coordinate3D Diff(Coordinate3D newProbe)
-        {
-            var diffX = Math.Abs(X - newProbe.X);
-            var diffY = Math.Abs(Y - newProbe.Y);
-            var diffZ = Math.Abs(Z - newProbe.Z);
+#pragma warning restore
 
-            var diff = new Coordinate3D(diffX, diffY, diffZ);
-
-            return diff;
-
+            var rotatedScannerLocation = new Coordinate3D(ScannerLocation.X + x, ScannerLocation.Y + y, ScannerLocation.Z + z);
+            return rotatedScannerLocation;
         }
 
-        public override bool Equals(object? obj)
+        public IEnumerable<Coordinate3D> GetTransformedProbes()
         {
-            // If the passed object is null
-            if (obj == null)
-            {
-                return false;
-            }
-            if (!(obj is Coordinate3D))
-            {
-                return false;
-            }
-            var other = (Coordinate3D)obj;
-
-            return other.X == X && other.Y == Y && other.Z == Z;
-        }
-
-        public override int GetHashCode()
-        {
-            return X + Y * 1000 + Z * 1000000;
+            return Probes.Select(Transform);
         }
     }
 
