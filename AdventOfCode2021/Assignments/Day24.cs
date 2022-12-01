@@ -9,18 +9,53 @@
         {
             var instructions = InputHandler.ConvertInputToOpcodes(Day24Input.Input);
 
-            int[] valueInput = new int[14]
-            {
-                1,1,1,1,1,1,1,1,1,1,1,1,1,1
-            };
+            /**
+             * 
+             * (z/splitted[0])*
+             * ((splitted[1]*((z%26+25) == A? 0 : 1))+1)+
+             * (A+splitted[2])*((z%26+25) == A? 0 : 1)
+             * 
+             * 
+             */
+            long lowest = long.MaxValue;
+            long highest = long.MinValue;
 
-            int[] result = ProcessAluInstructions(instructions, valueInput);
-            if(result[3] == 0)
+            for (long i = 10000000000000; i <= 99999999999999; i++)
             {
-                return "valid: " + string.Concat(valueInput);
+                var digits = i.ToString().Select(ch => int.Parse(ch.ToString())).ToArray();
+                int step = 0;
+                long z = 0;
+
+                foreach (var split in instructions)
+                {
+                    var w = digits[step];
+                    var test = (z % 26) + split[1] == w;
+                    if (w != 0 && split[0] == 26 && test)
+                    {
+                        z /= split[0];
+                    }
+                    else if (w != 0 && split[0] == 1 && !test)
+                    {
+                        z = 26 * (z / split[0]) + w + split[2];
+                    }
+                    else
+                    {
+                        //e.g. 234560000 to 234569999
+                        i += (long)Math.Pow(10, 13 - step);
+                        i--;
+                        break;
+                    }
+                    step++;
+                }
+
+                if (z == 0)
+                {
+                    lowest = Math.Min(lowest, i);
+                    highest = Math.Max(highest, i);
+                }
             }
 
-            return "invalid";
+            return $"low: {lowest} highest: {highest}" ;
         }
 
         public int[] ProcessAluInstructions(List<AluInstruction> instructions, int[] valueInput)

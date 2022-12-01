@@ -17,6 +17,26 @@
             return result;
         }
 
+        public static List<int[]> ConvertInputToOpcodes(string input)
+        {
+            var result = new List<int[]>();
+
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+            for (int i = 0; i < lines.Length; i += 18)
+            {
+                var lineSet = lines.Skip(i).Take(18).ToList();
+
+                var resultSet = new string[3] { lineSet[4], lineSet[5], lines[15] };
+                var splitted = resultSet.Select(input => Convert.ToInt32(input.Split(new string[] { " " },
+                    StringSplitOptions.None).Last())).ToArray();
+
+                result.Add(splitted);
+            }
+
+            return result;
+        }
+
         public static List<Cube> ConvertInputToCubes(string input)
         {
             var result = new List<Cube>();
@@ -24,7 +44,7 @@
                     StringSplitOptions.None);
 
             // line example: on x=-20..26,y=-36..17,z=-47..7
-            foreach(var line in lines)
+            foreach (var line in lines)
             {
                 var splitted = line.Split(new string[] { " ", ",", "=", ".." },
                     StringSplitOptions.RemoveEmptyEntries);
