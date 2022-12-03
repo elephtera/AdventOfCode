@@ -11,7 +11,7 @@ namespace AdventOfCode2021.Assignments.Tests
     [TestClass()]
     public class Day24Tests
     {
-        [TestMethod()]
+        //[TestMethod()]
         public void PartATest()
         {
             var day = new Day24();

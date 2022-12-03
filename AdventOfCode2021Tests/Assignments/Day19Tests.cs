@@ -11,14 +11,14 @@ namespace AdventOfCode2021.Assignments.Tests
     [TestClass()]
     public class Day19Tests
     {
-        [TestMethod()]
+        //[TestMethod()]
         public void PartATest()
         {
             var day = new Day19();
             Assert.AreEqual("512", day.PartA());
         }
 
-        [TestMethod()]
+        //[TestMethod()]
         public void PartBTest()
         {
             var day = new Day19();

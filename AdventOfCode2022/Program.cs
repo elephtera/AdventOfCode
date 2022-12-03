@@ -2,3 +2,4 @@
 using AdventOfCode2022.Assignments;
 
 Console.WriteLine("Hello, World!");
+Console.WriteLine("Please run testcases");

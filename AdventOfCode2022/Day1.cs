@@ -66,6 +66,8 @@
 
         public static IList<List<int>> ConvertInputToIntLists(string input)
         {
+
+
             var lines = input.Split(new string[] { Environment.NewLine},
                     StringSplitOptions.None);
             var result = new List<List<int>>();

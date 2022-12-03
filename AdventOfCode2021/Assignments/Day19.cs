@@ -60,7 +60,7 @@ namespace AdventOfCode2021.Assignments
 
             return locatedScanners;
         }
-        ScannerData TryToLocate(ScannerData scannerA, ScannerData scannerB)
+        ScannerData? TryToLocate(ScannerData scannerA, ScannerData scannerB)
         {
             var beaconsInA = scannerA.GetTransformedProbes().ToArray();
 

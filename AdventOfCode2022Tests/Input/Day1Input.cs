@@ -1,4 +1,4 @@
-﻿namespace AdventOfCode2022.Assignments
+﻿namespace AdventOfCode2022Tests.Input
 {
     public class Day1Input : IDayInput
     {
