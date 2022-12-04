@@ -10,30 +10,13 @@ namespace AdventOfCode2022.Assignments
         public int PartA(string input)
         {
             var inputData = ProcessInput(input);
-            var containsCount = 0;
-            for (int i = 0; i < inputData.Count; i++)
-            {
-                if (Contains(inputData[i].Item1, inputData[i].Item2))
-                {
-                    containsCount++;
-                }
-            }
-            return containsCount;
+            return inputData.Where(i => Contains(i.Item1, i.Item2)).Count();
         }
 
         public int PartB(string input)
         {
             var inputData = ProcessInput(input);
-            var overlapsCount = 0;
-            for (int i = 0; i < inputData.Count; i++)
-            {
-                if (Overlaps(inputData[i].Item1, inputData[i].Item2))
-                {
-                    overlapsCount++;
-                }
-            }
-
-            return overlapsCount;
+            return inputData.Where(i => Overlaps(i.Item1, i.Item2)).Count();
         }
 
         public static IList<Tuple<Range, Range>> ProcessInput(string input)
