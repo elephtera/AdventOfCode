@@ -1,20 +1,16 @@
-
-
-using System.Security;
-
 namespace AdventOfCode2022Tests
 {
     [TestClass]
-    public class Day1Test
+    public class Day5Test
     {
-        private const int AnswerPartA = 72240;
-        private const int AnswerPartB = 210957;
-        private const int AnswerExamplePartA = 24000;
-        private const int AnswerExamplePartB = 45000;
+        private const string AnswerPartA = "MQSHJMWNH";
+        private const string AnswerPartB = "LLWJRBHVZ";
+        private const string AnswerExamplePartA = "CMZ";
+        private const string AnswerExamplePartB = "MCD";
 
 
-        private readonly IDay<int> day = new Day1();
-        private readonly IDayInput input = new Day1Input();
+        private readonly IDay<string> day = new Day5();
+        private readonly IDayInput input = new Day5Input();
 
         [TestMethod]
         public void PartAExample()

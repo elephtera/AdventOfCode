@@ -5,17 +5,17 @@ namespace AdventOfCode2022.Assignments
     /**
      * 
      */
-    public class Day4 : IDay
+    public class Day4 : IDay<int>
     {
-        public int PartA(string input)
+        public int PartA(IList<string> input)
         {
-            var inputData = ProcessInput(input);
+            var inputData = ProcessInput(input.Single());
             return inputData.Where(i => Contains(i.Item1, i.Item2)).Count();
         }
 
-        public int PartB(string input)
+        public int PartB(IList<string> input)
         {
-            var inputData = ProcessInput(input);
+            var inputData = ProcessInput(input.Single());
             return inputData.Where(i => Overlaps(i.Item1, i.Item2)).Count();
         }
 

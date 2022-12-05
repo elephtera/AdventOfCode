@@ -13,7 +13,7 @@ namespace AdventOfCode2022Tests
         private const int AnswerExamplePartB = 12;
 
 
-        private readonly IDay day = new Day2();
+        private readonly IDay<int> day = new Day2();
         private readonly IDayInput input = new Day2Input();
 
         [TestMethod]

@@ -2,8 +2,8 @@
 {
     public class Day0Input : IDayInput
     {
-        public string ExampleInput => @"";
+        public IList<string> ExampleInput => new List<string>() { @"" };
 
-        public string Input => @"";
+        public IList<string> Input => new List<string>() { @"" };
     }
 }

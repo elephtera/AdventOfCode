@@ -3,18 +3,18 @@
     /**
      * 
      */
-    public class Day0 : IDay
+    public class Day0 : IDay<int>
     {
-        public int PartA(string input)
+        public int PartA(IList<string> input)
         {
-            var inputData = ProcessInput(input);
+            var inputData = ProcessInput(input.Single());
             var result = 0;            
             return result;
         }
 
-        public int PartB(string input)
+        public int PartB(IList<string> input)
         {
-            var inputData = ProcessInput(input);
+            var inputData = ProcessInput(input.Single());
             var result = 0;
             return result;
         }

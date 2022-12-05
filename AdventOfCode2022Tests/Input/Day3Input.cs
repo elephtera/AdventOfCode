@@ -2,14 +2,14 @@
 {
     public class Day3Input : IDayInput
     {
-        public string ExampleInput => @"vJrwpWtwJgWrhcsFMMfFFhFp
+        public IList<string> ExampleInput => new List<string>() { @"vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
 PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw";
+CrZsJsPPZsGzwwsLwLmpwMDw" };
 
-        public string Input => @"BdbzzddChsWrRFbzBrszbhWMLNJHLLLLHZtSLglFNZHLJH
+        public IList<string> Input => new List<string>() { @"BdbzzddChsWrRFbzBrszbhWMLNJHLLLLHZtSLglFNZHLJH
 nnfMwqpQTMffHlNNLllHnZSS
 cGpcMwfppfqcjcTCBBzWDsDbDrjzWz
 LhfjhcdjcGdhFfdGfdjdvwCCZMvvLvWwMLCLSwZC
@@ -308,6 +308,6 @@ GtsqFnfvGSFqGfQvgnWWZlLlLjZWtWldPmlT
 sSsFqsqsGghwQQmfGRHbbVczbwwBpBpHcw
 BBFCBJCsGJBBgvgsvTlVhgNg
 ZnLdjRQddLRnZrlScHRVTTSHhRvg
-fnnjZLWdrnqdWrrPLddqVqBzGDJJFGCBDfJmbDzFMbmB";
+fnnjZLWdrnqdWrrPLddqVqBzGDJJFGCBDfJmbDzFMbmB" };
     }
 }

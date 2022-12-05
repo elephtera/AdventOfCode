@@ -1,8 +1,8 @@
 ﻿namespace AdventOfCode2022.Assignments
 {
-    public interface IDay
+    public interface IDay<T>
     {
-        int PartA(string input);
-        int PartB(string input);
+        T PartA(IList<string> input);
+        T PartB(IList<string> input);
     }
 }

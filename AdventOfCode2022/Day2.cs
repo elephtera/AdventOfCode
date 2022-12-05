@@ -5,11 +5,11 @@ namespace AdventOfCode2022.Assignments
     /**
      * 
      */
-    public class Day2 : IDay
+    public class Day2 : IDay<int>
     {
-        public int PartA(string input)
+        public int PartA(IList<string> input)
         {
-            var inputData = ProcessInput(input);
+            var inputData = ProcessInput(input.Single());
             
             var score = 0;
             foreach(var item in inputData)
@@ -77,9 +77,9 @@ namespace AdventOfCode2022.Assignments
             return score;
         }
 
-        public int PartB(string input)
+        public int PartB(IList<string> input)
         {
-            var inputData = ProcessInput(input);
+            var inputData = ProcessInput(input.Single());
 
             var score = 0;
             foreach (var item in inputData)

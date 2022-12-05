@@ -48,18 +48,18 @@
      * 
      * Find the top three Elves carrying the most Calories. How many Calories are those Elves carrying in total?
      */
-    public class Day1 : IDay
+    public class Day1 : IDay<int>
     {
-        public int PartA(string input)
+        public int PartA(IList<string> input)
         {
-            var inputData = ConvertInputToIntLists(input);
+            var inputData = ConvertInputToIntLists(input.Single());
             var result = inputData.Select(x => x.Sum()).Max();            
             return result;
         }
 
-        public int PartB(string input)
+        public int PartB(IList<string> input)
         {
-            var inputData = ConvertInputToIntLists(input);
+            var inputData = ConvertInputToIntLists(input.Single());
             var result = inputData.Select(x => x.Sum()).OrderByDescending(x => x).Take(3).Sum();
             return result;
         }
