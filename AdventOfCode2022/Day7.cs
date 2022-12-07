@@ -11,8 +11,19 @@ namespace AdventOfCode2022.Assignments
         {
             var inputData = ProcessInput(input.Single());
             var root = CreateDirectoryTree(inputData);
+            var result = root.GetAllSubdirectories().Where(d => d.Size <= 100000).Sum(d => d.Size);
+            return result;
+        }
 
-            return root.SpecialSize;
+        public long PartB(IList<string> input)
+        {
+            var inputData = ProcessInput(input.Single());
+            var root = CreateDirectoryTree(inputData);
+            var freeSpace = (70000000 - root.Size);
+            var neededSpace = 30000000 - freeSpace;
+
+            var smallest = root.GetAllSubdirectories().Where(d => d.Size >= neededSpace).Min(d => d.Size);
+            return smallest;
         }
 
         public static DirectoryNode CreateDirectoryTree(IList<string> inputData)
@@ -51,24 +62,6 @@ namespace AdventOfCode2022.Assignments
             return root;
         }
 
-        public long PartB(IList<string> input)
-        {
-            var inputData = ProcessInput(input.Single());
-            var root = CreateDirectoryTree(inputData);
-            var freeSpace = (70000000 - root.Size);
-            var neededSpace = 30000000 - freeSpace;
-            var smallest = root;
-            foreach(var d in root.GetAllSubdirectories())
-            {
-                if(d.Size >= neededSpace && d.Size < smallest.Size)
-                {
-                    smallest = d;
-                }
-            }
-
-            return smallest.Size;
-        }
-
         public static IList<string> ProcessInput(string input)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
@@ -90,21 +83,6 @@ namespace AdventOfCode2022.Assignments
             {
                 return Files.Sum(f => f.Size) + SubDirectories.Sum(d => d.Size);
             } 
-        }
-
-        public long SpecialSize
-        {
-            get
-            {
-                var result = 0l;
-                if(Size <= 100000)
-                {
-                    result += Size;
-                }
-                result += SubDirectories.Sum(d => d.SpecialSize);
-                
-                return result;
-            }
         }
 
         public string Name { get; }
