@@ -76,13 +76,15 @@ namespace AdventOfCode2022.Assignments
         public DirectoryNode(string name, DirectoryNode? parent)
         {
             Name = name;
-            Parent = parent;            
+            Parent = parent;
         }
 
-        public long Size { get
+        public long Size
+        {
+            get
             {
                 return Files.Sum(f => f.Size) + SubDirectories.Sum(d => d.Size);
-            } 
+            }
         }
 
         public string Name { get; }
@@ -106,7 +108,7 @@ namespace AdventOfCode2022.Assignments
         public IList<DirectoryNode> GetAllSubdirectories()
         {
             var result = new List<DirectoryNode>();
-            
+
             result.AddRange(SubDirectories.SelectMany(d => d.GetAllSubdirectories()));
             result.AddRange(SubDirectories);
             return result;
