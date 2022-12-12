@@ -4,7 +4,7 @@ namespace AdventOfCode2022Tests
     public class Day12Test
     {
         private const int AnswerPartA = 534;
-        private const int AnswerPartB = 0;
+        private const int AnswerPartB = 525;
         private const int AnswerExamplePartA = 31;
         private const int AnswerExamplePartB = 29;
 
@@ -34,7 +34,7 @@ namespace AdventOfCode2022Tests
         }
 
         [TestMethod]
-        public async Task PartBAsync()                                                                              
+        public async Task PartBAsync()                                                                         
         {
             var result = await day.PartBAsync(input.Input);
             Assert.AreEqual(AnswerPartB, result);

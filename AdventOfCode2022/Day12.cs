@@ -18,13 +18,12 @@ namespace AdventOfCode2022.Assignments
         {
             var inputData = ProcessInput(input.Single(), false);
 
-            var dijkstra = new DijkstraSearch<Day12Node, Day12Edge>(
+            var search = new BreadthFirstSearch<Day12Node, Day12Edge>(
     source: inputData.Start,
-    isTarget: n => n.ID == inputData.End.ID,
-    getEdgeCost: e => 1);
+    isTarget: n => n.ID == inputData.End.ID);
 
-            await dijkstra.CompleteAsync();
-            var path = dijkstra.PathToTarget();
+            await search.CompleteAsync();
+            var path = search.PathToTarget();
 
             var result = path.ToList().Count;
             return result;
@@ -35,7 +34,7 @@ namespace AdventOfCode2022.Assignments
             var inputData = ProcessInput(input.Single(), true);
 
             var dijkstra = new DijkstraSearch<Day12Node, Day12Edge>(
-    source: inputData.Start,
+    source: inputData.End,
     isTarget: n => n.Val == 'a',
     getEdgeCost: e => 1);
 
@@ -46,36 +45,33 @@ namespace AdventOfCode2022.Assignments
             return result;
         }
 
-        public static Day12Graph ProcessInput(string input, bool inverted)
+        public static Day12Graph ProcessInput(string input, bool reverse)
         {
             var lines = input.Split(new string[] { Environment.NewLine },
                     StringSplitOptions.None);
             var graph = new Day12Graph();
 
-            //var x = lines.Count() - 1;
-            Day12Node? start = null;
-            Day12Node? end = null;
-
             var maxX = lines.Length;
             var maxY = lines[0].Length;
-            //Add nodes
             for (int x = 0; x < maxX; x++)
             {
                 for (int y = 0; y < maxY; y++)
                 {
-                    if (lines[x][y] == 'S')
+                    string lineX = lines[x];
+                    char valueXY = lineX[y];
+                    if (valueXY == 'S')
                     {
-                        lines[x] = lines[x].Replace('S', 'a');
-                        start = graph.AddNode(x, y, lines[x][y]);
+                        lines[x] = lineX.Replace('S', 'a');
+                        graph.Start = graph.AddNode(x, y, valueXY);
                     }
-                    else if (lines[x][y] == 'E')
+                    else if (valueXY == 'E')
                     {
-                        lines[x] = lines[x].Replace('E', 'z');
-                        end = graph.AddNode(x, y, lines[x][y]);
+                        lines[x] = lineX.Replace('E', 'z');
+                        graph.End = graph.AddNode(x, y, valueXY);
                     }
                     else
                     {
-                        graph.AddNode(x, y, lines[x][y]);
+                        graph.AddNode(x, y, valueXY);
                     }
                 }
             }
@@ -85,61 +81,29 @@ namespace AdventOfCode2022.Assignments
             {
                 for (int y = 0; y < maxY; y++)
                 {
-                    if (x < maxX - 1 && lines[x][y] + 1 >= lines[x + 1][y])
+                    string lineX = lines[x];
+                    if (x < maxX - 1 && lineX[y] + 1 >= lines[x + 1][y])
                     {
-                        if (inverted)
-                        {
-                            graph.AddEdge(x + 1, y, x, y);
-                        }
-                        else
-                        {
-                            graph.AddEdge(x, y, x + 1, y);
-
-                        }
+                        graph.AddEdge(x, y, x + 1, y, reverse);
                     }
 
-                    if (x < maxX - 1 && lines[x][y] <= lines[x + 1][y] + 1)
+                    if (x < maxX - 1 && lineX[y] <= lines[x + 1][y] + 1)
                     {
-                        if (inverted)
-                        {
-                            graph.AddEdge(x, y, x + 1, y);
-
-                        }
-                        else
-                        {
-                            graph.AddEdge(x + 1, y, x, y);
-                        }
+                        graph.AddEdge(x + 1, y, x, y, reverse);
                     }
 
-                    if (y < maxY - 1 && lines[x][y] + 1 >= lines[x][y + 1])
+                    if (y < maxY - 1 && lineX[y] + 1 >= lineX[y + 1])
                     {
-                        if (inverted)
-                        {
-                            graph.AddEdge(x, y + 1, x, y);
-
-                        }
-                        else
-                        {
-                            graph.AddEdge(x, y, x, y + 1);
-                        }
+                        graph.AddEdge(x, y, x, y + 1, reverse);
                     }
-                    if (y < maxY - 1 && lines[x][y] <= lines[x][y + 1] + 1)
-                    {
-                        if (inverted)
-                        {
-                            graph.AddEdge(x, y, x, y + 1);
-                        }
-                        else
-                        {
-                            graph.AddEdge(x, y + 1, x, y);
 
-                        }
+                    if (y < maxY - 1 && lineX[y] <= lineX[y + 1] + 1)
+                    {
+                        graph.AddEdge(x, y + 1, x, y, reverse);
                     }
                 }
             }
 
-            graph.Start = inverted ? end : start;
-            graph.End = inverted ? start : end;
             return graph;
         }
 
@@ -160,7 +124,7 @@ namespace AdventOfCode2022.Assignments
 
         public Day12Node AddNode(int x, int y, char val)
         {
-            var node = new Day12Node($"{x},{y}", val);
+            var node = new Day12Node($"{x},{y}", val, x, y);
             AddNode(node);
 
             return node;
@@ -176,12 +140,23 @@ namespace AdventOfCode2022.Assignments
             edges.Add(edge);
         }
 
-        internal void AddEdge(int x1, int y1, int x2, int y2)
+        internal void AddEdge(int x1, int y1, int x2, int y2, bool inverted)
         {
-            var from = nodes.Where(n => n.ID == $"{x1},{y1}").Single();
-            var to = nodes.Where(n => n.ID == $"{x2},{y2}").Single();
-            var edge = new Day12Edge(from, to);
-            AddEdge(edge);
+            var xy1 = $"{x1},{y1}";
+            var xy2 = $"{x2},{y2}";
+            var from = nodes.First(n => n.ID == xy1);
+            var to = nodes.First(n => n.ID == xy2);
+
+            if (!inverted)
+            {
+                AddEdge(new Day12Edge(from, to));
+            }
+            else
+            {
+                AddEdge(new Day12Edge(to, from));
+
+            }
+
         }
     }
 
@@ -191,14 +166,18 @@ namespace AdventOfCode2022.Assignments
         {
             return $"({ID}) {Val}";
         }
-        public Day12Node(string id, char val)
+        public Day12Node(string id, char val, int x, int y)
         {
             ID = id;
             Val = val;
+            X = x;
+            Y = y;
         }
 
         public string ID { get; }
         public char Val { get; }
+        public int X { get; }
+        public int Y { get; }
 
         private IList<Day12Edge> edges = new List<Day12Edge>();
         public IReadOnlyCollection<Day12Edge> Edges => new ReadOnlyCollection<Day12Edge>(edges);
@@ -206,6 +185,11 @@ namespace AdventOfCode2022.Assignments
         public void AddEdge(Day12Edge edge)
         {
             edges.Add(edge);
+        }
+
+        internal float Distance(Day12Node end)
+        {
+            return Math.Abs(end.X - X) + Math.Abs(end.Y - Y);
         }
     }
 
