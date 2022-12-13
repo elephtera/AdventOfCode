@@ -3,10 +3,10 @@ namespace AdventOfCode2022Tests
     [TestClass]
     public class Day13Test
     {
-        private const int AnswerPartA = 0;
-        private const int AnswerPartB = 0;
+        private const int AnswerPartA = 5390;
+        private const int AnswerPartB = 19261;
         private const int AnswerExamplePartA = 13;
-        private const int AnswerExamplePartB = 0;
+        private const int AnswerExamplePartB = 140;
 
 
         private readonly IDay<int> day = new Day13();
@@ -69,36 +69,39 @@ namespace AdventOfCode2022Tests
         {
             var packetLeft = new Packet("[1,1,3,1,1]");
             var packetRight = new Packet("[1,1,5,1,1]");
-            Assert.AreEqual(true, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(-1, packetLeft.CompareTo(packetRight));
 
 
             packetLeft = new Packet("[[1],[2,3,4]]");
-            packetRight = new Packet("[[1],4]");
-            Assert.AreEqual(true, Day13.Compare(packetLeft, packetRight));
+            packetRight = new Packet("[[1],4]"); 
+            Assert.AreEqual(-1, packetLeft.CompareTo(packetRight));
+
 
             packetLeft = new Packet("[9]");
             packetRight = new Packet("[[8,7,6]]");
-            Assert.AreEqual(false, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(1, packetLeft.CompareTo(packetRight));
 
-            packetLeft = new Packet("[[4,4],4,4]");
+                        packetLeft = new Packet("[[4,4],4,4]");
             packetRight = new Packet("[[4,4],4,4,4]");
-            Assert.AreEqual(true, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(-1, packetLeft.CompareTo(packetRight));
+
 
             packetLeft = new Packet("[7,7,7,7]");
             packetRight = new Packet("[7,7,7]");
-            Assert.AreEqual(false, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(1, packetLeft.CompareTo(packetRight));
 
             packetLeft = new Packet("[]");
             packetRight = new Packet("[3]");
-            Assert.AreEqual(true, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(-1, packetLeft.CompareTo(packetRight));
+
 
             packetLeft = new Packet("[[[]]]");
             packetRight = new Packet("[[]]");
-            Assert.AreEqual(false, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(1, packetLeft.CompareTo(packetRight));
 
             packetLeft = new Packet("[1,[2,[3,[4,[5,6,7]]]],8,9]");
             packetRight = new Packet("[1,[2,[3,[4,[5,6,0]]]],8,9]");
-            Assert.AreEqual(false, Day13.Compare(packetLeft, packetRight));
+            Assert.AreEqual(1, packetLeft.CompareTo(packetRight));
 
         }
     }
