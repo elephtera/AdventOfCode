@@ -121,7 +121,7 @@ namespace AdventOfCode2022.Helpers
 
 
         #region Methods
-
+        
         /// <summary>
 
         /// Indicates if the range contains <code>value</code>.

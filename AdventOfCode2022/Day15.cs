@@ -13,9 +13,11 @@ namespace AdventOfCode2022.Assignments
         {
             var inputData = ProcessInput(input.Single());
             List<int[]> beacons = GetBeacons(inputData);
-            var result = AllpointsWithoutBeaconOnRow(inputData, beacons, row);
+            var result = AllRangesWithoutBeaconOnRow(inputData, row);
 
-            return result.Count();
+            var beaconsOnRow = beacons.Where(b => b[1] == row).Count();
+            var count = result.Select(r => RangeCount(r)).Sum();
+            return count - beaconsOnRow;
         }
 
         private List<int[]> GetBeacons(IList<int[]> inputData)
@@ -40,27 +42,6 @@ namespace AdventOfCode2022.Assignments
             return distance;
         }
 
-        public static List<int> NoBeaconsOnRow(int x1, int y1, int yTarget, int maxDistance)
-        {
-            var result = new List<int>();
-            int minDistanceToY = ManhattenDistance(x1, y1, x1, yTarget);
-
-            if (minDistanceToY > maxDistance)
-            {
-                return result;
-            }
-
-            result.Add(x1);
-
-            for (int i = 1; i <= maxDistance - minDistanceToY; i++)
-            {
-                result.Add(x1 - i);
-                result.Add(x1 + i);
-            }
-
-            return result;
-        }
-
         public static Range<int>? ScannedRange(int x1, int y1, int yTarget, int maxDistance)
         {
             int minDistanceToY = ManhattenDistance(x1, y1, x1, yTarget);
@@ -71,10 +52,16 @@ namespace AdventOfCode2022.Assignments
                 return null;
             }
 
-            return new Range<int>(Math.Max(0,x1 - remaining), Math.Min(x1 + remaining, 4000000));
+            return new Range<int>(x1 - remaining, x1 + remaining);
+           // return new Range<int>(Math.Max(-100,x1 - remaining), Math.Min(x1 + remaining, 4000000));
         }
 
-        public int PartB(IList<string> input, int maxRange)
+        public static int RangeCount(Range<int> range)
+        {
+            return range.UpperBound + 1 - range.LowerBound;
+        }
+
+        public long PartB(IList<string> input, int maxRange)
         {
             // Zoek de enige lege plek die er is in de range [0-max]
             var inputData = ProcessInput(input.Single());
@@ -83,33 +70,14 @@ namespace AdventOfCode2022.Assignments
             for (int row = 0; row < maxRange; row++)
             {
                 var result = AllRangesWithoutBeaconOnRow(inputData, row);
-                if(result.Count > 1)
+                if(result.Count > 1 && result[0].UpperBound > 0 && result[0].UpperBound < 4000000)
                 {
-                    var x = result[0].UpperBound + 1;
+                    long x = result[0].UpperBound + 1;
                     return x * 4000000 + row;
                 }
             }
 
             return 0;
-        }
-
-        private IEnumerable<int> AllpointsWithoutBeaconOnRow(IList<int[]> inputData, IList<int[]> beacons, int row)
-        {
-            var noBeaconsOnRow = new List<int>();
-            foreach (var item in inputData)
-            {
-                int distance = ManhattenDistance(item[0], item[1], item[2], item[3]);
-                noBeaconsOnRow.AddRange(NoBeaconsOnRow(item[0], item[1], row, distance));
-            }
-
-            foreach (var item in beacons.Where(item => item[1] == row))
-            {
-                noBeaconsOnRow.RemoveAll(i => i == item[0]);
-            }
-
-            var result = noBeaconsOnRow.Distinct();
-
-            return result;
         }
 
         private IList<Range<int>> AllRangesWithoutBeaconOnRow(IList<int[]> inputData, int row)

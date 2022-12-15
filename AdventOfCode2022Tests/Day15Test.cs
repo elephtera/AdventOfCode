@@ -4,7 +4,7 @@ namespace AdventOfCode2022Tests
     public class Day15Test
     {
         private const int AnswerPartA = 5525990;
-        private const int AnswerPartB = 0;
+        private const long AnswerPartB = 11756174628223;
         private const int AnswerExamplePartA = 26;
         private const int AnswerExamplePartB = 56000011;
 
@@ -51,15 +51,14 @@ namespace AdventOfCode2022Tests
             var y1 = 0;
             var row = 2;
 
-            var res = Day15.NoBeaconsOnRow(x1, y1, row, 1);
-            Assert.AreEqual(0, res.Count);
+            var res = Day15.ScannedRange(x1, y1, row, 1);
+            Assert.AreEqual(null, res);
 
-            res = Day15.NoBeaconsOnRow(x1, y1, row, 2);
-            Assert.AreEqual(1, res.Count);
+            res = Day15.ScannedRange(x1, y1, row, 2);
+            Assert.AreEqual(1, Day15.RangeCount(res));
 
-            res = Day15.NoBeaconsOnRow(x1, y1, row, 3);
-            Assert.AreEqual(3, res.Count);
-
+            res = Day15.ScannedRange(x1, y1, row, 3);
+            Assert.AreEqual(3, Day15.RangeCount(res));
         }
 
         [TestMethod]
