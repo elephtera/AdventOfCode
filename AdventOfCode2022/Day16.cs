@@ -19,80 +19,86 @@ namespace AdventOfCode2022.Assignments
             var workingValves = inputData.Nodes.Where(n => n.Flowrate > 0 || n.ID == "AA");
             var valveFlowrates = workingValves.Select(p => new { key = p.ID, value = p.Flowrate })
     .ToDictionary(x => x.key, x => x.value);
-            var shorestPath = new Dictionary<string, List<Day16Edge>>();
+            var timeToOpenValve = new Dictionary<string, int>();
             var IDs = workingValves.Select(wv => wv.ID).ToList();
 
-            // afstand tussen valves
-            foreach(var workingValve in workingValves)
-            {
-                foreach(var ID in IDs.Where(id => id != workingValve.ID))
-                    {
-                    var search = new DijkstraSearch<Day16Node, Day16Edge>(workingValve, (node) => node.ID == ID, (edge) => 1);
-                    await search.CompleteAsync();
-                    shorestPath.Add($"{workingValve.ID}-{ID}", search.PathToTarget().ToList());
-                }
-            }
-
-            var result = CalculateReleasedPressure(30, workingValves.Where(wv => wv.ID != "AA").ToList(), "AA", shorestPath); 
-            return result;
-        }
-
-        public long CalculateReleasedPressure(int countdown, IList<Day16Node> usefull, string curV, Dictionary<string, List<Day16Edge>> shortestPaths)
-        {
-            long best = 0;
-            foreach (var t in usefull)
-            {
-                var steps = shortestPaths[$"{curV}-{t.ID}"].Count();
-                int newTimeToGo = countdown - steps - 1;
-                if (newTimeToGo > 0)
-                {
-                    long gain = newTimeToGo * t.Flowrate + CalculateReleasedPressure(newTimeToGo, usefull.Where(c => c.ID != t.ID).ToList(), t.ID, shortestPaths);
-                    if (best < gain) best = gain;
-                }
-            }
-            return best;
-        }
-
-        public long GetReleasedPressureTogether(int countdown, int countdownElephant, IList<Day16Node> usefull, string curV, string curVE, Dictionary<string, List<Day16Edge>> searchResults)
-        {
-            var elephant = countdown < countdownElephant;
-
-            long best = 0;
-            foreach (var t in usefull)
-            {
-                var steps = searchResults[$"{(elephant? curVE : curV)}-{t.ID}"].Count();
-                int newTimeToGo = (elephant? countdownElephant: countdown) - steps - 1;
-                if (newTimeToGo > 0)
-                {
-                    long gain = newTimeToGo * t.Flowrate + GetReleasedPressureTogether(elephant? countdown : newTimeToGo, elephant? newTimeToGo : countdownElephant, usefull.Where(c => c.ID != t.ID).ToList(), elephant? curV : t.ID, elephant? t.ID : curVE, searchResults);
-                    if (best < gain) best = gain;
-                }
-            }
-            return best;
-        }
-
-        public async Task<long> PartBAsync(IList<string> input)
-        {
-            var inputData = ProcessInput(input.Single());
-            // We start with AA, thus is part of the tree.
-            var workingValves = inputData.Nodes.Where(n => n.Flowrate > 0 || n.ID == "AA");
-            var valveFlowrates = workingValves.Select(p => new { key = p.ID, value = p.Flowrate })
-    .ToDictionary(x => x.key, x => x.value);
-            var searchResults = new Dictionary<string, List<Day16Edge>>();
-            var IDs = workingValves.Select(wv => wv.ID).ToList();
             // afstand tussen valves
             foreach (var workingValve in workingValves)
             {
                 foreach (var ID in IDs.Where(id => id != workingValve.ID))
                 {
-                    var search = new DijkstraSearch<Day16Node, Day16Edge>(workingValve, (node) => node.ID == ID, (edge) => 1);
+                    var search = new DijkstraSearch<Valve, Day16Edge>(workingValve, (node) => node.ID == ID, (edge) => 1);
                     await search.CompleteAsync();
-                    searchResults.Add($"{workingValve.ID}-{ID}", search.PathToTarget().ToList());
+                    timeToOpenValve.Add($"{workingValve.ID}-{ID}", 1 + search.PathToTarget().Count());
                 }
             }
 
-            var result = GetReleasedPressureTogether(26, 26, workingValves.Where(wv => wv.ID != "AA").ToList(), "AA", "AA", searchResults);
+            var result = CalculateReleasedPressure(30, workingValves.Where(wv => wv.ID != "AA").ToList(), "AA", timeToOpenValve);
             return result;
+        }
+
+
+        public async Task<long> PartBAsync(IList<string> input)
+        {
+            var inputData = ProcessInput(input.Single());
+
+            // We starten bij AA, deze moet dus altijd in de lijst
+            var workingValves = inputData.Nodes.Where(n => n.Flowrate > 0 || n.ID == "AA");
+            var valveFlowrates = workingValves.Select(p => new { key = p.ID, value = p.Flowrate })
+    .ToDictionary(x => x.key, x => x.value);
+            var timeToOpenValve = new Dictionary<string, int>();
+            var IDs = workingValves.Select(wv => wv.ID).ToList();
+
+            // afstand tussen valves
+            foreach (var workingValve in workingValves)
+            {
+                foreach (var ID in IDs.Where(id => id != workingValve.ID))
+                {
+                    var search = new DijkstraSearch<Valve, Day16Edge>(workingValve, (node) => node.ID == ID, (edge) => 1);
+                    await search.CompleteAsync();
+                    timeToOpenValve.Add($"{workingValve.ID}-{ID}", 1 + search.PathToTarget().Count());
+                }
+            }
+
+            var result = CalculateCombinedReleasedPressure(26, 26, workingValves.Where(wv => wv.ID != "AA").ToList(), "AA", "AA", timeToOpenValve);
+            return result;
+        }
+
+        public long CalculateReleasedPressure(int timeLeft, IEnumerable<Valve> unprocessedValves, string from, Dictionary<string, int> valveOpenTimes)
+        {
+            long maximumReleasedPressure = 0;
+            foreach (var valve in unprocessedValves)
+            {
+                var timeToOpenValve = valveOpenTimes[$"{from}-{valve.ID}"];
+                int newTimeLeft = timeLeft - timeToOpenValve;
+                if (newTimeLeft > 0)
+                {
+                    long extraPressure = newTimeLeft * valve.Flowrate +
+                        CalculateReleasedPressure(newTimeLeft, unprocessedValves.Where(c => c.ID != valve.ID), valve.ID, valveOpenTimes);
+                    maximumReleasedPressure = Math.Max(maximumReleasedPressure, extraPressure);
+                }
+            }
+
+            return maximumReleasedPressure;
+        }
+
+        public long CalculateCombinedReleasedPressure(int timeLeftMe, int timeLeftElephant, 
+            IEnumerable<Valve> unprocessedValves, string fromMe, string fromElephant, Dictionary<string, int> valveOpenTimes)
+        {
+            var elephant = timeLeftMe < timeLeftElephant;
+
+            long maximumReleasedPressure = 0;
+            foreach (var valve in unprocessedValves)
+            {
+                var steps = valveOpenTimes[$"{(elephant ? fromElephant : fromMe)}-{valve.ID}"];
+                int newTimeLeft = (elephant ? timeLeftElephant : timeLeftMe) - steps;
+                if (newTimeLeft > 0)
+                {
+                    long extraPressure = newTimeLeft * valve.Flowrate + CalculateCombinedReleasedPressure(elephant ? timeLeftMe : newTimeLeft, elephant ? newTimeLeft : timeLeftElephant, unprocessedValves.Where(c => c.ID != valve.ID), elephant ? fromMe : valve.ID, elephant ? valve.ID : fromElephant, valveOpenTimes);
+                    if (maximumReleasedPressure < extraPressure) maximumReleasedPressure = extraPressure;
+                }
+            }
+            return maximumReleasedPressure;
         }
 
         public static Day16Graph ProcessInput(string input)
@@ -126,26 +132,26 @@ namespace AdventOfCode2022.Assignments
         }
     }
 
-    public class Day16Graph : IGraph<Day16Node, Day16Edge>
+    public class Day16Graph : IGraph<Valve, Day16Edge>
     {
-        private List<Day16Node> nodes = new List<Day16Node>();
+        private List<Valve> nodes = new List<Valve>();
         private List<Day16Edge> edges = new List<Day16Edge>();
-        public Day16Node Start { get; set; }
-        public Day16Node End { get; set; }
+        public Valve Start { get; set; }
+        public Valve End { get; set; }
 
-        public IEnumerable<Day16Node> Nodes => nodes;
+        public IEnumerable<Valve> Nodes => nodes;
 
         public IEnumerable<Day16Edge> Edges => edges;
 
-        public Day16Node AddNode(string id, int flowrate)
+        public Valve AddNode(string id, int flowrate)
         {
-            var node = new Day16Node(id, flowrate);
+            var node = new Valve(id, flowrate);
             AddNode(node);
 
             return node;
         }
 
-        public void AddNode(Day16Node node)
+        public void AddNode(Valve node)
         {
             nodes.Add(node);
         }
@@ -165,13 +171,13 @@ namespace AdventOfCode2022.Assignments
         }
     }
 
-    public class Day16Node : INode<Day16Node, Day16Edge>
+    public class Valve : INode<Valve, Day16Edge>
     {
         public override string ToString()
         {
             return $"({ID}) {Flowrate}";
         }
-        public Day16Node(string id, int flowrate)
+        public Valve(string id, int flowrate)
         {
             ID = id;
             Flowrate = flowrate;
@@ -189,13 +195,13 @@ namespace AdventOfCode2022.Assignments
         }
     }
 
-    public class Day16Edge : IEdge<Day16Node, Day16Edge>
+    public class Day16Edge : IEdge<Valve, Day16Edge>
     {
-        public Day16Node From { get; }
+        public Valve From { get; }
 
-        public Day16Node To { get; }
+        public Valve To { get; }
 
-        public Day16Edge(Day16Node from, Day16Node to)
+        public Day16Edge(Valve from, Valve to)
         {
             From = from;
             To = to;
