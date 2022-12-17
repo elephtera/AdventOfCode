@@ -5,7 +5,7 @@
      */
     public class Day13 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToPointList(Day13Input.Input);
 
@@ -30,7 +30,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.ConvertInputToPointList(Day13Input.Input);
             FoldX(input, 655);

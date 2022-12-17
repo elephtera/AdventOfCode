@@ -4,7 +4,7 @@ namespace AdventOfCode2021.Assignments
 {
     public class Day19 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             return LocateScanners(Day19Input.Input)
                        .SelectMany(scanner => scanner.GetTransformedProbes())
@@ -13,7 +13,7 @@ namespace AdventOfCode2021.Assignments
         }
        
 
-        public string PartB()
+        public string Part2()
         {
             var scanners = LocateScanners(Day19Input.Input);
             return (

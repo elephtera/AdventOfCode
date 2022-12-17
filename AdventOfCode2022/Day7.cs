@@ -7,17 +7,17 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day7 : IDay<long>
     {
-        public long PartA(IList<string> input)
+        public long Part1(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var root = CreateDirectoryTree(inputData);
             var result = root.GetAllSubdirectories().Where(d => d.Size <= 100000).Sum(d => d.Size);
             return result;
         }
 
-        public long PartB(IList<string> input)
+        public long Part2(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var root = CreateDirectoryTree(inputData);
             var freeSpace = (70000000 - root.Size);
             var neededSpace = 30000000 - freeSpace;

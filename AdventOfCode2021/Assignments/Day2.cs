@@ -57,7 +57,7 @@
      */
     public class Day2 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             long depth = 0;
             long horizontalPosition = 0;
@@ -85,7 +85,7 @@
         }
 
 
-        public string PartB()
+        public string Part2()
         {
             int depth = 0;
             int horizontalPosition = 0;

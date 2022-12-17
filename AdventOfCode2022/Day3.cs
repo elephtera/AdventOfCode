@@ -5,9 +5,9 @@
      */
     public class Day3 : IDay<int>
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var result = 0;
             foreach(var line in inputData)
             {
@@ -18,9 +18,9 @@
             return result;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var result = 0;
 
             // sets of 3

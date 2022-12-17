@@ -38,7 +38,7 @@ What is the lowest total risk of any path from the top left to the bottom right?
     {
 
 
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToDoubleArray(Day15Input.Input);
 
@@ -47,7 +47,7 @@ What is the lowest total risk of any path from the top left to the bottom right?
 
 
         }
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.ConvertInputToDoubleArray(Day15Input.Input);
             var extendedInput = GenerateExtendedInput(input);

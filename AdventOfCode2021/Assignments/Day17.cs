@@ -5,7 +5,7 @@
      */
     public class Day17 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             //target area: x=138..184, y=-125..-71
 
@@ -38,7 +38,7 @@
             return maxY.ToString();
         }
 
-        public string PartB()
+        public string Part2()
         {
             var count = 0;
 

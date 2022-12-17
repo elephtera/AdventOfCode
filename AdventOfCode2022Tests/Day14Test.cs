@@ -3,41 +3,41 @@ namespace AdventOfCode2022Tests
     [TestClass]
     public class Day14Test
     {
-        private const int AnswerPartA = 961;
-        private const int AnswerPartB = 26375;
-        private const int AnswerExamplePartA = 24;
-        private const int AnswerExamplePartB = 93;
+        private const int AnswerPart1 = 961;
+        private const int AnswerPart2 = 26375;
+        private const int AnswerExamplePart1 = 24;
+        private const int AnswerExamplePart2 = 93;
 
 
         private readonly Day14 day = new Day14();
         private readonly IDayInput input = new Day14Input();
 
         [TestMethod]
-        public void PartAExample()
+        public void Part1Example()
         {
-            var result = day.PartA(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartA, result);
+            var result = day.Part1(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart1, result);
         }
 
         [TestMethod]
-        public void PartA()
+        public void Part1()
         {
-            var result = day.PartA(input.Input);
-            Assert.AreEqual(AnswerPartA, result);
+            var result = day.Part1(input.Input);
+            Assert.AreEqual(AnswerPart1, result);
         }
 
         [TestMethod]
-        public void PartBExample()
+        public void Part2Example()
         {
-            var result = day.PartB(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartB, result);
+            var result = day.Part2(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart2, result);
         }
 
         [TestMethod]
-        public void PartB()
+        public void Part2()
         {
-            var result = day.PartB(input.Input);
-            Assert.AreEqual(AnswerPartB, result);
+            var result = day.Part2(input.Input);
+            Assert.AreEqual(AnswerPart2, result);
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace AdventOfCode2022Tests
         [TestMethod]
         public void CreateExampleWalls()
         {
-            var res = Day14.ProcessInput(input.ExampleInput.Single());
+            var res = Day14.ProcessInput(input.ExampleInput);
             Assert.AreEqual(20, res.Count);
             
         }

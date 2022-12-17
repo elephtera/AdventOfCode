@@ -7,9 +7,9 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day14
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             int[,] map = ConvertToMap(inputData);
 
             // Do something with sand..
@@ -88,9 +88,9 @@ namespace AdventOfCode2022.Assignments
             return grain;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             int[,] map = ConvertToMap(inputData);
 
             // Do something with sand..

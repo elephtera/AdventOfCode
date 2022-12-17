@@ -5,7 +5,7 @@
      */
     public class Day14 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var template = Day14Input.Input2;
             var input = InputHandler.GetInputAsStringList(Day14Input.Input);
@@ -46,7 +46,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var template = Day14Input.Input2;
             var input = InputHandler.GetInputAsStringList(Day14Input.Input);

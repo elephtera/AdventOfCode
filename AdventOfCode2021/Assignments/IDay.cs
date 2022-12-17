@@ -2,7 +2,7 @@
 {
     public interface IDay
     {
-        string PartA();
-        string PartB();
+        string Part1();
+        string Part2();
     }
 }

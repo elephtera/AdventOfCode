@@ -339,7 +339,7 @@
      */
     public class Day11 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToDoubleArray(Day11Input.Input);
             var map = new OctopusMap(input);
@@ -355,7 +355,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.ConvertInputToDoubleArray(Day11Input.Input);
             var map = new OctopusMap(input);

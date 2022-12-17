@@ -1,8 +1,8 @@
 ﻿namespace AdventOfCode2022Tests.Input
 {
-    public class Day15Input
+    public class Day15Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"Sensor at x=2, y=18: closest beacon is at x=-2, y=15
+        public string ExampleInput => @"Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16
 Sensor at x=13, y=2: closest beacon is at x=15, y=3
 Sensor at x=12, y=14: closest beacon is at x=10, y=16
@@ -15,9 +15,9 @@ Sensor at x=20, y=14: closest beacon is at x=25, y=17
 Sensor at x=17, y=20: closest beacon is at x=21, y=22
 Sensor at x=16, y=7: closest beacon is at x=15, y=3
 Sensor at x=14, y=3: closest beacon is at x=15, y=3
-Sensor at x=20, y=1: closest beacon is at x=15, y=3" };
+Sensor at x=20, y=1: closest beacon is at x=15, y=3";
 
-        public IList<string> Input => new List<string>() { @"Sensor at x=13820, y=3995710: closest beacon is at x=1532002, y=3577287
+        public string Input => @"Sensor at x=13820, y=3995710: closest beacon is at x=1532002, y=3577287
 Sensor at x=3286002, y=2959504: closest beacon is at x=3931431, y=2926694
 Sensor at x=3654160, y=2649422: closest beacon is at x=3702627, y=2598480
 Sensor at x=3702414, y=2602790: closest beacon is at x=3702627, y=2598480
@@ -52,6 +52,6 @@ Sensor at x=2547761, y=2464195: closest beacon is at x=2120140, y=2591883
 Sensor at x=3711518, y=845968: closest beacon is at x=3702627, y=2598480
 Sensor at x=3925049, y=2897039: closest beacon is at x=3931431, y=2926694
 Sensor at x=1590740, y=3586256: closest beacon is at x=1532002, y=3577287
-Sensor at x=1033496, y=3762565: closest beacon is at x=1532002, y=3577287" };
+Sensor at x=1033496, y=3762565: closest beacon is at x=1532002, y=3577287";
     }
 }

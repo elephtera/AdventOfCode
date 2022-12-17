@@ -121,7 +121,7 @@ namespace AdventOfCode2021.Assignments.Tests
             var day18 = new Day18();
             //var rawLines = InputHandler.GetInputAsStringList(rawInput);
 
-            var result = day18.PartB();
+            var result = day18.Part2();
 
             Assert.AreEqual("4706", result);
         }

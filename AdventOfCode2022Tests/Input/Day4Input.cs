@@ -2,14 +2,14 @@
 {
     public class Day4Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"2-4,6-8
+        public string ExampleInput => @"2-4,6-8
 2-3,4-5
 5-7,7-9
 2-8,3-7
 6-6,4-6
-2-6,4-8" };
+2-6,4-8";
 
-        public IList<string> Input => new List<string>() { @"33-62,26-62
+        public string Input => @"33-62,26-62
 49-89,49-88
 2-4,3-92
 7-98,7-98
@@ -1008,6 +1008,6 @@
 42-79,9-80
 57-64,38-59
 31-37,37-72
-21-99,1-25" };
+21-99,1-25";
     }
 }

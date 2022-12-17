@@ -2,7 +2,7 @@
 {
     public interface IDayInput
     {
-        IList<string> ExampleInput { get; }
-        IList<string> Input { get; }
+        string ExampleInput { get; }
+        string Input { get; }
     }
 }

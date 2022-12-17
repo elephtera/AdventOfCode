@@ -42,7 +42,7 @@ namespace AdventOfCode2021.Assignments.Tests
         }
 
         [TestMethod()]
-        public void PartATest()
+        public void Part1Test()
         {
             var day = new Day22();
             var input = InputHandler.ConvertInputToCubes(Day22Input.InputA);
@@ -52,7 +52,7 @@ namespace AdventOfCode2021.Assignments.Tests
         }
 
         [TestMethod()]
-        public void PartBTest()
+        public void Part2Test()
         {
             var day = new Day22();
             var input = InputHandler.ConvertInputToCubes(Day22Input.InputB);

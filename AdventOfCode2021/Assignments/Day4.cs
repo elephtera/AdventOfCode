@@ -79,7 +79,7 @@
             return input;
         }
 
-        public string PartA()
+        public string Part1()
         {
             IList<int[][]> bingoCards = GetBingoCards();
             IList<int> bingoBalls = GetBingoBalls();
@@ -129,7 +129,7 @@
         }
 
 
-        public string PartB()
+        public string Part2()
         {
             IList<int[][]> bingoCards = GetBingoCards();
             IList<int> bingoBalls = GetBingoBalls();

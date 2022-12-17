@@ -56,7 +56,7 @@
      */
     public class Day7 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToIntList(Day7Input.Input).OrderBy(i => i);
             var leastFuel = long.MaxValue;
@@ -80,7 +80,7 @@
            
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.ConvertInputToIntList(Day7Input.Input).OrderBy(i => i);
             var leastFuel = long.MaxValue;

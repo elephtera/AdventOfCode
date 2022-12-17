@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode2022Tests.Input
 {
-    public class Day11Input : IDayInput
+    public class Day11Input
     {
         public List<Monkey> ExampleMonkeys => new List<Monkey>(){
             new Monkey()
@@ -40,8 +40,6 @@
                 MonkeyFalse = 1,
             },
         };
-        public IList<string> ExampleInput => new List<string>() { @"" };
-
         
         public List<Monkey> Monkeys => new List<Monkey>(){
             new Monkey()
@@ -117,7 +115,5 @@
                 MonkeyFalse = 5,
             },
         };
-
-        public IList<string> Input => new List<string>() { @"" };
     }
 }

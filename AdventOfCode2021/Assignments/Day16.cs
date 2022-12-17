@@ -7,7 +7,7 @@
     {
 
 
-        public string PartA()
+        public string Part1()
         {
             string input = InputHandler.ConvertInputToBitString(Day16Input.Input);
             var (_, _, versionCount) = ParsePacket(input, 0);
@@ -16,7 +16,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             string input = InputHandler.ConvertInputToBitString(Day16Input.Input);
             var (_, Value, _) = ParsePacket(input, 0);

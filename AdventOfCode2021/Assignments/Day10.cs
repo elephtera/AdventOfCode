@@ -92,7 +92,7 @@
      */
     public class Day10 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.GetInputAsStringList(Day10Input.Input);
 
@@ -155,7 +155,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.GetInputAsStringList(Day10Input.Input);
 

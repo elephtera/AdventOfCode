@@ -10,9 +10,9 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day13 : IDay<int>
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var total = 0;
             var pairId = 0;
             for (int i = 0; i < inputData.Count; i += 2)
@@ -28,9 +28,9 @@ namespace AdventOfCode2022.Assignments
             return total;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             
             var packets = inputData.Select(input => new Packet(input)).ToList();
             var packet2 = new Packet("[[2]]");

@@ -5,9 +5,9 @@
      */
     public class Day10 : IDay<int>
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
 
             var duringCycleValue = ProcessCommands(inputData);
             var result = 20 * duringCycleValue[20 - 1];
@@ -47,9 +47,9 @@
             return duringCycleValue;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var duringCycleValue = ProcessCommands(inputData);
             var screen = new List<bool>();
             for(int i = 0; i < 240; i++)

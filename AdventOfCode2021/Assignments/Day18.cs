@@ -9,7 +9,7 @@ namespace AdventOfCode2021.Assignments
     {
 
 
-        public string PartA()
+        public string Part1()
         {
             string rawInput = Day18Input.Input;
             SnailfishMath processed = DoMath(InputHandler.GetInputAsStringList(rawInput));
@@ -92,7 +92,7 @@ namespace AdventOfCode2021.Assignments
             return math;
         }
 
-        public string PartB()
+        public string Part2()
         {
             var maxMagnitude = 0L;
 

@@ -5,7 +5,7 @@
      */
     public class Day24 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var instructions = InputHandler.ConvertInputToOpcodes(Day24Input.Input);
 
@@ -117,7 +117,7 @@
             return register;
         }
 
-        public string PartB()
+        public string Part2()
         {
             
             return 0.ToString();

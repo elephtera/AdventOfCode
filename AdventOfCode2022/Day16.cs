@@ -11,9 +11,9 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day16
     {
-        public async Task<long> PartAAsync(IList<string> input)
+        public async Task<long> Part1Async(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
 
             // We starten bij AA, deze moet dus altijd in de lijst
             var workingValves = inputData.Nodes.Where(n => n.Flowrate > 0 || n.ID == "AA");
@@ -38,9 +38,9 @@ namespace AdventOfCode2022.Assignments
         }
 
 
-        public async Task<long> PartBAsync(IList<string> input)
+        public async Task<long> Part2Async(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
 
             // We starten bij AA, deze moet dus altijd in de lijst
             var workingValves = inputData.Nodes.Where(n => n.Flowrate > 0 || n.ID == "AA");

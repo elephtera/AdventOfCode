@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode2022Tests.Input
 {
-    public class Day5Input : IDayInput
+    public class Day5Input
     {
         public IList<string> ExampleInput => new List<string>() {
 @"ZN
@@ -12,7 +12,7 @@ move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2" };
 
-        public IList<string> Input => new List<string>() { 
+        public IList<string> Input => new List<string>() {
 @"BWN
 LZSPTDMB
 QHZWR

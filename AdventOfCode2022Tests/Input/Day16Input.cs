@@ -2,7 +2,7 @@
 {
     public class Day16Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
+        public string ExampleInput => @"Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
 Valve BB has flow rate=13; tunnels lead to valves CC, AA
 Valve CC has flow rate=2; tunnels lead to valves DD, BB
 Valve DD has flow rate=20; tunnels lead to valves CC, AA, EE
@@ -11,9 +11,9 @@ Valve FF has flow rate=0; tunnels lead to valves EE, GG
 Valve GG has flow rate=0; tunnels lead to valves FF, HH
 Valve HH has flow rate=22; tunnel leads to valve GG
 Valve II has flow rate=0; tunnels lead to valves AA, JJ
-Valve JJ has flow rate=21; tunnel leads to valve II" };
+Valve JJ has flow rate=21; tunnel leads to valve II";
 
-        public IList<string> Input => new List<string>() { @"Valve FY has flow rate=0; tunnels lead to valves TG, CD
+        public string Input => @"Valve FY has flow rate=0; tunnels lead to valves TG, CD
 Valve EK has flow rate=12; tunnels lead to valves JE, VE, PJ, CS, IX
 Valve NU has flow rate=0; tunnels lead to valves FG, HJ
 Valve AY has flow rate=0; tunnels lead to valves EG, KR
@@ -71,6 +71,6 @@ Valve GA has flow rate=0; tunnels lead to valves CF, HT
 Valve CS has flow rate=0; tunnels lead to valves OO, EK
 Valve MK has flow rate=0; tunnels lead to valves AQ, FG
 Valve KR has flow rate=18; tunnels lead to valves MN, DN, YW, AY
-Valve DX has flow rate=0; tunnels lead to valves AA, WI" };
+Valve DX has flow rate=0; tunnels lead to valves AA, WI";
     }
 }

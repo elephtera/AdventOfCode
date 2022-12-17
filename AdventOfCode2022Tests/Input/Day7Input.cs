@@ -2,7 +2,7 @@
 {
     public class Day7Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"$ cd /
+        public string ExampleInput => @"$ cd /
 $ ls
 dir a
 14848514 b.txt
@@ -24,9 +24,9 @@ $ ls
 4060174 j
 8033020 d.log
 5626152 d.ext
-7214296 k" };
+7214296 k";
 
-        public IList<string> Input => new List<string>() { @"$ cd /
+        public string Input => @"$ cd /
 $ ls
 dir bfbjzfd
 dir mbc
@@ -1112,6 +1112,6 @@ $ cd ..
 $ cd ..
 $ cd zzp
 $ ls
-197095 vwrmp.rzc" };
+197095 vwrmp.rzc";
     }
 }

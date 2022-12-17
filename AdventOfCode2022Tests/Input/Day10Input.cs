@@ -2,7 +2,7 @@
 {
     public class Day10Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"addx 15
+        public string ExampleInput => @"addx 15
 addx -11
 addx 6
 addx -3
@@ -147,9 +147,9 @@ addx -6
 addx -11
 noop
 noop
-noop" };
+noop";
 
-        public IList<string> Input => new List<string>() { @"noop
+        public string Input => @"noop
 addx 24
 addx -19
 noop
@@ -286,6 +286,6 @@ addx 2
 noop
 addx 3
 noop
-noop" };
+noop";
     }
 }

@@ -3,7 +3,7 @@
     /**
      * 
      */
-    public class Day0 : IDay<int>
+    public class Day17
     {
         public int Part1(string input)
         {

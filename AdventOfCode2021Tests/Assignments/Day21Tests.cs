@@ -12,7 +12,7 @@ namespace AdventOfCode2021.Assignments.Tests
     public class Day21Tests
     {
         [TestMethod()]
-        public void PartATest()
+        public void Part1Test()
         {
             var losingScore = Day21.PlayGame(1, 6);
             Assert.AreEqual(604998, losingScore);
@@ -26,7 +26,7 @@ namespace AdventOfCode2021.Assignments.Tests
         }
 
         [TestMethod()]
-        public void PartBTest()
+        public void Part2Test()
         {
             var dag = new Day21();
             var results = dag.Speel(true, 1, 0, 6, 0);

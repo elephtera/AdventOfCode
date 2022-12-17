@@ -12,10 +12,10 @@ namespace AdventOfCode2021.Assignments.Tests
     public class Day24Tests
     {
         //[TestMethod()]
-        public void PartATest()
+        public void Part1Test()
         {
             var day = new Day24();
-            var result = day.PartA();
+            var result = day.Part1();
             Assert.AreEqual(result, "lowest 123");
         }
     }

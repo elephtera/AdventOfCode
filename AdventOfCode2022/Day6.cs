@@ -8,9 +8,9 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day6 : IDay<int>
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var inputData = input.Single();
+            var inputData = input;
 
             var tmp = "";
             var cnt = 0;
@@ -32,9 +32,9 @@ namespace AdventOfCode2022.Assignments
             return 0;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var inputData = input.Single();
+            var inputData = input;
 
             var tmp = "";
             var cnt = 0;

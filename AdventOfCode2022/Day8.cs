@@ -5,9 +5,9 @@
      */
     public class Day8 : IDay<int>
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var forest = ProcessInput(input.Single());
+            var forest = ProcessInput(input);
             var lineOfSight = new bool[forest.Count, forest[0].Count];//new List<List<bool>>();
             // vanuit elke kant itereren en checken
 
@@ -80,9 +80,9 @@
             return cnt;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var forest = ProcessInput(input.Single());
+            var forest = ProcessInput(input);
             var maxScore = 0;
             for (int row = 0; row < forest.Count; row++)
             {

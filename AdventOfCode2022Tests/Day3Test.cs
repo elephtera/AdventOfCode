@@ -3,41 +3,41 @@ namespace AdventOfCode2022Tests
     [TestClass]
     public class Day3Test
     {
-        private const int AnswerPartA = 7889;
-        private const int AnswerPartB = 2825;
-        private const int AnswerExamplePartA = 157;
-        private const int AnswerExamplePartB = 70;
+        private const int AnswerPart1 = 7889;
+        private const int AnswerPart2 = 2825;
+        private const int AnswerExamplePart1 = 157;
+        private const int AnswerExamplePart2 = 70;
 
 
         private readonly IDay<int> day = new Day3();
         private readonly IDayInput input = new Day3Input();
 
         [TestMethod]
-        public void PartAExample()
+        public void Part1Example()
         {
-            var result = day.PartA(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartA, result);
+            var result = day.Part1(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart1, result);
         }
 
         [TestMethod]
-        public void PartA()
+        public void Part1()
         {
-            var result = day.PartA(input.Input);
-            Assert.AreEqual(AnswerPartA, result);
+            var result = day.Part1(input.Input);
+            Assert.AreEqual(AnswerPart1, result);
         }
 
         [TestMethod]
-        public void PartBExample()
+        public void Part2Example()
         {
-            var result = day.PartB(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartB, result);
+            var result = day.Part2(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart2, result);
         }
 
         [TestMethod]
-        public void PartB()
+        public void Part2()
         {
-            var result = day.PartB(input.Input);
-            Assert.AreEqual(AnswerPartB, result);
+            var result = day.Part2(input.Input);
+            Assert.AreEqual(AnswerPart2, result);
         }
 
         [TestMethod]

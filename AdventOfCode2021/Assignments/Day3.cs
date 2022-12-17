@@ -66,7 +66,7 @@
      */
     public class Day3 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             IList<string> inputs = InputHandler.GetInputAsStringList(Day3Input.Input);
             string gamma, epsilon;
@@ -75,7 +75,7 @@
             return (Convert.ToInt32(gamma, 2) * Convert.ToInt32(epsilon, 2)).ToString();
         }
 
-        public string PartB()
+        public string Part2()
         {
             int position = 0;
             IList<string> inputsOxygen = InputHandler.GetInputAsStringList(Day3Input.Input);

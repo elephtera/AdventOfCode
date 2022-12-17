@@ -79,7 +79,7 @@
      */
     public class Day1 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var count = 0;
             var previous = default(int?);
@@ -98,7 +98,7 @@
             return count.ToString();
         }
 
-        public string PartB()
+        public string Part2()
         {
             var count = 0;
             var previous1 = default(int?);

@@ -65,7 +65,7 @@
      */
     public class Day5 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var dimension = 1000;
             var resultMatrix = new int[dimension, dimension];
@@ -91,7 +91,7 @@
         }
 
 
-        public string PartB()
+        public string Part2()
         {
             var dimension = 1000;
             var resultMatrix = new int[dimension, dimension];

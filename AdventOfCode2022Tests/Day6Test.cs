@@ -3,76 +3,76 @@ namespace AdventOfCode2022Tests
     [TestClass]
     public class Day6Test
     {
-        private const int AnswerPartA = 1100;
-        private const int AnswerPartB = 2421;
-        private const int AnswerExamplePartA = 7;
-        private const int AnswerExamplePartB = 19;
+        private const int AnswerPart1 = 1100;
+        private const int AnswerPart2 = 2421;
+        private const int AnswerExamplePart1 = 7;
+        private const int AnswerExamplePart2 = 19;
 
 
         private readonly IDay<int> day = new Day6();
         private readonly IDayInput input = new Day6Input();
 
         [TestMethod]
-        public void PartAExample()
+        public void Part1Example()
         {
-            var result = day.PartA(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartA, result);
+            var result = day.Part1(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart1, result);
 
         }
 
         [TestMethod]
-        public void PartAExampleExtra()
+        public void Part1ExampleExtra()
         {
-            var result = day.PartA(new List<string>() { "bvwbjplbgvbhsrlpgdmjqwftvncz" });
+            var result = day.Part1("bvwbjplbgvbhsrlpgdmjqwftvncz");
             Assert.AreEqual(5, result);
 
-            result = day.PartA(new List<string>() { "nppdvjthqldpwncqszvftbrmjlhg" });
+            result = day.Part1("nppdvjthqldpwncqszvftbrmjlhg");
             Assert.AreEqual(6, result);
 
-            result = day.PartA(new List<string>() { "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" });
+            result = day.Part1("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg");
             Assert.AreEqual(10, result);
 
-            result = day.PartA(new List<string>() { "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" });
+            result = day.Part1("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw");
             Assert.AreEqual(11, result);
 
         }
 
         [TestMethod]
-        public void PartA()
+        public void Part1()
         {
-            var result = day.PartA(input.Input);
-            Assert.AreEqual(AnswerPartA, result);
+            var result = day.Part1(input.Input);
+            Assert.AreEqual(AnswerPart1, result);
         }
 
         [TestMethod]
-        public void PartBExample()
+        public void Part2Example()
         {
-            var result = day.PartB(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartB, result);
+            var result = day.Part2(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart2, result);
         }
 
         [TestMethod]
-        public void PartBExampleExtra()
+        public void Part2ExampleExtra()
         {
-            var result = day.PartB(new List<string>() { "bvwbjplbgvbhsrlpgdmjqwftvncz" });
+            var result = day.Part2("bvwbjplbgvbhsrlpgdmjqwftvncz");
             Assert.AreEqual(23, result);
 
-            result = day.PartB(new List<string>() { "nppdvjthqldpwncqszvftbrmjlhg" });
+            result = day.Part2("nppdvjthqldpwncqszvftbrmjlhg");
             Assert.AreEqual(23, result);
 
-            result = day.PartB(new List<string>() { "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" });
+            result = day.Part2("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg");
             Assert.AreEqual(29, result);
 
-            result = day.PartB(new List<string>() { "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw" });
+            result = day.Part2("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw");
             Assert.AreEqual(26, result);
 
         }
 
         [TestMethod]
-        public void PartB()
+        public void Part2()
         {
-            var result = day.PartB(input.Input);
-            Assert.AreEqual(AnswerPartB, result);
+            var result = day.Part2(input.Input);
+            Assert.AreEqual(AnswerPart2, result);
         }
     }
 }

@@ -3,24 +3,24 @@ namespace AdventOfCode2022Tests
     [TestClass]
     public class Day10Test
     {
-        private const int AnswerPartA = 13440;
-        private const int AnswerPartB = 0; //PBZGRAZA
-        private const int AnswerExamplePartA = 13140;
-        private const int AnswerExamplePartB = 0;
+        private const int AnswerPart1 = 13440;
+        private const int AnswerPart2 = 0; //PBZGRAZA
+        private const int AnswerExamplePart1 = 13140;
+        private const int AnswerExamplePart2 = 0;
 
 
         private readonly IDay<int> day = new Day10();
         private readonly IDayInput input = new Day10Input();
 
         [TestMethod]
-        public void PartAExample()
+        public void Part1Example()
         {
-            var result = day.PartA(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartA, result);
+            var result = day.Part1(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart1, result);
         }
 
         [TestMethod]
-        public void PartAExample2()
+        public void Part1Example2()
         {
             var input = new List<string>() { "noop","addx 3","addx -5" };
             var result = Day10.ProcessCommands(input);
@@ -34,9 +34,9 @@ namespace AdventOfCode2022Tests
         }
 
         [TestMethod]
-        public void PartAExample3()
+        public void Part1Example3()
         {
-            var inputData = Day10.ProcessInput(input.ExampleInput.Single());
+            var inputData = Day10.ProcessInput(input.ExampleInput);
             var result = Day10.ProcessCommands(inputData);
 
             Assert.AreEqual(21, result[20 - 1]);
@@ -48,24 +48,24 @@ namespace AdventOfCode2022Tests
         }
 
         [TestMethod]
-        public void PartA()
+        public void Part1()
         {
-            var result = day.PartA(input.Input);
-            Assert.AreEqual(AnswerPartA, result);
+            var result = day.Part1(input.Input);
+            Assert.AreEqual(AnswerPart1, result);
         }
 
         [TestMethod]
-        public void PartBExample()
+        public void Part2Example()
         {
-            var result = day.PartB(input.ExampleInput);
-            Assert.AreEqual(AnswerExamplePartB, result);
+            var result = day.Part2(input.ExampleInput);
+            Assert.AreEqual(AnswerExamplePart2, result);
         }
 
         [TestMethod]
-        public void PartB()
+        public void Part2()
         {
-            var result = day.PartB(input.Input);
-            Assert.AreEqual(AnswerPartB, result);
+            var result = day.Part2(input.Input);
+            Assert.AreEqual(AnswerPart2, result);
         }
     }
 }

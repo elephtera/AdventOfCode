@@ -5,7 +5,7 @@
      */
     public class Day20 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToPadded2DArray(Day20Input.Input);
 
@@ -69,7 +69,7 @@
             return output;
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.ConvertInputToPadded2DArray(Day20Input.Input);
             int[][]? output = input;

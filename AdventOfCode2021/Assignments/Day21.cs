@@ -7,7 +7,7 @@
     {
         public static List<(int steps, int count)> DiceRoles = new();
 
-        public string PartA()
+        public string Part1()
         {
             return PlayGame(1, 6).ToString();
         }
@@ -40,7 +40,7 @@
             DiceRoles = GetDiceRoles();
         }
 
-        public string PartB()
+        public string Part2()
         {
             var (winst1, winst2) = Speel(true, 1, 0, 6, 0);
 

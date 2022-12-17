@@ -5,7 +5,7 @@
      */
     public class Day22 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToCubes(Day22Input.InputA);
             var result = Calc(input);
@@ -13,7 +13,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.ConvertInputToCubes(Day22Input.InputB);
             var result = Calc(input);

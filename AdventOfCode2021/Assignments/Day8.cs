@@ -121,7 +121,7 @@
      */
     public class Day8 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.ConvertInputToDisplayItems(Day8Input.Input);
             var count = input.Sum(i => i.outputs.Where(o => o.Length == 2 || o.Length == 3 || o.Length == 4 || o.Length == 7).Count());
@@ -129,7 +129,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var displayItems = InputHandler.ConvertInputToDisplayItems(Day8Input.Input);
 

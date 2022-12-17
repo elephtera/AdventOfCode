@@ -14,9 +14,9 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day12
     {
-        public async Task<int> PartAAsync(IList<string> input)
+        public async Task<int> Part1Async(string input)
         {
-            var inputData = ProcessInput(input.Single(), false);
+            var inputData = ProcessInput(input, false);
 
             var search = new BreadthFirstSearch<Day12Node, Day12Edge>(
     source: inputData.Start,
@@ -29,9 +29,9 @@ namespace AdventOfCode2022.Assignments
             return result;
         }
 
-        public async Task<int> PartBAsync(IList<string> input)
+        public async Task<int> Part2Async(string input)
         {
-            var inputData = ProcessInput(input.Single(), true);
+            var inputData = ProcessInput(input, true);
 
             var dijkstra = new DijkstraSearch<Day12Node, Day12Edge>(
     source: inputData.End,

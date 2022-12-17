@@ -144,7 +144,7 @@
      */
     public class Day12 : IDay
     {
-        public string PartA()
+        public string Part1()
         {
             var input = InputHandler.GetInputAsStringList(Day12Input.Input);
             var map = new CaveMap(input);
@@ -154,7 +154,7 @@
 
         }
 
-        public string PartB()
+        public string Part2()
         {
             var input = InputHandler.GetInputAsStringList(Day12Input.Input);
             var map = new CaveMap(input);

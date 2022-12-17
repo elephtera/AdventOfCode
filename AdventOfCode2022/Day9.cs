@@ -5,9 +5,9 @@
      */
     public class Day9 : IDay<int>
     {
-        public int PartA(IList<string> input)
+        public int Part1(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var head = new int[2] { 0, 0 };
             var tails = new int[2] { 0, 0 };
             var tailLocations = new List<string>();
@@ -75,9 +75,9 @@
             return newtails;
         }
 
-        public int PartB(IList<string> input)
+        public int Part2(string input)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             var head = new int[2] { 0, 0 };
             var tails1 = new int[2] { 0, 0 };
             var tails2 = new int[2] { 0, 0 };

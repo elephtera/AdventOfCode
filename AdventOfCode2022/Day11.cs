@@ -5,7 +5,7 @@
      */
     public class Day11
     {
-        public long PartA(IList<Monkey> input)
+        public long Part1(IList<Monkey> input)
         {
             for (int i = 0; i < 20; i++)
             {
@@ -35,7 +35,7 @@
             return result;
         }
 
-        public long PartB(IList<Monkey> input)
+        public long Part2(IList<Monkey> input)
         {
             long monkeyModulo = input.Select(m => m.ModuloValue).Aggregate((m1, m2) => m1 * m2);
 

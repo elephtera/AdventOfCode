@@ -12,17 +12,17 @@ namespace AdventOfCode2021.Assignments.Tests
     public class Day20Tests
     {
         [TestMethod()]
-        public void PartATest()
+        public void Part1Test()
         {
             var day = new Day20();
-            Assert.AreEqual("5391", day.PartA());
+            Assert.AreEqual("5391", day.Part1());
         }
 
         [TestMethod()]
-        public void PartBTest()
+        public void Part2Test()
         {
             var day = new Day20();
-            Assert.AreEqual("16383", day.PartB());
+            Assert.AreEqual("16383", day.Part2());
         }
 
 
@@ -95,7 +95,7 @@ namespace AdventOfCode2021.Assignments.Tests
         }
 
         [TestMethod()]
-        public void PartACountTest()
+        public void Part1CountTest()
         {
             var day = new Day20();
             var input = InputHandler.ConvertInputToPadded2DArray(Day20Input.Input);
@@ -110,7 +110,7 @@ namespace AdventOfCode2021.Assignments.Tests
         }
 
         [TestMethod()]
-        public void PartBCountTest()
+        public void Part2CountTest()
         {
             var day = new Day20();
             var input = InputHandler.ConvertInputToPadded2DArray(Day20Input.Input);

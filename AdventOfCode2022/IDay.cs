@@ -2,7 +2,7 @@
 {
     public interface IDay<T>
     {
-        T PartA(IList<string> input);
-        T PartB(IList<string> input);
+        T Part1(string input);
+        T Part2(string input);
     }
 }

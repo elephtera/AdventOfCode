@@ -2,7 +2,7 @@
 {
     public class Day1Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"1000
+        public string ExampleInput => @"1000
 2000
 3000
 
@@ -15,9 +15,9 @@
 8000
 9000
 
-10000" };
+10000";
 
-        public IList<string> Input => new List<string>() { @"7569
+        public string Input => @"7569
 1357
 10134
 4696
@@ -2268,6 +2268,6 @@
 8594
 1229
 7588
-3507" };
+3507";
     }
 }

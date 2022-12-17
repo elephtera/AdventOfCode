@@ -5,8 +5,8 @@
 
 <h1>Results for day @Day</h1>
 
-<p role="status">Part 1: @PartA</p>
-<p role="status">Part 2: @PartB</p>
+<p role="status">Part 1: @Part1</p>
+<p role="status">Part 2: @Part2</p>
 
 @code {
     [Parameter]
@@ -18,7 +18,7 @@
         return (IDay) classInstance.Unwrap();
     }
 
-    public string PartA => GetDay().PartA();
+    public string Part1 => GetDay().Part1();
 
-    public string PartB => GetDay().PartB();
+    public string Part2 => GetDay().Part2();
 }

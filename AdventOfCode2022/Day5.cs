@@ -3,9 +3,9 @@
     /**
      * 
      */
-    public class Day5 : IDay<string>
+    public class Day5
     {
-        public string PartA(IList<string> input)
+        public string Part1(IList<string> input)
         {
             var warehouse = FillWarehouse(input.First());
             var actions = FillActions(input.Last());
@@ -23,7 +23,7 @@
             return result;
         }
 
-        public string PartB(IList<string> input)
+        public string Part2(IList<string> input)
         {
             var warehouse = FillWarehouse(input.First());
             var actions = FillActions(input.Last());

@@ -2,16 +2,16 @@
 {
     public class Day9Input : IDayInput
     {
-        public IList<string> ExampleInput => new List<string>() { @"R 4
+        public string ExampleInput => @"R 4
 U 4
 L 3
 D 1
 R 4
 D 1
 L 5
-R 2" };
+R 2";
 
-        public IList<string> Input => new List<string>() { @"L 2
+        public string Input => @"L 2
 D 2
 R 2
 U 1
@@ -2010,6 +2010,6 @@ L 7
 R 18
 U 5
 L 4
-D 7" };
+D 7";
     }
 }

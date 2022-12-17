@@ -9,9 +9,9 @@ namespace AdventOfCode2022.Assignments
      */
     public class Day15
     {
-        public int PartA(IList<string> input, int row)
+        public int Part1(string input, int row)
         {
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             List<int[]> beacons = GetBeacons(inputData);
             var result = AllRangesWithoutBeaconOnRow(inputData, row);
 
@@ -61,10 +61,10 @@ namespace AdventOfCode2022.Assignments
             return range.UpperBound + 1 - range.LowerBound;
         }
 
-        public long PartB(IList<string> input, int maxRange)
+        public long Part2(string input, int maxRange)
         {
             // Zoek de enige lege plek die er is in de range [0-max]
-            var inputData = ProcessInput(input.Single());
+            var inputData = ProcessInput(input);
             List<int[]> beacons = GetBeacons(inputData);
 
             for (int row = 0; row < maxRange; row++)
