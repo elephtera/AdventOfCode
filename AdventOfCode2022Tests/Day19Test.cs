@@ -3,10 +3,10 @@ namespace AdventOfCode2022Tests
     [TestClass]
     public class Day19Test
     {
-        private const int AnswerPart1 = 0;
-        private const int AnswerPart2 = 0;
+        private const int AnswerPart1 = 1395;
+        private const int AnswerPart2 = 2700;
         private const int AnswerExamplePart1 = 33;
-        private const int AnswerExamplePart2 = 0;
+        private const int AnswerExamplePart2 = 3472;
 
 
         private readonly IDay<int> day = new Day19();
