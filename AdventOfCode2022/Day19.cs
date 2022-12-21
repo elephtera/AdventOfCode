@@ -14,7 +14,7 @@ namespace AdventOfCode2022.Assignments
 
             for (int i = 0; i < blueprints.Count; i++)
             {
-                int newScore = ProcessBlueprint(blueprint: blueprints[i], ore: 0, oreBots: 1, clay: 0, clayBots: 0, obsidian: 0, obsidianBots: 0, geode: 0, geodeBots: 0, minutesLeft: 24);
+                int newScore = ProcessBlueprint(blueprint: blueprints[i], inventory: new Material(0, 0, 0, 0),ore: 0, oreBots: 1, clay: 0, clayBots: 0, obsidian: 0, obsidianBots: 0, geode: 0, geodeBots: 0, minutesLeft: 24);
                 qualities += newScore * (i + 1);
             }
 
@@ -27,7 +27,7 @@ namespace AdventOfCode2022.Assignments
             var score = 1;
             for (int i = 0; i < Math.Min(3, blueprints.Count); i++)
             {
-                int newScore = ProcessBlueprint(blueprint: blueprints[i], ore: 0, oreBots: 1, clay: 0, clayBots: 0, obsidian: 0, obsidianBots: 0, geode: 0, geodeBots: 0, minutesLeft: 32);
+                int newScore = ProcessBlueprint(blueprint: blueprints[i], inventory: new Material(0,0,0,0), ore: 0, oreBots: 1, clay: 0, clayBots: 0, obsidian: 0, obsidianBots: 0, geode: 0, geodeBots: 0, minutesLeft: 32);
                 score *= newScore;
             }
             
@@ -53,6 +53,7 @@ namespace AdventOfCode2022.Assignments
   
         public static int ProcessBlueprint(
                 Blueprint blueprint,
+                Material inventory,
                 int ore,
                 int oreBots,
                 int clay,
@@ -86,25 +87,25 @@ namespace AdventOfCode2022.Assignments
                 int subscore;
                 if (canGeo && !prevCanGeo)
                 {
-                    subscore = ProcessBlueprint(blueprint, ore - blueprint.GeodeOre, oreBots, clay, clayBots, obsidian - blueprint.GeodeObsidian, obsidianBots, geode, geodeBots + 1, i);
+                    subscore = ProcessBlueprint(blueprint, inventory, ore - blueprint.GeodeOre, oreBots, clay, clayBots, obsidian - blueprint.GeodeObsidian, obsidianBots, geode, geodeBots + 1, i);
                     score = Math.Max(score, subscore);
                     prevCanGeo = canGeo;
                 }
                 if (canObs && !prevCanObs && obsidianBots < maxObs)
                 {
-                    subscore = ProcessBlueprint(blueprint, ore - blueprint.ObsidianOre, oreBots, clay - blueprint.ObsidianClay, clayBots, obsidian, obsidianBots + 1, geode, geodeBots, i);
+                    subscore = ProcessBlueprint(blueprint, inventory, ore - blueprint.ObsidianOre, oreBots, clay - blueprint.ObsidianClay, clayBots, obsidian, obsidianBots + 1, geode, geodeBots, i);
                     score = Math.Max(score, subscore);
                     prevCanObs = canObs;
                 }
                 if (canClay && !prevCanClay && clayBots < maxClay)
                 {
-                    subscore = ProcessBlueprint(blueprint, ore - blueprint.Clay, oreBots, clay, clayBots + 1, obsidian, obsidianBots, geode, geodeBots, i);
+                    subscore = ProcessBlueprint(blueprint, inventory, ore - blueprint.Clay, oreBots, clay, clayBots + 1, obsidian, obsidianBots, geode, geodeBots, i);
                     score = Math.Max(score, subscore);
                     prevCanClay = canClay;
                 }
                 if (canOre && !prevCanOre && oreBots < maxOre)
                 {
-                    subscore = ProcessBlueprint(blueprint, ore - blueprint.Ore, oreBots + 1, clay, clayBots, obsidian, obsidianBots, geode, geodeBots, i);
+                    subscore = ProcessBlueprint(blueprint, inventory, ore - blueprint.Ore, oreBots + 1, clay, clayBots, obsidian, obsidianBots, geode, geodeBots, i);
                     score = Math.Max(score, subscore);
                     prevCanOre = canOre;
                 }
@@ -133,4 +134,47 @@ namespace AdventOfCode2022.Assignments
         }
 
     }
+
+    public record Material(int ore, int clay, int obsidian, int geode)
+    {
+        public static Material operator +(Material a, Material b)
+        {
+            return new Material(
+                a.ore + b.ore,
+                a.clay + b.clay,
+                a.obsidian + b.obsidian,
+                a.geode + b.geode
+            );
+        }
+
+        public static Material operator -(Material a, Material b)
+        {
+            return new Material(
+                a.ore - b.ore,
+                a.clay - b.clay,
+                a.obsidian - b.obsidian,
+                a.geode - b.geode
+            );
+        }
+
+        public static bool operator <=(Material a, Material b)
+        {
+            return
+                a.ore <= b.ore &&
+                a.clay <= b.clay &&
+                a.obsidian <= b.obsidian &&
+                a.geode <= b.geode;
+        }
+
+        public static bool operator >=(Material a, Material b)
+        {
+            return
+                a.ore >= b.ore &&
+                a.clay >= b.clay &&
+                a.obsidian >= b.obsidian &&
+                a.geode >= b.geode;
+        }
+    }
+
+    record Robot(Material cost, Material produces);
 }
