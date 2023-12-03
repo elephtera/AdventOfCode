@@ -8,34 +8,20 @@ namespace AdventOfCode2023
         public int Part1(string input)
         {
             var inputData = ProcessInput(input);
+
             // only 12 red cubes, 13 green cubes, and 14 blue cubes
-            var red = 12;
-            var green = 13;
-            var blue = 14;
+            const int red = 12;
+            const int green = 13;
+            const int blue = 14;
 
-            var sum = 0;
-            foreach (var game in inputData)
-            {
-                if (game.IsPossible(red, green, blue))
-                {
-                    sum += game.Id;
-                }
-            }
-
-            return sum;
+            return inputData.Where(game => game.IsPossible(red, green, blue)).Sum(game => game.Id);
         }
 
         public int Part2(string input)
         {
             var inputData = ProcessInput(input);
 
-            var sum = 0;
-            foreach (var game in inputData)
-            {
-                sum += game.GamePower;
-            }
-
-            return sum;
+            return inputData.Sum(game => game.GamePower);
         }
         public static IList<Game> ProcessInput(string input)
         {

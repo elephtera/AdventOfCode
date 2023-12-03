@@ -35,7 +35,7 @@ namespace AdventOfCode2023
             var som = 0;
             foreach (var item in inputData)
             {
-                string getal = "";
+                var getal = "";
                 getal += Regex.Match(item, @"\d").Value;
                 getal += Regex.Match(item, @"\d", RegexOptions.RightToLeft).Value;
                 som += int.Parse(getal);
@@ -51,7 +51,7 @@ namespace AdventOfCode2023
             var som = 0;
             foreach (var item in inputData)
             {
-                string getal = "";
+                var getal = "";
                 getal += FindNumber(item, false);
                 getal += FindNumber(item, true);
                 som += int.Parse(getal);
