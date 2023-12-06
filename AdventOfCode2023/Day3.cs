@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode2023
+﻿using AdventOfCode2023.Helpers;
+
+namespace AdventOfCode2023
 {
     /**
      * 
@@ -25,7 +27,7 @@
                 for (int x = 0; x < inputData[y].Length; x++)
                 {
                     var val = inputData[y][x];
-                    var isNumber = IsNumber(val);
+                    var isNumber = InputParsing.IsNumber(val);
 
                     if (isNumber)
                     {
@@ -68,13 +70,6 @@
             }
 
             return engineParts;
-        }
-
-        private static bool IsNumber(char val)
-        {
-            var numbers = new List<char>() { '1', '2', '3', '4', '5', '6', '7', '8', '8', '9', '0' };
-            var isNumber = numbers.Contains(val);
-            return isNumber;
         }
 
         public int Part2(string input)
@@ -139,7 +134,7 @@
                 {
                     var val = inputData[y][x];
                     if (val == '.') continue;
-                    if (IsNumber(val)) continue;
+                    if (InputParsing.IsNumber(val)) continue;
 
                     Symbol = new Symbol()
                     {
@@ -153,13 +148,6 @@
                     return;
                 }
             }
-        }
-
-        private static bool IsNumber(char val)
-        {
-            var numbers = new List<char>() { '1', '2', '3', '4', '5', '6', '7', '8', '8', '9', '0' };
-            var isNumber = numbers.Contains(val);
-            return isNumber;
         }
     }
 
