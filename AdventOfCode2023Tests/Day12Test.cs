@@ -7,12 +7,12 @@ namespace AdventOfCode2023Tests
     public class Day12Test
     {
         private const int AnswerPart1 = 7402;
-        private const int AnswerPart2 = 0;
+        private const long AnswerPart2 = 3384337640277;
         private const int AnswerExamplePart1 = 21;
-        private const int AnswerExamplePart2 = 0;
+        private const int AnswerExamplePart2 = 525152;
 
 
-        private readonly IDay<int> day = new Day12();
+        private readonly IDay<long> day = new Day12();
         private readonly IDayInput input = new Day12Input();
 
         [TestMethod]

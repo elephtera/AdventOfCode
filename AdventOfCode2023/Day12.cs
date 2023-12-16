@@ -1,113 +1,103 @@
-﻿namespace AdventOfCode2023
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace AdventOfCode2023
 {
     /**
      * 
      */
-    public class Day12 : IDay<int>
+    public class Day12 : IDay<long>
     {
-        public int Part1(string input)
+        public long Part1(string input)
         {
-            var solutionCount = 0;
+            var solutionCount = 0L;
             var field = ProcessInput(input);
+            var cache  = new Dictionary<(string row, string damagedSpringsHash), long>();
             foreach (var row in field)
             {
                 var splittedRow = row.Split(' ');
-                var solutions = CalculateArrangements(splittedRow[0], splittedRow[1].Split(',').Select(int.Parse).ToList());
+                var damagedSprings = splittedRow[1].Split(',').Select(int.Parse).ToList();
+                var solutions = DetermineOnlyValidPermutations(splittedRow[0], damagedSprings, cache);
                 solutionCount += solutions;
             }
 
             return solutionCount;
         }
 
-        private int CalculateArrangements(string row, List<int> damagedSprings)
+        private long DetermineOnlyValidPermutations(string row, List<int> damagedSprings, Dictionary<(string row, string damagedSpringsHash), long> cache)
         {
-            var solutionCount = 0;
-
-            var rowLength = row.Length;
-            var minSprings = damagedSprings.Sum() + damagedSprings.Count - 1;
-            var diff = rowLength - minSprings;
-
-            // determine permutations
-            List<string> permutations = DeterminePermutations(rowLength, damagedSprings);
-
-            // validate permutations
-            var validPermutations = DetermineValidPermutations(row, permutations, rowLength);
-
-            return validPermutations.Count;
-
-        }
-
-        private static List<string> DetermineValidPermutations(string row, List<string> permutations, int rowLength)
-        {
-            List<string> validPermutations = new List<string>();
-            foreach (var permutation in permutations)
+            var damagedSpringsHash = string.Join(",", damagedSprings);
+            if (cache.ContainsKey((row, damagedSpringsHash)))
             {
-                var valid = true;
-                // compare with row;
-                for (int i = 0; i < rowLength; i++)
-                {
-                    if (permutation[i] != row[i] && row[i] != '?')
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (valid)
-                {
-                    validPermutations.Add(permutation);
-                }
+                return cache.GetValueOrDefault((row, damagedSpringsHash));
             }
-
-            return validPermutations;
-        }
-
-        private List<string> DeterminePermutations(int rowLength, List<int> damagedSprings)
-        {
-            var result = new List<string>();
-            var minSprings = damagedSprings.Sum() + damagedSprings.Count - 1;
-            var permutationSpace = rowLength - minSprings;
 
             if (damagedSprings.Count == 0)
             {
-                // last "gap", fill it with working stuff
-                result.Add(new string('.', rowLength));
-                return result;
+                // no damaged springs left, so return it as valid permutation only if the row contains no damaged springs. 
+                return row.All(c => c != '#') ? 1 : 0;
             }
 
-            for (int i = 0; i <= permutationSpace; i++)
+            if (row.Length == 0)
             {
-                var working = new string('.', i);
-                var damaged = new string('#', damagedSprings[0]);
-                var pre = working + damaged;
+                return 0;
+            }
 
-                var newRowLength = rowLength - i - damagedSprings[0] - 1;
-                if (newRowLength < 0)
+            var minSprings = damagedSprings.Sum() + damagedSprings.Count - 1;
+            var permutationSpace = row.Length - minSprings;
+            if (permutationSpace < 0)
+            {
+                return 0;
+            }
+
+            var validPermutationsCount = 0L;
+
+
+            if (row[0] == '.' || row[0] == '?')
+            {
+                validPermutationsCount += DetermineOnlyValidPermutations(row[1..], damagedSprings, cache);
+            }
+
+            if (row[0] == '#' || row[0] == '?')
+            {
+                for (int i = 0; i < damagedSprings[0]; i++)
                 {
-                    result.Add(pre);
+                    if (row[i] == '.')
+                    {
+                        // no valid permutations available
+                        return validPermutationsCount;
+                    }
                 }
-                else
+
+                if (row.Length == damagedSprings[0] && damagedSprings.Count == 1)
                 {
-                    var extra = DeterminePermutations(newRowLength,
-                        damagedSprings.GetRange(1, damagedSprings.Count - 1));
-                    result.AddRange(extra.Select(e => pre + '.' + e));
+                    validPermutationsCount++;
+                }
+                else if (row.Length > damagedSprings[0] && row[damagedSprings[0]] != '#')
+                {
+                    validPermutationsCount += DetermineOnlyValidPermutations(row[(damagedSprings[0]+1)..],
+                        damagedSprings.GetRange(1, damagedSprings.Count - 1), cache);
                 }
             }
 
-            return result;
+            cache.Add((row, damagedSpringsHash), validPermutationsCount);
+            return validPermutationsCount;
         }
 
-        public int Part2(string input)
+        public long Part2(string input)
         {
-            var solutionCount = 0;
+            var solutionCount = 0L;
             var field = ProcessInput(input);
+            var cache = new Dictionary<(string row, string damagedSpringsHash), long>();
+
             foreach (var row in field)
             {
                 var splittedRow = row.Split(' ');
-                var targetRow = string.Concat(Enumerable.Repeat(splittedRow[0], 5));
-                var brokenList = splittedRow[1].Split(',').Select(int.Parse);
-                var brokenextendedList = Enumerable.Repeat(brokenList, 5).SelectMany(bl => bl).ToList();
-                var solutions = CalculateArrangements(targetRow, brokenextendedList);
+
+                var targetRow = "" + splittedRow[0] + "?" + splittedRow[0] + "?" + splittedRow[0] + "?" + splittedRow[0] + "?" + splittedRow[0];
+                var broken = "" + splittedRow[1] + "," + splittedRow[1] + "," + splittedRow[1] + "," + splittedRow[1] + "," + splittedRow[1];
+
+                var brokenList = broken.Split(',').Select(int.Parse).ToList();
+                var solutions = DetermineOnlyValidPermutations(targetRow, brokenList, cache);
                 solutionCount += solutions;
             }
 
@@ -116,9 +106,9 @@
 
         public static IList<string> ProcessInput(string input)
         {
-            var lines = input.Split(new string[] { Environment.NewLine},
+            var lines = input.Split(new string[] { Environment.NewLine },
                     StringSplitOptions.None);
-            
+
             return lines;
         }
     }
