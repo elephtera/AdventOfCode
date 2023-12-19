@@ -29,4 +29,9 @@ public class MathHelper
     {
         return a / GCD(a, b) * b;
     }
+
+    public static int Mod(int x, int m)
+    {
+        return (x % m + m) % m;
+    }
 }

@@ -29,5 +29,31 @@ namespace AdventOfCode2023.Helpers
             var result = splittedValues.Select(int.Parse).ToList();
             return result;
         }
+
+        public static int[] StringToIntArray(string line)
+        {
+            int[] result = line.Select(c => c - '0').ToArray();
+
+            return result;
+        }
+
+        public static List<string> StringToStringLineList(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                StringSplitOptions.None).ToList();
+
+            return lines;
+        }
+
+        public static int[][] StringToIntArrays(string input)
+        {
+            var lines = input.Split(new[] { Environment.NewLine },
+                StringSplitOptions.None).ToList();
+            var doubleIntArray = lines.Select(StringToIntArray).ToArray();
+
+            return doubleIntArray;
+        }
+
+        
     }
 }
