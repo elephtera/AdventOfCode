@@ -3,16 +3,16 @@
     /**
      * 
      */
-    public class Day0 : IDay<int>
+    public class Day0 : IDay<long>
     {
-        public int Part1(string input)
+        public long Part1(string input)
         {
             var inputData = ProcessInput(input);
-            var result = 0;            
+            var result = 0;
             return result;
         }
 
-        public int Part2(string input)
+        public long Part2(string input)
         {
             var inputData = ProcessInput(input);
             var result = 0;

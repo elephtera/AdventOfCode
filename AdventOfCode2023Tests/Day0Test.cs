@@ -6,13 +6,13 @@ namespace AdventOfCode2023Tests
     [TestClass]
     public class Day0Test
     {
-        private const int AnswerPart1 = 0;
-        private const int AnswerPart2 = 0;
-        private const int AnswerExamplePart1 = 0;
-        private const int AnswerExamplePart2 = 0;
+        private const long AnswerPart1 = 0;
+        private const long AnswerPart2 = 0;
+        private const long AnswerExamplePart1 = 0;
+        private const long AnswerExamplePart2 = 0;
 
 
-        private readonly IDay<int> day = new Day0();
+        private readonly IDay<long> day = new Day0();
         private readonly IDayInput input = new Day0Input();
 
         [TestMethod]
