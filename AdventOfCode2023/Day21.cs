@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
+using AdventOfCode2023.Helpers;
 
 namespace AdventOfCode2023
 {
@@ -8,11 +9,101 @@ namespace AdventOfCode2023
      */
     public class Day21 : IDay<long>
     {
-        public long Part1(string input, int steps)
+        public long WalkAmount(string input, int steps)
         {
             var inputData = ProcessInput(input);
 
-            var startPoint = (x: 0,y: 0);
+            var startPoint = FindStartPoint(inputData);
+
+            // hashset is a distinct dataset
+            var visiting = new HashSet<(int x, int y)> { (startPoint) };
+
+            for (var i = 0; i < steps; i++)
+            {
+                var willVisit = new HashSet<(int x, int y)>();
+                foreach (var (x, y) in visiting)
+                {
+                    // if (x,y) is a valid location, continue walking.
+                    if (x < 0 || y < 0 || x >= inputData[0].Length || y >= inputData.Count)
+                    {
+                        continue;
+                    }
+
+                    // Steen
+                    if (inputData[y][x] == '#')
+                    {
+                        continue;
+                    }
+
+                    willVisit.Add((x + 1, y));
+                    willVisit.Add((x - 1, y));
+                    willVisit.Add((x, y + 1));
+                    willVisit.Add((x, y - 1));
+                }
+
+                visiting = willVisit;
+            }
+
+            var validVisiting = visiting.Where(v => inputData[v.y][v.x] != '#');
+            var result = validVisiting.Count();
+            return result;
+        }
+
+
+
+        public long Part1(string input)
+        {
+            return WalkAmount(input, 64);
+        }
+
+        public long Part2(string input)
+        {
+            var totalSteps = 26501365L;
+
+            var inputData = ProcessInput(input);
+            var startPoint = FindStartPoint(inputData);
+
+            var width = inputData.Count;
+
+            var visiting = new HashSet<(int x, int y)> { (startPoint) };
+            var counts = new List<(int x, int y)>();
+            
+            // start at 1, because we are talking about actual steps, not "array indexes".
+            // end at 65 (start to edge) + 2 extra fields. this should give enough data for the lagrange interpolation formula.
+            for (var steps = 1; steps <= startPoint.x + 2 * width; steps++)
+            {
+                var willVisit = new HashSet<(int x, int y)>();
+                foreach (var (x, y) in visiting)
+                {
+                    // Stone
+                    if (inputData[MathHelper.Mod(y, 131)][MathHelper.Mod(x, 131)] == '#')
+                    {
+                        continue;
+                    }
+
+                    willVisit.Add((x + 1, y));
+                    willVisit.Add((x - 1, y));
+                    willVisit.Add((x, y + 1));
+                    willVisit.Add((x, y - 1));
+                }
+
+                visiting = willVisit;
+
+                if ((steps - startPoint.x) % width == 0)
+                {
+                    var validVisitingCount = visiting.Count(v => inputData[MathHelper.Mod(v.y, 131)][MathHelper.Mod(v.x, 131)] != '#');
+                    counts.Add((steps, validVisitingCount));
+                }
+            }
+
+            var result = MathHelper.LagrangeInterpolation(counts, totalSteps);
+
+            return (long)result;
+        }
+
+        private static (int x, int y) FindStartPoint(IList<string> inputData)
+        {
+            var startPoint = (x: 0, y: 0);
 
             // find Startpoint S
             for (int i = 0; i < inputData.Count; i++)
@@ -24,94 +115,14 @@ namespace AdventOfCode2023
                 }
             }
 
-            // initialize a map
-            var map = new char[inputData.Count][];
-            var finalMap = new char[inputData.Count][];
-            for (var i = 0; i < inputData.Count; i++)
-            {
-                map[i] = new char[inputData[0].Length];
-                finalMap[i] = new char[inputData[0].Length];
-            }
-
-
-            var queue = new Queue<(int x, int y, int stepsLeft)>();
-            queue.Enqueue((startPoint.x, startPoint.y, steps));
-            var currentStep = steps;
-            while (queue.Count > 0)
-            {
-                var walk = queue.Dequeue();
-
-                if (currentStep != walk.stepsLeft)
-                {
-                    // reset map
-                    for (var i = 0; i < inputData.Count; i++)
-                    {
-                        map[i] = new char[inputData[0].Length];
-                    }
-                    currentStep = walk.stepsLeft;
-                }
-
-                // Ongeldige x/y
-                if (walk.x < 0 || walk.y < 0 || walk.x >= inputData[0].Length || walk.y >= inputData.Count)
-                {
-                    continue;
-                }
-
-                // Al geweest
-                if (map[walk.y][walk.x] == 'X')
-                {
-                    continue;
-                }
-
-                // Steen
-                if (inputData[walk.y][walk.x] == '#')
-                {
-                    map[walk.y][walk.x] = '#';
-                    continue;
-                }
-
-                // Alle stappen al gezet
-                if (walk.stepsLeft == 0)
-                {
-                    finalMap[walk.y][walk.x] = 'X';
-                    continue;
-                }
-
-                map[walk.y][walk.x] = 'X';
-
-                queue.Enqueue((walk.x + 1, walk.y, walk.stepsLeft- 1));
-                queue.Enqueue((walk.x - 1, walk.y, walk.stepsLeft - 1));
-                queue.Enqueue((walk.x, walk.y + 1, walk.stepsLeft - 1));
-                queue.Enqueue((walk.x, walk.y - 1, walk.stepsLeft - 1));
-            }
-
-            var walkable = finalMap.Select(m => m.Count(c => c == 'X')).Sum();
-
-            
-
-            var result = walkable;
-            return result;
-        }
-
-        public long Part1(string input)
-        {
-            return Part1(input, 64);
-        }
-
-        public long Part2(string input)
-        {
-            var inputData = ProcessInput(input);
-
-
-            var result = 0;
-            return result;
+            return startPoint;
         }
 
         public static IList<string> ProcessInput(string input)
         {
-            var lines = input.Split(new string[] { Environment.NewLine},
+            var lines = input.Split(new string[] { Environment.NewLine },
                     StringSplitOptions.None);
-            
+
             return lines;
         }
     }

@@ -34,4 +34,28 @@ public class MathHelper
     {
         return (x % m + m) % m;
     }
+
+    public static double LagrangeInterpolation(List<(int x, int y)> points, long totalX)
+    {
+        double result = 0;
+
+        for (var i = 0; i < points.Count; i++)
+        {
+            // Compute individual terms of formula
+            double term = points[i].y;
+
+            for (var j = 0; j < points.Count; j++)
+            {
+                if (j != i)
+                {
+                    term = term * (totalX - points[j].x) / (points[i].x - points[j].x);
+                }
+            }
+
+            // Add current term to result
+            result += term;
+        }
+
+        return result;
+    }
 }
