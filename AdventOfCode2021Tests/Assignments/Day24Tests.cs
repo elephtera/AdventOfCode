@@ -16,7 +16,7 @@ namespace AdventOfCode2021.Assignments.Tests
         {
             var day = new Day24();
             var result = day.Part1();
-            Assert.AreEqual(result, "lowest 123");
+            Assert.AreEqual("lowest 123", result);
         }
     }
 }

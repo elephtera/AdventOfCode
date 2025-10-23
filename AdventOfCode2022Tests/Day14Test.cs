@@ -45,7 +45,7 @@ namespace AdventOfCode2022Tests
         {
             var simpleWall = new string[] { "1,1 -> 1,4" };
             var res = Day14.CreateWalls(simpleWall);
-            Assert.AreEqual(4, res.Count);
+            Assert.HasCount(4, res);
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace AdventOfCode2022Tests
         {
             var simpleWall = new string[] { "1,4 -> 1,1" };
             var res = Day14.CreateWalls(simpleWall);
-            Assert.AreEqual(4, res.Count);
+            Assert.HasCount(4, res);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace AdventOfCode2022Tests
         {
             var simpleWall = new string[] { "1,1 -> 4,1" };
             var res = Day14.CreateWalls(simpleWall);
-            Assert.AreEqual(4, res.Count);
+            Assert.HasCount(4, res);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace AdventOfCode2022Tests
         {
             var simpleWall = new string[] { "4,1 -> 1,1" };
             var res = Day14.CreateWalls(simpleWall);
-            Assert.AreEqual(4, res.Count);
+            Assert.HasCount(4, res);
         }
 
         [TestMethod]
@@ -77,14 +77,14 @@ namespace AdventOfCode2022Tests
         {
             var simpleWall = new string[] { "1,1 -> 1,4 -> 4,4" };
             var res = Day14.CreateWalls(simpleWall);
-            Assert.AreEqual(7, res.Count);
+            Assert.HasCount(7, res);
         }
 
         [TestMethod]
         public void CreateExampleWalls()
         {
             var res = Day14.ProcessInput(input.ExampleInput);
-            Assert.AreEqual(20, res.Count);
+            Assert.HasCount(20, res);
             
         }
     }

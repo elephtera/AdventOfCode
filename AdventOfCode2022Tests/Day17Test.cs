@@ -53,8 +53,8 @@ namespace AdventOfCode2022Tests
             shape.MoveLeft();
             shape.MoveDown();
             shape.MoveRight();
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(false, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsFalse(shape.MoveDown());
             Assert.AreEqual("0011000", string.Concat(shape.NewHeight()[0].Select(v => v ? '1' : '0')));
             Assert.AreEqual("0011000", string.Concat(shape.NewHeight()[1].Select(v => v ? '1' : '0')));
 
@@ -67,15 +67,15 @@ namespace AdventOfCode2022Tests
             IDay17Shape shape = new Day17Line(new List<bool[]>());
 
             shape.MoveRight();
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(3, shape.Position().X);
             Assert.AreEqual(2, shape.Position().Y);
             shape.MoveRight();
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             shape.MoveRight();
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             shape.MoveLeft();
-            Assert.AreEqual(false, shape.MoveDown());
+            Assert.IsFalse(shape.MoveDown());
 
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(0, shape.Position().Y);
@@ -121,10 +121,10 @@ namespace AdventOfCode2022Tests
             Assert.AreEqual(9, shape.Position().Y);
 
             // Na 4x down zitten we in dezelfde rij als de hoogste tot nu toe
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
 
             // Naar links bewegen op weg naar de blokkade
             shape.MoveLeft();
@@ -166,20 +166,20 @@ namespace AdventOfCode2022Tests
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(3, shape.Position().Y);
 
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(2, shape.Position().Y);
 
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(1, shape.Position().Y);
 
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(0, shape.Position().Y);
 
             // Down, no change, return false;
-            Assert.AreEqual(false, shape.MoveDown());
+            Assert.IsFalse(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(0, shape.Position().Y);
         }
@@ -211,7 +211,7 @@ namespace AdventOfCode2022Tests
             shape.MoveLeft();
             shape.MoveDown();
             shape.MoveRight();
-            Assert.AreEqual(false, shape.MoveDown());
+            Assert.IsFalse(shape.MoveDown());
 
             newHeight = shape.NewHeight();
             Assert.AreEqual("0001000", string.Concat(shape.NewHeight()[3].Select(v => v ? '1' : '0')));
@@ -258,11 +258,11 @@ namespace AdventOfCode2022Tests
             Assert.AreEqual(9, shape.Position().Y);
 
             // Na 4x down zitten we in dezelfde rij als de hoogste tot nu toe
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
 
             // Naar links bewegen op weg naar de blokkade
             shape.MoveLeft();
@@ -308,20 +308,20 @@ namespace AdventOfCode2022Tests
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(3, shape.Position().Y);
 
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(2, shape.Position().Y);
 
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(1, shape.Position().Y);
 
-            Assert.AreEqual(true, shape.MoveDown());
+            Assert.IsTrue(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(0, shape.Position().Y);
 
             // Down, no change, return false;
-            Assert.AreEqual(false, shape.MoveDown());
+            Assert.IsFalse(shape.MoveDown());
             Assert.AreEqual(2, shape.Position().X);
             Assert.AreEqual(0, shape.Position().Y);
         }

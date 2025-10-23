@@ -43,23 +43,23 @@ namespace AdventOfCode2022Tests
         [TestMethod]
         public void ContainsTest()
         {
-            Assert.AreEqual(true, Day4.Contains(new Range(0, 4), new Range(1, 4)));
-            Assert.AreEqual(true, Day4.Contains(new Range(1, 4), new Range(1, 4)));
-            Assert.AreEqual(true, Day4.Contains(new Range(2, 4), new Range(1, 4)));
-            Assert.AreEqual(true, Day4.Contains(new Range(3, 3), new Range(1, 4)));
-            Assert.AreEqual(false, Day4.Contains(new Range(5, 9), new Range(1, 4)));
-            Assert.AreEqual(false, Day4.Contains(new Range(1, 4), new Range(5, 9)));
+            Assert.IsTrue(Day4.Contains(new Range(0, 4), new Range(1, 4)));
+            Assert.IsTrue(Day4.Contains(new Range(1, 4), new Range(1, 4)));
+            Assert.IsTrue(Day4.Contains(new Range(2, 4), new Range(1, 4)));
+            Assert.IsTrue(Day4.Contains(new Range(3, 3), new Range(1, 4)));
+            Assert.IsFalse(Day4.Contains(new Range(5, 9), new Range(1, 4)));
+            Assert.IsFalse(Day4.Contains(new Range(1, 4), new Range(5, 9)));
         }
 
         [TestMethod]
         public void OverlapTest()
         {
-            Assert.AreEqual(true, Day4.Overlaps(new Range(0, 4), new Range(1, 5)));
-            Assert.AreEqual(true, Day4.Overlaps(new Range(1, 4), new Range(1, 4)));
-            Assert.AreEqual(true, Day4.Overlaps(new Range(2, 4), new Range(1, 4)));
-            Assert.AreEqual(true, Day4.Overlaps(new Range(3, 3), new Range(1, 4)));
-            Assert.AreEqual(false, Day4.Overlaps(new Range(1, 3), new Range(5, 8)));
-            Assert.AreEqual(false, Day4.Overlaps(new Range(5, 8), new Range(1, 3)));
+            Assert.IsTrue(Day4.Overlaps(new Range(0, 4), new Range(1, 5)));
+            Assert.IsTrue(Day4.Overlaps(new Range(1, 4), new Range(1, 4)));
+            Assert.IsTrue(Day4.Overlaps(new Range(2, 4), new Range(1, 4)));
+            Assert.IsTrue(Day4.Overlaps(new Range(3, 3), new Range(1, 4)));
+            Assert.IsFalse(Day4.Overlaps(new Range(1, 3), new Range(5, 8)));
+            Assert.IsFalse(Day4.Overlaps(new Range(5, 8), new Range(1, 3)));
 
         }
     }

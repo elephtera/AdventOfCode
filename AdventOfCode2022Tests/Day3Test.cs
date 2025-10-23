@@ -57,7 +57,7 @@ namespace AdventOfCode2022Tests
         {
             Assert.AreEqual('A', Day3.FindDuplicateItem("ABCA"));
             Assert.AreEqual('A', Day3.FindDuplicateItem("BAAC"));
-            Assert.ThrowsException<InvalidOperationException>(() => Day3.FindDuplicateItem("BAaC"));
+            Assert.ThrowsExactly<InvalidOperationException>(() => Day3.FindDuplicateItem("BAaC"));
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace AdventOfCode2022Tests
             Assert.AreEqual('Z', Day3.FindDuplicateItem("wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn", "ttgJtRGJQctTZtZT", "CrZsJsPPZsGzwwsLwLmpwMDw"));
             
             Assert.AreEqual('a', Day3.FindDuplicateItem("aBCD", "ABCDa", "abcde"));
-            Assert.ThrowsException<InvalidOperationException>(() => Day3.FindDuplicateItem("ABCD", "ABCD", "ABCD"));
+            Assert.ThrowsExactly<InvalidOperationException>(() => Day3.FindDuplicateItem("ABCD", "ABCD", "ABCD"));
 
         }
     }

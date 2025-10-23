@@ -46,8 +46,8 @@ namespace AdventOfCode2022Tests
             var inputData = Day7.ProcessInput(input.ExampleInput);
             var result = Day7.CreateDirectoryTree(inputData);
 
-            Assert.IsTrue(result.SubDirectories.Count == 2);
-            Assert.IsTrue(result.Files.Count == 2);
+            Assert.HasCount(2, result.SubDirectories);
+            Assert.HasCount(2, result.Files);
 
             var dirA = result.SubDirectories.Where(d => d.Name == "a").Single();
             Assert.AreEqual(94853, dirA.Size);

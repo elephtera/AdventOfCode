@@ -47,8 +47,8 @@ namespace AdventOfCode2021.Assignments.Tests
             var rawLines = InputHandler.GetInputAsStringList(rawInput);
             var result = day18.DoMath(rawLines);
             
-            Assert.AreEqual(result.Magnitude, 4140);
-            Assert.AreEqual(result.ToString(), "[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]");
+            Assert.AreEqual(4140, result.Magnitude);
+            Assert.AreEqual("[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]", result.ToString());
         }
 
         [TestMethod()]
@@ -69,7 +69,7 @@ namespace AdventOfCode2021.Assignments.Tests
             var rawLines = InputHandler.GetInputAsStringList(rawInput);
             var result = day18.DoMath(rawLines);
 
-            Assert.AreEqual(result.ToString(), "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]");
+            Assert.AreEqual("[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]", result.ToString());
         }
 
 
@@ -90,8 +90,8 @@ namespace AdventOfCode2021.Assignments.Tests
             var rawLines = InputHandler.GetInputAsStringList(rawInput);
             var result = day18.DoMath(rawLines);
 
-            Assert.AreEqual(result.ToString(), "[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]");
-            Assert.AreEqual(result.Magnitude, 4140);
+            Assert.AreEqual("[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]", result.ToString());
+            Assert.AreEqual(4140, result.Magnitude);
 
         }
 
@@ -101,7 +101,7 @@ namespace AdventOfCode2021.Assignments.Tests
             var remco18 = new Remco18();
             var rawLines = InputHandler.GetInputAsStringList(rawInput);
             var res = remco18.PartOne(rawLines);
-            Assert.AreEqual(res, 4173);
+            Assert.AreEqual(4173, res);
         }
 
         [TestMethod()]
@@ -112,7 +112,7 @@ namespace AdventOfCode2021.Assignments.Tests
 
             var result = day18.DoMath(rawLines);
 
-            Assert.AreEqual(result.Magnitude, 4173);
+            Assert.AreEqual(4173, result.Magnitude);
         }
 
         [TestMethod()]

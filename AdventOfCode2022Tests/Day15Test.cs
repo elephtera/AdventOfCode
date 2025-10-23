@@ -52,12 +52,14 @@ namespace AdventOfCode2022Tests
             var row = 2;
 
             var res = Day15.ScannedRange(x1, y1, row, 1);
-            Assert.AreEqual(null, res);
+            Assert.IsNull(res);
 
             res = Day15.ScannedRange(x1, y1, row, 2);
+            Assert.IsNotNull(res);
             Assert.AreEqual(1, Day15.RangeCount(res));
 
             res = Day15.ScannedRange(x1, y1, row, 3);
+            Assert.IsNotNull(res);
             Assert.AreEqual(3, Day15.RangeCount(res));
         }
 

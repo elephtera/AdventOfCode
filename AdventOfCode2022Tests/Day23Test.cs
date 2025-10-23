@@ -59,10 +59,10 @@ namespace AdventOfCode2022Tests
         {
             var elves = new List<(int X, int Y)>() { (1, 1), (1,2), (4, 4) };
             var result = Day23.ElvesNear((1,2), elves, Direction.North);
-            Assert.AreEqual(true, result);
+            Assert.IsTrue(result);
 
             result = Day23.ElvesNear((4,4), elves, Direction.North);
-            Assert.AreEqual(false, result);
+            Assert.IsFalse(result);
 
         }
 

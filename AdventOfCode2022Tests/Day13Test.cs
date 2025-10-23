@@ -45,23 +45,23 @@ namespace AdventOfCode2022Tests
         {
             var rootPacket = new Packet();
             rootPacket.Add("[1]");
-            Assert.AreEqual(1, rootPacket.Packets.Count);
-            Assert.IsTrue(rootPacket.Packets[0].Value == 1);
+            Assert.HasCount(1, rootPacket.Packets);
+            Assert.AreEqual(1, rootPacket.Packets[0].Value);
 
             rootPacket = new Packet();
             rootPacket.AddFirst("[1]");
-            Assert.AreEqual(0, rootPacket.Packets.Count);
-            Assert.IsTrue(rootPacket.Value == 1);
+            Assert.IsEmpty(rootPacket.Packets);
+            Assert.AreEqual(1, rootPacket.Value);
 
             rootPacket = new Packet();
             rootPacket.AddFirst("[1,1,3,1,1]");
-            Assert.AreEqual(5, rootPacket.Packets.Count);
-            Assert.IsTrue(rootPacket.Packets[2].Value == 3);
+            Assert.HasCount(5, rootPacket.Packets);
+            Assert.AreEqual(3, rootPacket.Packets[2].Value);
 
             rootPacket = new Packet();
             rootPacket.AddFirst("[[1],[2,3,4]]");
-            Assert.AreEqual(2, rootPacket.Packets.Count);
-            Assert.AreEqual(3, rootPacket.Packets[1].Packets.Count);
+            Assert.HasCount(2, rootPacket.Packets);
+            Assert.HasCount(3, rootPacket.Packets[1].Packets);
         }
 
         [TestMethod]
