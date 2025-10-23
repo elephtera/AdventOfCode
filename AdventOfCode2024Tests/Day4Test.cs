@@ -6,10 +6,10 @@ namespace AdventOfCode2024Tests
     [TestClass]
     public class Day4Test
     {
-        private const long AnswerPart1 =0;
-        private const long AnswerPart2 =0;
-        private const long AnswerExamplePart1 =0;
-        private const long AnswerExamplePart2 =0;
+        private const long AnswerPart1 = 2573;
+        private const long AnswerPart2 =1850;
+        private const long AnswerExamplePart1 = 18;
+        private const long AnswerExamplePart2 = 9;
 
 
         private readonly IDay<long> day = new Day4();
