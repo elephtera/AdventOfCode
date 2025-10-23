@@ -6,14 +6,14 @@ namespace AdventOfCode2024Tests
     [TestClass]
     public class Day3Test
     {
-        private const long AnswerPart1 = 0;
-        private const long AnswerPart2 = 0;
-        private const long AnswerExamplePart1 = 0;
-        private const long AnswerExamplePart2 = 0;
+        private const long AnswerPart1 = 155955228;
+        private const long AnswerPart2 = 100189366;
+        private const long AnswerExamplePart1 = 161;
+        private const long AnswerExamplePart2 = 48;
 
 
         private readonly IDay<long> day = new Day3();
-        private readonly IDayInput input = new Day3Input();
+        private readonly Day3Input input = new Day3Input();
 
         [TestMethod]
         public void Part1Example()
@@ -32,7 +32,7 @@ namespace AdventOfCode2024Tests
         [TestMethod]
         public void Part2Example()
         {
-            var result = day.Part2(input.ExampleInput);
+            var result = day.Part2(input.Example2Input);
             Assert.AreEqual(AnswerExamplePart2, result);
         }
 
