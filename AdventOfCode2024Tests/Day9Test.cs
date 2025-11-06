@@ -6,9 +6,9 @@ namespace AdventOfCode2024Tests
     [TestClass]
     public class Day9Test
     {
-        private const long AnswerPart1 =0;
+        private const long AnswerPart1 = 6201130364722;
         private const long AnswerPart2 =0;
-        private const long AnswerExamplePart1 =0;
+        private const long AnswerExamplePart1 = 1928;
         private const long AnswerExamplePart2 =0;
 
 
