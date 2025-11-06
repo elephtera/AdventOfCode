@@ -13,7 +13,7 @@ namespace AdventOfCode2024
             var spaces = new List<int>();
             bool isSpace = false;
             int nextId = 0;
-            foreach(var c in input)
+            foreach (var c in input)
             {
                 if (isSpace)
                 {
@@ -41,10 +41,10 @@ namespace AdventOfCode2024
                 // Processing logic goes here
                 if (filePointer == spacePointer)
                 {
-                    if(files.Count == 0)
+                    if (files.Count == 0)
                     {
                         // do something with lastFile
-                        
+
                         break;
                     }
 
@@ -52,25 +52,25 @@ namespace AdventOfCode2024
                     files.RemoveAt(0);
 
                     // handle files
-                    for(int i = 0; i < file.fileSize; i++)
+                    for (int i = 0; i < file.fileSize; i++)
                     {
                         result += blockPointer * file.id;
                         blockPointer++;
                     }
 
                     filePointer++;
-                } 
+                }
                 else
                 {
                     // handle spaces
-                    if(spacePointer >= spaces.Count)
+                    if (spacePointer >= spaces.Count)
                     {
                         break;
                     }
 
                     var fillableSpace = spaces[spacePointer];
-                    
-                    while(fillableSpace > 0)
+
+                    while (fillableSpace > 0)
                     {
                         fillableSpace--;
                         lastFile.fileSize--;
@@ -110,7 +110,76 @@ namespace AdventOfCode2024
         public long Part2(string input)
         {
             var inputData = ProcessInput(input);
-            var result = 0;
+
+            var files = new List<(int id, int fileSize)>();
+            var spaces = new List<int>();
+            bool isSpace = false;
+            int nextId = 0;
+            var disk = new List<(int id, int fileSize, bool space)>();
+            foreach (var c in input)
+            {
+                if (isSpace)
+                {
+                    disk.Add((-1, c - '0', true));
+                }
+                else
+                {
+                    disk.Add((nextId, c - '0', false));
+                    nextId++;
+                }
+
+                isSpace = !isSpace;
+            }
+
+            var highestId = nextId - 1;
+            for (int i = highestId; i >= 0; i--)
+            {
+                // Find the file with this id
+                var fileIndex = disk.FindIndex(x => x.id == i && !x.space);
+                if (fileIndex == -1)
+                    continue;
+
+                // Pop the file
+                var (id, fileSize, space) = disk[fileIndex];
+
+                for (int index = 0; index < fileIndex; index++)
+                {
+                    var freeSpace = disk[index];
+                    if (!freeSpace.space)
+                        continue;
+
+                    if (freeSpace.fileSize >= fileSize)
+                    {
+                        // We can move the entire file here
+                        disk[index] = (freeSpace.id, freeSpace.fileSize - fileSize, true);
+                        disk.Insert(index, (id, fileSize, false));
+
+                        // Remove the original file, which is now 1 index ahead, replacing it with empty space
+                        disk[fileIndex + 1] = (-1, fileSize, true);
+
+                        break;
+                    }
+                }
+            }
+
+            var result = 0L;
+            var blockPointer = 0;
+
+            foreach (var (id, fileSize, space) in disk)
+            {
+                if (space)
+                {
+                    blockPointer += fileSize;
+                    continue;
+                }
+
+                for (int i = 0; i < fileSize; i++)
+                {
+                    result += id * blockPointer;
+                    blockPointer++;
+                }
+            }
+
             return result;
         }
 

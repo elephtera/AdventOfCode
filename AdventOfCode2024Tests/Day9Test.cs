@@ -7,9 +7,9 @@ namespace AdventOfCode2024Tests
     public class Day9Test
     {
         private const long AnswerPart1 = 6201130364722;
-        private const long AnswerPart2 =0;
+        private const long AnswerPart2 = 6221662795602;
         private const long AnswerExamplePart1 = 1928;
-        private const long AnswerExamplePart2 =0;
+        private const long AnswerExamplePart2 = 2858;
 
 
         private readonly IDay<long> day = new Day9();
