@@ -8,37 +8,20 @@ namespace AdventOfCode2024
         public long Part1(string input)
         {
             var (leftList, rightList) = ProcessInput(input);
-            var orderedLeftList = leftList.Order().ToList();
+            var orderedLeftList = leftList.Order();
             var orderedRightList = rightList.Order().ToList();
 
-            var result = 0L;
-
-            for (int i = 0; i < orderedLeftList.Count; i++)
-            {
-                var left = orderedLeftList[i];
-                var right = orderedRightList[i];
-                result += Math.Abs(left - right);
-            }
-                        
-            return result;
+            return orderedLeftList.Select((value, index) => Math.Abs(value - orderedRightList[index])).Sum();
         }
 
         public long Part2(string input)
         {
             var (leftList, rightList) = ProcessInput(input);
-            var orderedLeftList = leftList.Order().ToList();
+            var orderedLeftList = leftList.Order();
 
-            var cnt = rightList.CountBy(x => x).ToDictionary();
+            var rightCount = rightList.CountBy(x => x).ToDictionary();
 
-            var result = 0L;
-
-            for (int i = 0; i < orderedLeftList.Count; i++)
-            {
-                var left = orderedLeftList[i];
-                result += left * cnt.GetValueOrDefault(left,0);
-            }
-
-            return result;
+            return orderedLeftList.Sum(leftValue => leftValue * rightCount.GetValueOrDefault(leftValue,0));
         }
 
         public static (IList<long>, IList<long>) ProcessInput(string input)

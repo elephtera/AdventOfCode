@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode2024
 {
@@ -8,45 +9,28 @@ namespace AdventOfCode2024
         public long Part1(string input)
         {
             var inputData = ProcessInput(input);
-            var result = 0;
-            foreach (var report in inputData)
-            {
-                if (checkIfSafe(report))
-                {
-                    result++;
-                }                
-            }
-
-            return result;
+            return inputData.Count(IsSafe);
         }
 
         public long Part2(string input)
         {
             var inputData = ProcessInput(input);
-            var result = 0;
-            foreach (var report in inputData)
-            {
-                if (checkSafetyWithDampener(report))
-                {
-                    result++;
-                }
-            }
-            return result;
+            return inputData.Count(IsSafeWithDamper);
         }
 
-        private static bool checkSafetyWithDampener(IList<int> report)
+        private static bool IsSafeWithDamper(IList<int> report)
         {
-            if (checkIfSafe(report))
+            if (IsSafe(report))
             {
                 return true;
             }
 
             for (var i = 0; i < report.Count; i++)
             {
-                var reportWithout = new List<int>(report);
-                reportWithout.RemoveAt(i);
+                var reportWithOneItemSkipped = new List<int>(report);
+                reportWithOneItemSkipped.RemoveAt(i);
 
-                if (checkIfSafe(reportWithout))
+                if (IsSafe(reportWithOneItemSkipped))
                 {
                     return true;
                 }
@@ -55,54 +39,29 @@ namespace AdventOfCode2024
             return false;
         }
 
-        private static bool checkIfSafe(IList<int> report)
+        private static bool IsSafe(IList<int> report)
         {
-            if (report[0] == report[1])
-            {
-                return false;
-            }
+            var ascending = report[0] < report[1];
 
-            if (report[0] < report[1])
+            for (var i = 0; i < report.Count - 1; i++)
             {
-                // all should be ascending
-                for (var i = 0; i < report.Count - 1; i++)
+                var diff = ascending ? report[i + 1] - report[i] : report[i] - report[i + 1];
+                if (diff is < 1 or > 3)
                 {
-                    var diff = report[i + 1] - report[i];
-                    if (diff > 3 || diff < 1)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-
-                return true;
             }
 
-            if (report[0] > report[1])
-            {
-                // all should be ascending
-                for (var i = 0; i < report.Count - 1; i++)
-                {
-                    var diff = report[i] - report[i + 1];
-                    if (diff > 3 || diff < 1)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public static IList<IList<int>> ProcessInput(string input)
         {
-            var lines = input.Split(new string[] { Environment.NewLine },
-                StringSplitOptions.None);
+            var lines = input.Split([Environment.NewLine], StringSplitOptions.None);
             var result = new List<IList<int>>();
             foreach (var line in lines)
             {
-                // Process each line as needed
-                result.Add(line.Split(' ').Select(x => int.Parse(x)).ToList());
+                result.Add(line.Split(' ').Select(int.Parse).ToList());
             }
 
             return result;
