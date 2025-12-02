@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11116.177 d18.0
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode2021", "AdventOfCode2021\AdventOfCode2021.csproj", "{8529D4A8-FC85-4C0E-BD04-22B95A9B9A52}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2024", "AdventOfCode2024\AdventOfCode2024.csproj", "{DF934963-158A-DADD-FCAE-0D7A5D7763CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2024Tests", "AdventOfCode2024Tests\AdventOfCode2024Tests.csproj", "{0D60527A-8113-C98F-066E-EFB1AC37D977}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2025", "AdventOfCode2025\AdventOfCode2025.csproj", "{2E6EBADA-8E64-BC30-07A3-3BEEF61D9056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode2025Tests", "AdventOfCode2025Tests\AdventOfCode2025Tests.csproj", "{702F8F33-CFCF-437E-9D1C-86FFC8D636A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,14 @@ Global
 		{0D60527A-8113-C98F-066E-EFB1AC37D977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D60527A-8113-C98F-066E-EFB1AC37D977}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D60527A-8113-C98F-066E-EFB1AC37D977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6EBADA-8E64-BC30-07A3-3BEEF61D9056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6EBADA-8E64-BC30-07A3-3BEEF61D9056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6EBADA-8E64-BC30-07A3-3BEEF61D9056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6EBADA-8E64-BC30-07A3-3BEEF61D9056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{702F8F33-CFCF-437E-9D1C-86FFC8D636A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{702F8F33-CFCF-437E-9D1C-86FFC8D636A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{702F8F33-CFCF-437E-9D1C-86FFC8D636A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{702F8F33-CFCF-437E-9D1C-86FFC8D636A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
