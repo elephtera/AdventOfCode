@@ -108,6 +108,38 @@ namespace AdventOfCode2025
 
             return res;
         }
+        public long Part2Pim(string input)
+        {
+            var inputData = ProcessInput(input);
+            var result = 0L;
+
+            var answer = inputData.Sum(instruction => FindMaxNumber(instruction, 12));
+
+            return answer;
+        }
+
+        private static long FindMaxNumber(int[] numbers, int targetLength)
+        {
+            var result = new List<int>();
+            var toSkip = numbers.Length - targetLength;
+            var skipped = 0;
+
+            foreach (var number in numbers)
+            {
+                while (result.Count > 0 && result[^1] < number && skipped < toSkip)
+                {
+                    result.RemoveAt(result.Count - 1);
+                    skipped++;
+                }
+
+                result.Add(number);
+            }
+
+            result = result.Take(targetLength).ToList();
+
+            return result.Aggregate<int, long>(0, (current, number) => current * 10 + number);
+        }
+
     }
 
 }

@@ -44,6 +44,13 @@ namespace AdventOfCode2025Tests
         }
 
         [TestMethod]
+        public void Part2Pim()
+        {
+            var result = day.Part2Pim(input.Input);
+            Assert.AreEqual(AnswerPart2, result);
+        }
+
+        [TestMethod]
         public void CalcBigJolt2Choices()
         {
             var result = day.CalcBigJolt([1, 2], 1);
@@ -91,6 +98,7 @@ namespace AdventOfCode2025Tests
         [TestMethod]
         public void CalcBigJoltExample1()
         {
+            day.Memoization.Clear();
             var result = day.CalcBigJolt("987654321111111".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(987654321111, result);
         }
@@ -98,6 +106,7 @@ namespace AdventOfCode2025Tests
         [TestMethod]
         public void CalcBigJoltExample2()
         {
+            day.Memoization.Clear();
             var result = day.CalcBigJolt("811111111111119".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(811111111119, result);
         }
@@ -105,6 +114,7 @@ namespace AdventOfCode2025Tests
         [TestMethod]
         public void CalcBigJoltExample3()
         {
+            day.Memoization.Clear();
             var result = day.CalcBigJolt("234234234234278".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(434234234278, result);
         }
@@ -112,8 +122,19 @@ namespace AdventOfCode2025Tests
         [TestMethod]
         public void CalcBigJoltExample4()
         {
+            day.Memoization.Clear();
             var result = day.CalcBigJolt("818181911112111".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(888911112111, result);
+        }
+
+        //6483266694748235893324353634344523834567333718239477213324541343624714732212276727733744455653544463
+
+        [TestMethod]
+        public void CalcBigJoltExample5()
+        {
+            day.Memoization.Clear();
+            var result = day.CalcBigJolt("6483266694748235893324353634344523834567333718239477213324541343624714732212276727733744455653544463".Select(c => int.Parse(c.ToString())).ToArray(), 12);
+            Assert.AreEqual(999777777777, result);
         }
     }
 }
