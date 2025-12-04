@@ -53,77 +53,73 @@ namespace AdventOfCode2025Tests
         [TestMethod]
         public void CalcBigJolt2Choices()
         {
-            var result = day.CalcBigJolt([1, 2], 1);
+            var result = day.CalcJolt([1, 2], 1);
             Assert.AreEqual(2, result);
 
-            result = day.CalcBigJolt([2, 1], 1);
+            result = day.CalcJolt([2, 1], 1);
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public void CalcBigJolt1Item()
         {
-            var result = day.CalcBigJolt([2], 1);
+            var result = day.CalcJolt([2], 1);
             Assert.AreEqual(2, result);
         }
 
         [TestMethod]
         public void CalcBigJolt2()
         {
-            var result = day.CalcBigJolt([1, 2, 3, 4, 5], 3);
+            var result = day.CalcJolt([1, 2, 3, 4, 5], 3);
             Assert.AreEqual(345, result);
         }
 
         [TestMethod]
         public void CalcBigJolt3()
         {
-            var result = day.CalcBigJolt([5, 4, 3, 2, 1], 3);
+            var result = day.CalcJolt([5, 4, 3, 2, 1], 3);
             Assert.AreEqual(543, result);
         }
 
         [TestMethod]
         public void CalcBigJolt4()
         {
-            var result = day.CalcBigJolt([1, 4, 3, 2, 1], 3);
+            var result = day.CalcJolt([1, 4, 3, 2, 1], 3);
             Assert.AreEqual(432, result);
         }
 
         [TestMethod]
         public void CalcBigJolt5()
         {
-            var result = day.CalcBigJolt("14321".Select(c => int.Parse(c.ToString())).ToArray(), 3);
+            var result = day.CalcJolt("14321".Select(c => int.Parse(c.ToString())).ToArray(), 3);
             Assert.AreEqual(432, result);
         }
 
         [TestMethod]
         public void CalcBigJoltExample1()
         {
-            day.Memoization.Clear();
-            var result = day.CalcBigJolt("987654321111111".Select(c => int.Parse(c.ToString())).ToArray(), 12);
+            var result = day.CalcJolt("987654321111111".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(987654321111, result);
         }
 
         [TestMethod]
         public void CalcBigJoltExample2()
         {
-            day.Memoization.Clear();
-            var result = day.CalcBigJolt("811111111111119".Select(c => int.Parse(c.ToString())).ToArray(), 12);
+            var result = day.CalcJolt("811111111111119".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(811111111119, result);
         }
 
         [TestMethod]
         public void CalcBigJoltExample3()
         {
-            day.Memoization.Clear();
-            var result = day.CalcBigJolt("234234234234278".Select(c => int.Parse(c.ToString())).ToArray(), 12);
+            var result = day.CalcJolt("234234234234278".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(434234234278, result);
         }
 
         [TestMethod]
         public void CalcBigJoltExample4()
         {
-            day.Memoization.Clear();
-            var result = day.CalcBigJolt("818181911112111".Select(c => int.Parse(c.ToString())).ToArray(), 12);
+            var result = day.CalcJolt("818181911112111".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(888911112111, result);
         }
 
@@ -132,8 +128,7 @@ namespace AdventOfCode2025Tests
         [TestMethod]
         public void CalcBigJoltExample5()
         {
-            day.Memoization.Clear();
-            var result = day.CalcBigJolt("6483266694748235893324353634344523834567333718239477213324541343624714732212276727733744455653544463".Select(c => int.Parse(c.ToString())).ToArray(), 12);
+            var result = day.CalcJolt("6483266694748235893324353634344523834567333718239477213324541343624714732212276727733744455653544463".Select(c => int.Parse(c.ToString())).ToArray(), 12);
             Assert.AreEqual(999777777777, result);
         }
     }
