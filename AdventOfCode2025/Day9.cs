@@ -113,7 +113,7 @@ namespace AdventOfCode2025
                     continue;
                 }
 
-                for (long y = boxBottomLeft.Y; y <= boxTopLeft.Y; y++)
+                for (long y = boxTopLeft.Y; y <= boxBottomLeft.Y; y++)
                 {
                     if (!IsPointInPolygon(inputData, new Point(boxBottomLeft.X, y)))
                     {
@@ -135,53 +135,6 @@ namespace AdventOfCode2025
 
                 return pair.Value;
 
-
-                                // both horizontal lines
-                var line1 = new Line(boxTopLeft, boxTopRight);
-                var line2 = new Line(boxBottomLeft, boxBottomRight);
-
-                // both vertical lines
-                var line3 = new Line(boxTopLeft, boxBottomLeft);
-                var line4 = new Line(boxTopRight, boxBottomRight);
-
-                bool intersects = false;
-
-                // Check if any of the horizontal lines intersect with the vertical polygon lines
-                foreach (var vLine in verticalLines)
-                {
-                    if (DoLinesIntersect(line1, vLine) || DoLinesIntersect(line2, vLine))
-                    {
-                        intersects = true;
-                        break;
-                    }
-                }
-                if (intersects)
-                {
-                    continue;
-                }
-                // Check if any of the vertical lines intersect with the horizontal polygon lines
-                foreach (var hLine in horizontalLines)
-                {
-                    if (DoLinesIntersect(line3, hLine) || DoLinesIntersect(line4, hLine))
-                    {
-                        intersects = true;
-                        break;
-                    }
-                }
-                if (intersects)
-                {
-                    continue;
-                }
-
-                //// check if the middle of the box is inside the polygon
-                //var boxCenter = new Point((boxTopLeft.X + boxBottomRight.X) / 2, (boxTopLeft.Y + boxBottomRight.Y) / 2);
-                //if (!IsPointInPolygon(inputData, boxCenter))
-                //{
-                //    continue;
-                //}
-
-                // If we reach here, the box fits inside the polygon
-                return pair.Value;
             }
 
             // 4630762112 <-- ook fout
