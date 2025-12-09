@@ -12,7 +12,7 @@ namespace AdventOfCode2025Tests
         private const long AnswerExamplePart2 = 24;
 
 
-        private readonly IDay<long> day = new Day9();
+        private readonly Day9 day = new Day9();
         private readonly IDayInput input = new Day9Input();
 
         [TestMethod]
@@ -36,18 +36,57 @@ namespace AdventOfCode2025Tests
             Assert.AreEqual(AnswerExamplePart2, result);
 
         }
-            [TestMethod]
-            public void Part2Example1()
-            {
-                var customInput = @"0,0
-0,5
-5,5
-5,0";
-                var result = day.Part2(customInput);
-                Assert.AreEqual(25, result);
-            }
 
-            [TestMethod]
+        [TestMethod]
+        public void Part2Example1()
+        {
+            var customInput = @"1,1
+1,5
+5,5
+5,1";
+            var result = day.Part2(customInput);
+            Assert.AreEqual(25, result);
+        }
+
+        [TestMethod]
+        public void PointInPolygonTest()
+        {
+            var customInput = new List<Point>()
+            {
+                new Point(1,1),
+                new Point(1,5),
+                new Point(5,5),
+                new Point(5,1),
+            };
+            var result = Day9.IsPointInPolygon(
+                customInput, new Point(1, 1));
+            Assert.IsTrue(result);
+
+            result = Day9.IsPointInPolygon(
+                customInput, new Point(2, 2));
+            Assert.IsTrue(result);
+
+            result = Day9.IsPointInPolygon(
+                customInput, new Point(1, 3));
+            Assert.IsTrue(result);
+
+
+            result = Day9.IsPointInPolygon(
+                customInput, new Point(3,1));
+            Assert.IsTrue(result);
+
+            result = Day9.IsPointInPolygon(
+                customInput, new Point(0, 0));
+            Assert.IsFalse(result);
+            result = Day9.IsPointInPolygon(
+                customInput, new Point(0, 3));
+            Assert.IsFalse(result);
+            result = Day9.IsPointInPolygon(
+                customInput, new Point(3, 0));
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
         public void Part2()
         {
             var result = day.Part2(input.Input);

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Numerics;
 
 namespace AdventOfCode2025
 {
@@ -50,11 +49,13 @@ namespace AdventOfCode2025
 
             // Calculate all the sizes of the boxes that can be formed by the points in inputData
             var sizes = new Dictionary<(Point, Point), long>();
-            foreach (var point1 in inputData)
+            for (int i = 0; i < inputData.Count; i++)
             {
-                foreach (var point2 in inputData)
+                Point point1 = inputData[i];
+                for (int j = i+1; j < inputData.Count; j++)
                 {
-                    var maxSize = Math.Abs(point1.X - point2.X + 1) * Math.Abs(point1.Y - point2.Y + 1);
+                    Point? point2 = inputData[j];
+                    var maxSize = (Math.Abs(point1.X - point2.X)+1) * (Math.Abs(point1.Y - point2.Y)+1);
                     sizes.Add((point1, point2), maxSize);
                 }
             }
@@ -75,8 +76,67 @@ namespace AdventOfCode2025
                 var boxTopRight = new Point(boxBottomRight.X, boxTopLeft.Y);
                 var boxBottomLeft = new Point(boxTopLeft.X, boxBottomRight.Y);
 
+                if (!IsPointInPolygon(inputData, boxTopLeft) ||
+                    !IsPointInPolygon(inputData, boxBottomRight) ||
+                    !IsPointInPolygon(inputData, boxTopRight) ||
+                    !IsPointInPolygon(inputData, boxBottomLeft))
+                {
+                    continue;
+                }
 
-                // both horizontal lines
+                //// check if the middle of the box is inside the polygon
+                var boxCenter = new Point((boxTopLeft.X + boxBottomRight.X) / 2, (boxTopLeft.Y + boxBottomRight.Y) / 2);
+                if (!IsPointInPolygon(inputData, boxCenter))
+                {
+                    continue;
+                }
+
+                // check all points on the box edges to be in the polygon
+                var notInPolygon = false;
+                for (long x = boxBottomLeft.X; x <= boxBottomRight.X; x++)
+                {
+                    if (!IsPointInPolygon(inputData, new Point(x, boxBottomLeft.Y)))
+                    {
+                        notInPolygon = true;
+                        break;
+                    }
+
+                    if (!IsPointInPolygon(inputData, new Point(x, boxTopLeft.Y)))
+                    {
+                        notInPolygon = true;
+                        break;
+                    }
+
+                }
+                if (notInPolygon)
+                {
+                    continue;
+                }
+
+                for (long y = boxBottomLeft.Y; y <= boxTopLeft.Y; y++)
+                {
+                    if (!IsPointInPolygon(inputData, new Point(boxBottomLeft.X, y)))
+                    {
+                        notInPolygon = true;
+                        break;
+                    }
+
+                    if (!IsPointInPolygon(inputData, new Point(boxBottomRight.X, y)))
+                    {
+                        notInPolygon = true;
+                        break;
+                    }
+                }
+                
+                if (notInPolygon)
+                {
+                    continue;
+                }
+
+                return pair.Value;
+
+
+                                // both horizontal lines
                 var line1 = new Line(boxTopLeft, boxTopRight);
                 var line2 = new Line(boxBottomLeft, boxBottomRight);
 
@@ -89,8 +149,7 @@ namespace AdventOfCode2025
                 // Check if any of the horizontal lines intersect with the vertical polygon lines
                 foreach (var vLine in verticalLines)
                 {
-                    if (DoLinesIntersect(line1, vLine) || DoLinesIntersect(line2, vLine)||
-                        DoLinesIntersect(line3, vLine) || DoLinesIntersect(line4, vLine))
+                    if (DoLinesIntersect(line1, vLine) || DoLinesIntersect(line2, vLine))
                     {
                         intersects = true;
                         break;
@@ -103,8 +162,7 @@ namespace AdventOfCode2025
                 // Check if any of the vertical lines intersect with the horizontal polygon lines
                 foreach (var hLine in horizontalLines)
                 {
-                    if (DoLinesIntersect(line3, hLine) || DoLinesIntersect(line4, hLine)||
-                        DoLinesIntersect(line1, hLine) || DoLinesIntersect(line2, hLine))
+                    if (DoLinesIntersect(line3, hLine) || DoLinesIntersect(line4, hLine))
                     {
                         intersects = true;
                         break;
@@ -115,43 +173,50 @@ namespace AdventOfCode2025
                     continue;
                 }
 
-                // check if the middle of the box is inside the polygon
-                var boxCenter = new Point((boxTopLeft.X + boxBottomRight.X) / 2, (boxTopLeft.Y + boxBottomRight.Y) / 2);
-                if (!IsPointInPolygon(inputData, boxCenter))
-                {
-                    continue;
-                }
+                //// check if the middle of the box is inside the polygon
+                //var boxCenter = new Point((boxTopLeft.X + boxBottomRight.X) / 2, (boxTopLeft.Y + boxBottomRight.Y) / 2);
+                //if (!IsPointInPolygon(inputData, boxCenter))
+                //{
+                //    continue;
+                //}
 
                 // If we reach here, the box fits inside the polygon
                 return pair.Value;
             }
 
+            // 4630762112 <-- ook fout
             // 2323334942 te hoog
             return 0L;
         }
 
-        private bool DoLinesIntersect(Line line, Line vertex)
+        private bool DoLinesIntersect(Line edgeOfBox, Line vertex)
         {
-            if(line.Start.X == line.End.X && vertex.Start.X == vertex.End.X)
+            if(edgeOfBox.Start.X == edgeOfBox.End.X && vertex.Start.X == vertex.End.X)
             {
                 return false; // both vertical
             }
-
-            if(line.Start.Y == line.End.Y && vertex.Start.Y == vertex.End.Y)
+            if(edgeOfBox.Start.Y == edgeOfBox.End.Y && vertex.Start.Y == vertex.End.Y)
             {
                 return false; // both horizontal
             }
 
+            //// Check if one of the points are identical to each of the lines
+            //if (edgeOfBox.Start == vertex.Start || edgeOfBox.Start == vertex.End ||
+            //    edgeOfBox.End == vertex.Start || edgeOfBox.End == vertex.End)
+            //{
+            //    return false;
+            //}
+
             // one vertical, one horizontal
-            if (line.Start.X == line.End.X) // line is vertical
-            {
-                return (vertex.Start.X <= line.Start.X && vertex.End.X >= line.Start.X) &&
-                       (line.Start.Y <= vertex.Start.Y && line.End.Y >= vertex.Start.Y);
+            if (edgeOfBox.Start.X == edgeOfBox.End.X) // line1 is vertical
+            {   
+                return (vertex.Start.X <= edgeOfBox.Start.X && vertex.End.X >= edgeOfBox.Start.X) &&
+                       (edgeOfBox.Start.Y <= vertex.Start.Y && edgeOfBox.End.Y >= vertex.Start.Y);
             }
-            else // line is horizontal
+            else // line1 is horizontal
             {
-                return (line.Start.X <= vertex.Start.X && line.End.X >= vertex.Start.X) &&
-                       (vertex.Start.Y <= line.Start.Y && vertex.End.Y >= line.Start.Y);
+                return (edgeOfBox.Start.X <= vertex.Start.X && edgeOfBox.End.X >= vertex.Start.X) &&
+                       (vertex.Start.Y < edgeOfBox.Start.Y && vertex.End.Y > edgeOfBox.Start.Y);
             }
         }
 
@@ -163,23 +228,56 @@ namespace AdventOfCode2025
         }
 
         public static bool IsPointInPolygon(IList<Point> polygon, Point testPoint)
-        {
-            bool isInside = false;
-            int j = polygon.Count - 1;
-
-            for (int i = 0; i < polygon.Count; i++)
+        {   
+            if (polygon == null || polygon.Count == 0)
             {
-                if ((polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y) ||
-                (polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y))
+                return false;
+            }
+
+            // Helper: check if point p lies exactly on segment a-b
+            static bool IsPointOnSegment(Point a, Point b, Point p)
+            {
+                // Cross product to test collinearity
+                long cross = (p.Y - a.Y) * (b.X - a.X) - (p.X - a.X) * (b.Y - a.Y);
+                if (cross != 0)
                 {
-                    if (polygon[i].X + (testPoint.Y - polygon[i].Y) /
-                    (polygon[j].Y - polygon[i].Y) *
-                    (polygon[j].X - polygon[i].X) < testPoint.X)
-                    {
-                        isInside = !isInside;
-                    }
+                    return false;
                 }
-                j = i;
+
+                // Check if p is within bounding box of a and b
+                if (Math.Min(a.X, b.X) <= p.X && p.X <= Math.Max(a.X, b.X) &&
+                    Math.Min(a.Y, b.Y) <= p.Y && p.Y <= Math.Max(a.Y, b.Y))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            bool isInside = false;
+            int n = polygon.Count;
+            int j = n - 1;
+
+            for (int i = 0; i < n; j = i++)
+            {
+                Point a = polygon[i];
+                Point b = polygon[j];
+
+                // If the test point is exactly on an edge or vertex, consider it inside
+                if (IsPointOnSegment(a, b, testPoint))
+                {
+                    return true;
+                }
+
+                // Ray-casting test for edge intersection with horizontal ray to the right of testPoint
+                // Use double arithmetic to avoid integer division truncation
+                bool intersects = ((a.Y > testPoint.Y) != (b.Y > testPoint.Y)) &&
+                                  (testPoint.X < (double)(b.X - a.X) * (testPoint.Y - a.Y) / (double)(b.Y - a.Y) + a.X);
+
+                if (intersects)
+                {
+                    isInside = !isInside;
+                }
             }
 
             return isInside;
