@@ -91,44 +91,14 @@ namespace AdventOfCode2025
                     continue;
                 }
 
-                // check all points on the box edges to be in the polygon
-                var notInPolygon = false;
-                for (long x = boxBottomLeft.X; x <= boxBottomRight.X; x++)
-                {
-                    if (!IsPointInPolygon(inputData, new Point(x, boxBottomLeft.Y)))
-                    {
-                        notInPolygon = true;
-                        break;
-                    }
-
-                    if (!IsPointInPolygon(inputData, new Point(x, boxTopLeft.Y)))
-                    {
-                        notInPolygon = true;
-                        break;
-                    }
-
-                }
-                if (notInPolygon)
+                bool isValid = CheckBoxIntersection(verticalLines, horizontalLines, boxTopLeft, boxBottomRight, boxTopRight, boxBottomLeft);
+                if (!isValid)
                 {
                     continue;
                 }
 
-                for (long y = boxTopLeft.Y; y <= boxBottomLeft.Y; y++)
-                {
-                    if (!IsPointInPolygon(inputData, new Point(boxBottomLeft.X, y)))
-                    {
-                        notInPolygon = true;
-                        break;
-                    }
-
-                    if (!IsPointInPolygon(inputData, new Point(boxBottomRight.X, y)))
-                    {
-                        notInPolygon = true;
-                        break;
-                    }
-                }
-                
-                if (notInPolygon)
+                isValid = FinalCheck(inputData, boxTopLeft, boxBottomRight, boxTopRight, boxBottomLeft);
+                if (!isValid)
                 {
                     continue;
                 }
@@ -137,38 +107,101 @@ namespace AdventOfCode2025
 
             }
 
+            // 1577956170
             // 4630762112 <-- ook fout
             // 2323334942 te hoog
             return 0L;
         }
 
+        private bool CheckBoxIntersection(IList<Line> verticalLines, IList<Line> horizontalLines, Point boxTopLeft, Point boxBottomRight, Point boxTopRight, Point boxBottomLeft)
+        {
+            // both horizontal lines
+            var line1 = new Line(boxTopLeft, boxTopRight);
+            var line2 = new Line(boxBottomLeft, boxBottomRight);
+
+            // both vertical lines
+            var line3 = new Line(boxTopLeft, boxBottomLeft);
+            var line4 = new Line(boxTopRight, boxBottomRight);
+
+            // Check if any of the horizontal lines intersect with the vertical polygon lines
+            foreach (var vLine in verticalLines)
+            {
+                if (DoLinesIntersect(line1, vLine) || DoLinesIntersect(line2, vLine))
+                {
+                    return false;
+                }
+            }
+
+            // Check if any of the vertical lines intersect with the horizontal polygon lines
+            foreach (var hLine in horizontalLines)
+            {
+                if (DoLinesIntersect(line3, hLine) || DoLinesIntersect(line4, hLine))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool FinalCheck(IList<Point> inputData, Point boxTopLeft, Point boxBottomRight, Point boxTopRight, Point boxBottomLeft)
+        {
+            // check all points on the box edges to be in the polygon
+            var notInPolygon = false;
+            for (long x = boxBottomLeft.X; x <= boxTopRight.X; x++)
+            {
+                if (!IsPointInPolygon(inputData, new Point(x, boxBottomLeft.Y)))
+                {
+                    notInPolygon = true;
+                    break;
+                }
+
+                if (!IsPointInPolygon(inputData, new Point(x, boxTopLeft.Y)))
+                {
+                    notInPolygon = true;
+                    break;
+                }
+
+            }
+            if (notInPolygon)
+            {
+                return false;
+            }
+
+            for (long y = boxTopRight.Y; y <= boxBottomLeft.Y; y++)
+            {
+                if (!IsPointInPolygon(inputData, new Point(boxBottomLeft.X, y)))
+                {
+                    notInPolygon = true;
+                    break;
+                }
+
+                if (!IsPointInPolygon(inputData, new Point(boxBottomRight.X, y)))
+                {
+                    notInPolygon = true;
+                    break;
+                }
+            }
+
+            if (notInPolygon)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private bool DoLinesIntersect(Line edgeOfBox, Line vertex)
         {
-            if(edgeOfBox.Start.X == edgeOfBox.End.X && vertex.Start.X == vertex.End.X)
-            {
-                return false; // both vertical
-            }
-            if(edgeOfBox.Start.Y == edgeOfBox.End.Y && vertex.Start.Y == vertex.End.Y)
-            {
-                return false; // both horizontal
-            }
-
-            //// Check if one of the points are identical to each of the lines
-            //if (edgeOfBox.Start == vertex.Start || edgeOfBox.Start == vertex.End ||
-            //    edgeOfBox.End == vertex.Start || edgeOfBox.End == vertex.End)
-            //{
-            //    return false;
-            //}
-
             // one vertical, one horizontal
             if (edgeOfBox.Start.X == edgeOfBox.End.X) // line1 is vertical
             {   
-                return (vertex.Start.X <= edgeOfBox.Start.X && vertex.End.X >= edgeOfBox.Start.X) &&
-                       (edgeOfBox.Start.Y <= vertex.Start.Y && edgeOfBox.End.Y >= vertex.Start.Y);
+                return (vertex.Start.X < edgeOfBox.Start.X && vertex.End.X > edgeOfBox.Start.X) &&
+                       (edgeOfBox.Start.Y < vertex.Start.Y && edgeOfBox.End.Y > vertex.Start.Y);
             }
             else // line1 is horizontal
             {
-                return (edgeOfBox.Start.X <= vertex.Start.X && edgeOfBox.End.X >= vertex.Start.X) &&
+                return (edgeOfBox.Start.X < vertex.Start.X && edgeOfBox.End.X > vertex.Start.X) &&
                        (vertex.Start.Y < edgeOfBox.Start.Y && vertex.End.Y > edgeOfBox.Start.Y);
             }
         }

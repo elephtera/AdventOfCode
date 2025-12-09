@@ -7,7 +7,7 @@ namespace AdventOfCode2025Tests
     public class Day9Test
     {
         private const long AnswerPart1 = 4758121828;
-        private const long AnswerPart2 = 0;
+        private const long AnswerPart2 = 1577956170;
         private const long AnswerExamplePart1 = 50;
         private const long AnswerExamplePart2 = 24;
 
