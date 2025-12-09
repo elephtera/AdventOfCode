@@ -32,7 +32,7 @@ namespace AdventOfCode2025
             // All vertices in the polygon, sorted by horizontal and vertical vertices
             IList<Line> verticalLines = new List<Line>();
             IList<Line> horizontalLines = new List<Line>();
-            for(int i = 0; i < inputData.Count; i++)
+            for (int i = 0; i < inputData.Count; i++)
             {
                 var point = inputData[i];
                 var point2 = inputData[(i + 1) % inputData.Count];
@@ -52,10 +52,10 @@ namespace AdventOfCode2025
             for (int i = 0; i < inputData.Count; i++)
             {
                 Point point1 = inputData[i];
-                for (int j = i+1; j < inputData.Count; j++)
+                for (int j = i + 1; j < inputData.Count; j++)
                 {
                     Point? point2 = inputData[j];
-                    var maxSize = (Math.Abs(point1.X - point2.X)+1) * (Math.Abs(point1.Y - point2.Y)+1);
+                    var maxSize = (Math.Abs(point1.X - point2.X) + 1) * (Math.Abs(point1.Y - point2.Y) + 1);
                     sizes.Add((point1, point2), maxSize);
                 }
             }
@@ -84,20 +84,7 @@ namespace AdventOfCode2025
                     continue;
                 }
 
-                //// check if the middle of the box is inside the polygon
-                var boxCenter = new Point((boxTopLeft.X + boxBottomRight.X) / 2, (boxTopLeft.Y + boxBottomRight.Y) / 2);
-                if (!IsPointInPolygon(inputData, boxCenter))
-                {
-                    continue;
-                }
-
                 bool isValid = CheckBoxIntersection(verticalLines, horizontalLines, boxTopLeft, boxBottomRight, boxTopRight, boxBottomLeft);
-                if (!isValid)
-                {
-                    continue;
-                }
-
-                isValid = FinalCheck(inputData, boxTopLeft, boxBottomRight, boxTopRight, boxBottomLeft);
                 if (!isValid)
                 {
                     continue;
@@ -107,9 +94,6 @@ namespace AdventOfCode2025
 
             }
 
-            // 1577956170
-            // 4630762112 <-- ook fout
-            // 2323334942 te hoog
             return 0L;
         }
 
@@ -144,62 +128,14 @@ namespace AdventOfCode2025
             return true;
         }
 
-        private static bool FinalCheck(IList<Point> inputData, Point boxTopLeft, Point boxBottomRight, Point boxTopRight, Point boxBottomLeft)
-        {
-            // check all points on the box edges to be in the polygon
-            var notInPolygon = false;
-            for (long x = boxBottomLeft.X; x <= boxTopRight.X; x++)
-            {
-                if (!IsPointInPolygon(inputData, new Point(x, boxBottomLeft.Y)))
-                {
-                    notInPolygon = true;
-                    break;
-                }
-
-                if (!IsPointInPolygon(inputData, new Point(x, boxTopLeft.Y)))
-                {
-                    notInPolygon = true;
-                    break;
-                }
-
-            }
-            if (notInPolygon)
-            {
-                return false;
-            }
-
-            for (long y = boxTopRight.Y; y <= boxBottomLeft.Y; y++)
-            {
-                if (!IsPointInPolygon(inputData, new Point(boxBottomLeft.X, y)))
-                {
-                    notInPolygon = true;
-                    break;
-                }
-
-                if (!IsPointInPolygon(inputData, new Point(boxBottomRight.X, y)))
-                {
-                    notInPolygon = true;
-                    break;
-                }
-            }
-
-            if (notInPolygon)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private bool DoLinesIntersect(Line edgeOfBox, Line vertex)
         {
-            // one vertical, one horizontal
-            if (edgeOfBox.Start.X == edgeOfBox.End.X) // line1 is vertical
-            {   
+            if (edgeOfBox.Start.X == edgeOfBox.End.X) // edgeOfBox is vertical
+            {
                 return (vertex.Start.X < edgeOfBox.Start.X && vertex.End.X > edgeOfBox.Start.X) &&
                        (edgeOfBox.Start.Y < vertex.Start.Y && edgeOfBox.End.Y > vertex.Start.Y);
             }
-            else // line1 is horizontal
+            else // edgeOfBox is horizontal
             {
                 return (edgeOfBox.Start.X < vertex.Start.X && edgeOfBox.End.X > vertex.Start.X) &&
                        (vertex.Start.Y < edgeOfBox.Start.Y && vertex.End.Y > edgeOfBox.Start.Y);
@@ -214,32 +150,7 @@ namespace AdventOfCode2025
         }
 
         public static bool IsPointInPolygon(IList<Point> polygon, Point testPoint)
-        {   
-            if (polygon == null || polygon.Count == 0)
-            {
-                return false;
-            }
-
-            // Helper: check if point p lies exactly on segment a-b
-            static bool IsPointOnSegment(Point a, Point b, Point p)
-            {
-                // Cross product to test collinearity
-                long cross = (p.Y - a.Y) * (b.X - a.X) - (p.X - a.X) * (b.Y - a.Y);
-                if (cross != 0)
-                {
-                    return false;
-                }
-
-                // Check if p is within bounding box of a and b
-                if (Math.Min(a.X, b.X) <= p.X && p.X <= Math.Max(a.X, b.X) &&
-                    Math.Min(a.Y, b.Y) <= p.Y && p.Y <= Math.Max(a.Y, b.Y))
-                {
-                    return true;
-                }
-
-                return false;
-            }
-
+        {
             bool isInside = false;
             int n = polygon.Count;
             int j = n - 1;
@@ -267,6 +178,12 @@ namespace AdventOfCode2025
             }
 
             return isInside;
+        }
+
+        private static bool IsPointOnSegment(Point a, Point b, Point point)
+        {
+            return Math.Min(a.X, b.X) <= point.X && point.X <= Math.Max(a.X, b.X) &&
+                Math.Min(a.Y, b.Y) <= point.Y && point.Y <= Math.Max(a.Y, b.Y);
         }
     }
 
