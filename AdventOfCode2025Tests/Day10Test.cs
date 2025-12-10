@@ -9,7 +9,7 @@ namespace AdventOfCode2025Tests
         private const long AnswerPart1 = 432;
         private const long AnswerPart2 = 0;
         private const long AnswerExamplePart1 = 7;
-        private const long AnswerExamplePart2 = 0;
+        private const long AnswerExamplePart2 = 33;
 
 
         private readonly IDay<long> day = new Day10();
@@ -47,10 +47,10 @@ namespace AdventOfCode2025Tests
         public void LightSwitchTest()
         {
             var result = Day10.CalculateLightswitch(4, "1,2"); // 0b0110
-            Assert.AreEqual(6u, result);
+            Assert.AreEqual(0b0110u, result);
 
             result = Day10.CalculateLightswitch(4, "0"); // 0b0001
-            Assert.AreEqual(1u, result);
+            Assert.AreEqual(0b1000u, result);
         }
 
         [TestMethod]
@@ -181,6 +181,24 @@ namespace AdventOfCode2025Tests
 
             var result2 = day.Part1("[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}");
             Assert.AreEqual(3, result2);
+        }
+
+        [TestMethod]
+        public void Part2SeperateExampleTest()
+        {
+            var result = day.Part2("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}");
+            Assert.AreEqual(10, result);
+
+            result = day.Part2("[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}");
+            Assert.AreEqual(12, result);
+
+            result = day.Part2("[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}");
+            Assert.AreEqual(11, result);
+
+
+            result = day.Part2(@"[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}");
+            Assert.AreEqual(22, result);
         }
     }
 }

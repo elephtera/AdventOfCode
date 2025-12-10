@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode2025
 {
@@ -43,10 +44,69 @@ namespace AdventOfCode2025
 
         }
 
+        private Dictionary<string, int> Memo = new Dictionary<string, int>();
+
+        public int CalculateJolts(int[] joltEndstate, int[] currentJolts, IList<uint> bitmasks)
+        {
+            if (Memo.TryGetValue(string.Join(",", currentJolts), out var memoized))
+            {
+                return memoized;
+            }
+
+            bool match = true;
+            for (int i = 0; i < joltEndstate.Length; i++)
+            {
+                if (currentJolts[i] != joltEndstate[i])
+                {
+                    match = false;
+                }
+
+                if (currentJolts[i] > joltEndstate[i])
+                {
+                    return int.MaxValue;
+                }
+            }
+
+            if (match)
+            {
+                return 0;
+            }
+            var size = currentJolts.Length;
+            var smallest = int.MaxValue;
+            foreach (int i in bitmasks)
+            {
+                var nextJolts = new int[size];
+                for (int j = 0; j < size; j++)
+                {
+                    int arrayIndex = size - j - 1;
+                    if ((i & (1 << j)) != 0)
+                    {
+                        nextJolts[arrayIndex] = currentJolts[arrayIndex] + 1;
+                    }
+                    else
+                    {
+                        nextJolts[arrayIndex] = currentJolts[arrayIndex];
+                    }
+                }
+                var val = CalculateJolts(joltEndstate, nextJolts, bitmasks);
+                smallest = Math.Min(smallest, val == int.MaxValue ? int.MaxValue : val + 1);
+            }
+
+            Memo.Add(string.Join(",", currentJolts), smallest);
+            return smallest;
+        }
+
         public long Part2(string input)
         {
-            var inputData = ProcessInput(input);
+            IList<(uint lights, IList<uint> bitmasks, IList<int> jolts)> inputData = ProcessInput(input);
+
             var result = 0;
+
+            foreach (var (lights, bitmasks, jolts) in inputData)
+            {
+                Memo.Clear();
+                result += CalculateJolts(jolts.ToArray(), new int[jolts.Count], bitmasks);
+            }
             return result;
         }
 
