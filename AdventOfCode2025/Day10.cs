@@ -1,5 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using LpSolveDotNet;
 
 namespace AdventOfCode2025
 {
@@ -44,71 +46,103 @@ namespace AdventOfCode2025
 
         }
 
-        private Dictionary<string, int> Memo = new Dictionary<string, int>();
-
-        public int CalculateJolts(int[] joltEndstate, int[] currentJolts, IList<uint> bitmasks)
-        {
-            if (Memo.TryGetValue(string.Join(",", currentJolts), out var memoized))
-            {
-                return memoized;
-            }
-
-            bool match = true;
-            for (int i = 0; i < joltEndstate.Length; i++)
-            {
-                if (currentJolts[i] != joltEndstate[i])
-                {
-                    match = false;
-                }
-
-                if (currentJolts[i] > joltEndstate[i])
-                {
-                    return int.MaxValue;
-                }
-            }
-
-            if (match)
-            {
-                return 0;
-            }
-            var size = currentJolts.Length;
-            var smallest = int.MaxValue;
-            foreach (int i in bitmasks)
-            {
-                var nextJolts = new int[size];
-                for (int j = 0; j < size; j++)
-                {
-                    int arrayIndex = size - j - 1;
-                    if ((i & (1 << j)) != 0)
-                    {
-                        nextJolts[arrayIndex] = currentJolts[arrayIndex] + 1;
-                    }
-                    else
-                    {
-                        nextJolts[arrayIndex] = currentJolts[arrayIndex];
-                    }
-                }
-                var val = CalculateJolts(joltEndstate, nextJolts, bitmasks);
-                smallest = Math.Min(smallest, val == int.MaxValue ? int.MaxValue : val + 1);
-            }
-
-            Memo.Add(string.Join(",", currentJolts), smallest);
-            return smallest;
-        }
-
         public long Part2(string input)
         {
-            IList<(uint lights, IList<uint> bitmasks, IList<int> jolts)> inputData = ProcessInput(input);
+            LpSolve.Init();
+            var Ncol = 2;
+            using var lp = LpSolve.make_lp(3, Ncol);
+
+            const double Ignored = 0;
+
+            IList<(IList<IList<int>> buttons, IList<int> jolts)> inputData = Process2Input(input);
 
             var result = 0;
 
-            foreach (var (lights, bitmasks, jolts) in inputData)
+            foreach (var (buttons, jolts) in inputData)
             {
-                Memo.Clear();
-                result += CalculateJolts(jolts.ToArray(), new int[jolts.Count], bitmasks);
+                result += CalculateJolts(jolts, buttons);
             }
+
             return result;
         }
+
+        public int CalculateJolts(IList<int> joltEndstate, IList<IList<int>> buttons)
+        {
+            // We build a model with 3 constraints and 2 variables
+            int NVariables = buttons.Count;
+            int Nconstraints = joltEndstate.Count;
+            using var lp = LpSolve.make_lp(Nconstraints, NVariables);
+
+            // NOTE: set_obj_fnex/add_constraintex should be preferred on set_obj_fn/add_constraint
+            //       as they can specify only non-zero elements when working with big model.
+            //       The methods without _ex_ suffix will ignore the first array element so
+            //       let's use a constant for this for clarity.
+            const double Ignored = 0;
+
+            // set the objective function: maximize (143 x + 60 y)
+            lp.set_minim();
+            
+            // Set all output values to be integers
+            for(int i = 0; i < NVariables; i++)
+            {
+                lp.set_int(i + 1, true);
+            }
+
+            var objFn = new double[NVariables + 1];
+            objFn[0] = Ignored;
+            for (int i = 0; i < NVariables; i++)
+            {
+                // We want to have the minimum of all the buttons pressed,
+                // and the variable is the number of times a button is pressed
+                objFn[i + 1] = 1;
+            }
+
+            lp.set_obj_fn(objFn);
+
+            // add constraints to the model
+            lp.set_add_rowmode(true);
+
+            for (int i = 0; i < Nconstraints; i++)
+            {
+                var constraint = new double[NVariables + 1];
+                constraint[0] = Ignored;
+                for (int j = 0; j < NVariables; j++)
+                {
+                    // Each constraint corresponds to a jolt value we want to reach
+                    // If the button is pressed, it contributes to the jolt value
+                    if (buttons[j].Contains(i))
+                    {
+                        constraint[j + 1] = 1;
+                    }
+                    else
+                    {
+                        constraint[j + 1] = 0;
+                    }
+                }
+                lp.add_constraint(constraint, lpsolve_constr_types.EQ, joltEndstate[i]);
+            }
+
+            lp.set_add_rowmode(false);
+
+            // We only want to see important messages on screen while solving
+            lp.set_verbose(lpsolve_verbosity.IMPORTANT);
+
+            // Now let lp_solve calculate a solution
+            lpsolve_return s = lp.solve();
+            if (s == lpsolve_return.OPTIMAL)
+            {
+                Console.WriteLine("Objective value: " + lp.get_objective());
+
+                var results = new double[NVariables];
+                lp.get_variables(results);
+                return Convert.ToInt32(lp.get_objective());
+            }
+
+            //
+            return 0;
+        }
+
+        
 
         public static IList<(uint lights, IList<uint> bitmasks, IList<int> jolts)> ProcessInput(string input)
         {
@@ -117,7 +151,7 @@ namespace AdventOfCode2025
 
             var result = new List<(uint lights, IList<uint> bitmasks, IList<int> jolts)>();
 
-           
+
             var bracketRegex = new Regex(@"\[.*\]");
             var bitmaskRegex = new Regex(@"\(.*?\)");
             var joltsRegex = new Regex(@"\{.*\}");
@@ -158,6 +192,34 @@ namespace AdventOfCode2025
 
                 }
                 result.Add((lights, bitmasks, jolts));
+            }
+            return result;
+        }
+
+        public static IList<(IList<IList<int>> buttons, IList<int> jolts)> Process2Input(string input)
+        {
+            var lines = input.Split(new string[] { Environment.NewLine },
+                    StringSplitOptions.None);
+
+            var result = new List<(IList<IList<int>> buttons, IList<int> jolts)>();
+
+            var bitmaskRegex = new Regex(@"\(.*?\)");
+            var joltsRegex = new Regex(@"\{.*\}");
+            foreach (var line in lines)
+            {
+                var buttons = new List<IList<int>>();
+                var match2 = bitmaskRegex.Matches(line);
+
+                foreach (var group in match2)
+                {
+                    var inner = group.ToString()[1..^1].Split(',').Select(v => int.Parse(v)).ToList();
+                    buttons.Add(inner);
+                }
+
+                var match = joltsRegex.Match(line);
+                var jolts = match.Groups[0].Value[1..^1].Split(',').Select(v => int.Parse(v)).ToList();
+
+                result.Add((buttons, jolts));
             }
             return result;
         }
