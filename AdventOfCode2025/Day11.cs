@@ -127,6 +127,53 @@
             }
             return result;
         }
+
+        private long ProcessNextItem2(string input, IList<(string id, IList<string> outputs)> inputData, bool dac, bool fft)
+        {
+            if (Memo2.ContainsKey((input, dac, fft)))
+            {
+                return Memo2[(input, dac, fft)];
+            }
+            var result = 0L;
+            var outputs = inputData.Where(item => item.id == input).Single().outputs;
+            foreach (var output in outputs)
+            {
+                if (output == "out")
+                {
+                    if (dac && fft)
+                    {
+                        result += 1;
+                    }
+                    continue;
+                }
+
+                result += ProcessNextItem2(output, inputData, dac || output == "dac", fft || output == "fft");
+                // Process each output
+            }
+
+            Memo2.Add((input, dac, fft), result);
+            return result;
+        }
+
+        private Dictionary<(string input, bool dac, bool fft), long> Memo2 = new Dictionary<(string, bool, bool), long>();
+
+        public long Part2Alternative(string input)
+        {
+            IList<(string id, IList<string> outputs)> inputData = ProcessInput(input);
+
+            var result = 0L;
+
+            var me = inputData.Where(item => item.id == "svr").First();
+
+            foreach (var output in me.outputs)
+            {
+                result += ProcessNextItem2(output, inputData, false, false);
+                // Process each output
+            }
+
+
+            return result;
+        }
     }
 
 }

@@ -12,7 +12,7 @@ namespace AdventOfCode2025Tests
         private const long AnswerExamplePart2 = 2;
 
 
-        private readonly IDay<long> day = new Day11();
+        private readonly Day11 day = new Day11();
         private readonly Day11Input input = new Day11Input();
 
         [TestMethod]
@@ -40,6 +40,13 @@ namespace AdventOfCode2025Tests
         public void Part2()
         {
             var result = day.Part2(input.Input);
+            Assert.AreEqual(AnswerPart2, result);
+        }
+
+        [TestMethod]
+        public void Part2Alternative()
+        {
+            var result = day.Part2Alternative(input.Input);
             Assert.AreEqual(AnswerPart2, result);
         }
     }
